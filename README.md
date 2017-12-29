@@ -7,4 +7,4 @@ Ridhvl2 is a library designed to provide shortcuts and templates for 2D Java gam
 
 Ridhvl2 depends on [Lwjgl 2](http://legacy.lwjgl.org/) and [slick-util](http://slick.ninjacave.com/).
 
-Pull requests that provide *helpful* and *logical* additions will be accepted.
+Pull requests that provide *helpful* and *logical* additions will be accepted. Additionally, questions and ideas can be discussed in our [Discord server](https://discord.gg/E8GTCNH).
