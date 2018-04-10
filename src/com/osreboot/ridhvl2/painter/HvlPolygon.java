@@ -11,19 +11,19 @@ public class HvlPolygon {
 		uvs = uvArgs;
 	}
 	
-	public HvlCoord[] getVertices(){
+	protected HvlCoord[] getVertices(){
 		return vertices;
 	}
 	
-	public HvlCoord[] getUVs(){
+	protected HvlCoord[] getUVs(){
 		return uvs;
 	}
 	
-	public void setVertices(HvlCoord[] vArgs){
+	protected void setVertices(HvlCoord[] vArgs){
 		vertices = vArgs;
 	}
 	
-	public void setUVs(HvlCoord[] uvArgs){
+	protected void setUVs(HvlCoord[] uvArgs){
 		uvs = uvArgs;
 	}
 	
