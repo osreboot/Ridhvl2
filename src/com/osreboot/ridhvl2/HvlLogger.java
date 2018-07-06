@@ -6,8 +6,7 @@ public class HvlLogger {
 		System.out.println("[" + Thread.currentThread().getStackTrace()[2].getClassName() + "]: " + sArg);
 	}
 	
-	@SuppressWarnings("rawtypes")
-	public static void println(Class cArg, String sArg){
+	public static void println(Class<?> cArg, String sArg){
 		System.out.println("[" + cArg.getSimpleName() + "]: " + sArg);
 	}
 	

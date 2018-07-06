@@ -2,8 +2,21 @@ package com.osreboot.ridhvl2.template;
 
 import org.lwjgl.Sys;
 
+/**
+ * 
+ * A managed single-thread loop that repeatedly calls <code>update(float delta)</code>. Can handle time
+ * dilation, tracks total time elapsed, and calculates the time between <code>update</code> calls (in 
+ * seconds)(<code>delta</code>).
+ * 
+ * @author os_reboot
+ *
+ */
 public abstract class HvlTimer {
 
+	/**
+	 * Common values used to represent the maximum possible delta (in case the program briefly becomes 
+	 * unresponsive).
+	 */
 	public static final long MAXDELTA_UNLIMITED = Long.MAX_VALUE,
 			MAXDELTA_SECOND = 1000,
 			MAXDELTA_DECISECOND = 100,
@@ -18,6 +31,9 @@ public abstract class HvlTimer {
 
 	public HvlTimer(){}
 
+	/**
+	 * Starts the loop. This method will not exit until <code>setRunning(false)</code> is called.
+	 */
 	public final void start(){
 		running = true;
 		while(running){
