@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
 
-public class HvlChronology {
+public final class HvlChronology {
 
 	public static final int 
 	CHRONOLOGY_INIT_INTERVAL = 5,
@@ -29,11 +29,13 @@ public class HvlChronology {
 	CHRONOLOGY_UPDATE_POST_MIDDLE = 75,
 	CHRONOLOGY_UPDATE_POST_LATE = 87,
 	CHRONOLOGY_UPDATE_POST_LATEST = 100,
-	LAUNCH_CODE = 1, 
+	LAUNCH_CODE = 1, //functionally does nothing, exists for structure purposes
 	LAUNCH_CODE_RAW = 0,
 	DEBUG_LAUNCH_CODE = 1,
 	DEBUG_LAUNCH_CODE_RAW = 0;
 
+	private HvlChronology(){}
+	
 	private static long launchCode = -1, debugLaunchCode = -1;
 
 	public static long getLaunchCode(){
@@ -129,7 +131,8 @@ public class HvlChronology {
 		}
 	}
 
-	private static class Initialize{
+	public static final class Initialize{
+		
 		private static ArrayList<Initialize> queue = new ArrayList<>();
 
 		private HvlAction.A1<Boolean> action;
@@ -137,14 +140,33 @@ public class HvlChronology {
 
 		private Initialize(HvlAction.A1<Boolean> actionArg, HvlChronologyInitialize annotationArg){
 			if(annotationArg.launchCode() < 1) throw new InvalidLaunchCodeException();
+			if(annotationArg.chronology() < CHRONOLOGY_INIT_EARLIEST || annotationArg.chronology() > CHRONOLOGY_INIT_LATEST)
+				throw new InvalidChronologyException();
 			action = actionArg;
 			annotation = annotationArg;
 			queue.add(this);
 		}
+		
+		public String getAnnotationLabel(){
+			return annotation.label();
+		}
+		
+		public int getAnnotationLaunchCode(){
+			return annotation.launchCode();
+		}
+		
+		public int getAnnotationChronology(){
+			return annotation.chronology();
+		}
 
 	}
+	
+	public static ArrayList<Initialize> getInitializeQueue(){
+		return new ArrayList<>(Initialize.queue);
+	}
 
-	private static class Update{
+	public static final class Update{
+		
 		private static ArrayList<Update> queue = new ArrayList<>();
 
 		private HvlAction.A2<Boolean, Float> action;
@@ -152,11 +174,29 @@ public class HvlChronology {
 
 		private Update(HvlAction.A2<Boolean, Float> actionArg, HvlChronologyUpdate annotationArg){
 			if(annotationArg.launchCode() < 1) throw new InvalidLaunchCodeException();
+			if(annotationArg.chronology() < CHRONOLOGY_UPDATE_PRE_EARLIEST || annotationArg.chronology() > CHRONOLOGY_UPDATE_POST_LATEST)
+				throw new InvalidChronologyException();
 			action = actionArg;
 			annotation = annotationArg;
 			queue.add(this);
 		}
+		
+		public String getAnnotationLabel(){
+			return annotation.label();
+		}
+		
+		public int getAnnotationLaunchCode(){
+			return annotation.launchCode();
+		}
+		
+		public int getAnnotationChronology(){
+			return annotation.chronology();
+		}
 
+	}
+	
+	public static ArrayList<Update> getUpdateQueue(){
+		return new ArrayList<>(Update.queue);
 	}
 
 	private static LinkedHashMap<HvlAction.A1<Boolean>, Boolean> loadedInitialize = new LinkedHashMap<>();
