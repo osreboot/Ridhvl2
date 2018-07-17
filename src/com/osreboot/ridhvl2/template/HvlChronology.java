@@ -40,10 +40,11 @@ public class HvlChronology {
 		return debugLaunchCode;
 	}
 	
-	public boolean getDebugOutput(){
+	public static boolean getDebugOutput(){
 		return verifyDebugLaunchCode(1);
 	}
 
+	@SuppressWarnings("unchecked")
 	public static void registerChronology(Class<?> cArg){
 		try{
 			for(Field f : cArg.getFields()){
