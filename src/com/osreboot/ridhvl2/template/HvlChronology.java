@@ -28,7 +28,11 @@ public class HvlChronology {
 	CHRONOLOGY_UPDATE_POST_EARLY = 63,
 	CHRONOLOGY_UPDATE_POST_MIDDLE = 75,
 	CHRONOLOGY_UPDATE_POST_LATE = 87,
-	CHRONOLOGY_UPDATE_POST_LATEST = 100;
+	CHRONOLOGY_UPDATE_POST_LATEST = 100,
+	LAUNCH_CODE = 1, 
+	LAUNCH_CODE_RAW = 0,
+	DEBUG_LAUNCH_CODE = 1,
+	DEBUG_LAUNCH_CODE_RAW = 0;
 
 	private static long launchCode = -1, debugLaunchCode = -1;
 
@@ -39,9 +43,9 @@ public class HvlChronology {
 	public static long getDebugLaunchCode(){
 		return debugLaunchCode;
 	}
-	
+
 	public static boolean getDebugOutput(){
-		return verifyDebugLaunchCode(1);
+		return verifyDebugLaunchCode(0);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -71,11 +75,11 @@ public class HvlChronology {
 	}
 
 	private static boolean verifyLaunchCode(int codeArg){
-		return BigInteger.valueOf(launchCode).testBit(codeArg - 1);
+		return BigInteger.valueOf(launchCode).testBit(codeArg);
 	}
-	
+
 	private static boolean verifyDebugLaunchCode(int codeArg){
-		return BigInteger.valueOf(debugLaunchCode).testBit(codeArg - 1);
+		return BigInteger.valueOf(debugLaunchCode).testBit(codeArg);
 	}
 
 	public static void loadChronologies(long launchCodeArg, long debugLaunchCodeArg){
@@ -84,38 +88,44 @@ public class HvlChronology {
 		debugLaunchCode = debugLaunchCodeArg;
 		HashMap<Integer, Initialize> preInits = new HashMap<>();
 		for(Initialize chrono : Initialize.queue){
-			if(!preInits.containsKey(chrono.annotation.chronology())){
-				if(verifyLaunchCode(chrono.annotation.launchCode()))
+			if(verifyLaunchCode(chrono.annotation.launchCode())){
+				if(!preInits.containsKey(chrono.annotation.chronology())){
 					preInits.put(chrono.annotation.chronology(), chrono);
-				//TODO else debug output
-			}else{
-				HvlLogger.println("Error when trying to register initialize action " + chrono.annotation.label() + ".");
-				throw new PredefinedChronologyException();
-			}
+				}else{
+					HvlLogger.println("Error when trying to register initialize action " + chrono.annotation.label() + " to occupied slot " + chrono.annotation.chronology() + "!");
+					throw new PredefinedChronologyException();
+				}
+			}else HvlLogger.println(getDebugOutput(), "Launch code disabled initialize action from " + chrono.annotation.label() + ".");
 		}
 		for(int i = CHRONOLOGY_INIT_EARLIEST; i <= CHRONOLOGY_INIT_LATEST; i++){
-			//TODO debug printout
-			if(preInits.containsKey(i)) loadedInitialize.put(preInits.get(i).action, verifyDebugLaunchCode(preInits.get(i).annotation.launchCode()));
+			if(preInits.containsKey(i)){
+				HvlLogger.println(getDebugOutput(), "Registering initialize action from " + preInits.get(i).annotation.label() + " to slot " + i + ".");
+				loadedInitialize.put(preInits.get(i).action, verifyDebugLaunchCode(preInits.get(i).annotation.launchCode()));
+			}
 		}
 
 		HashMap<Integer, Update> preUpdates = new HashMap<>();
 		for(Update chrono : Update.queue){
-			if(!preUpdates.containsKey(chrono.annotation.chronology())){
-				if(verifyLaunchCode(chrono.annotation.launchCode()))
+			if(verifyLaunchCode(chrono.annotation.launchCode())){
+				if(!preUpdates.containsKey(chrono.annotation.chronology())){
 					preUpdates.put(chrono.annotation.chronology(), chrono);
-				//TODO else debug output
-			}else{
-				HvlLogger.println("Error when trying to register update action " + chrono.annotation.label() + ".");
-				throw new PredefinedChronologyException();
-			}
+				}else{
+					HvlLogger.println("Error when trying to register update action " + chrono.annotation.label() + " to occupied slot " + chrono.annotation.chronology() + "!");
+					throw new PredefinedChronologyException();
+				}
+			}else HvlLogger.println(getDebugOutput(), "Launch code disabled update action from " + chrono.annotation.label() + ".");
 		}
 		for(int i = CHRONOLOGY_UPDATE_PRE_EARLIEST; i <= CHRONOLOGY_UPDATE_PRE_LATEST; i++){
-			//TODO debug printout
-			if(preUpdates.containsKey(i)) loadedPreUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
+			if(preUpdates.containsKey(i)){
+				HvlLogger.println(getDebugOutput(), "Registering pre-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + ".");
+				loadedPreUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
+			}
 		}
 		for(int i = CHRONOLOGY_UPDATE_POST_EARLIEST; i <= CHRONOLOGY_UPDATE_POST_LATEST; i++){
-			//TODO debug printout
-			if(preUpdates.containsKey(i)) loadedPostUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
+			if(preUpdates.containsKey(i)){
+				HvlLogger.println(getDebugOutput(), "Registering post-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + ".");
+				loadedPostUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
+			}
 		}
 	}
 
@@ -193,7 +203,7 @@ public class HvlChronology {
 	public static class InvalidLaunchCodeException extends RuntimeException{
 		private static final long serialVersionUID = -7657584019043303889L;
 	}
-	
+
 	public static class InvalidLoadConfigurationException extends RuntimeException{
 		private static final long serialVersionUID = 2633380302403141329L;
 	}
