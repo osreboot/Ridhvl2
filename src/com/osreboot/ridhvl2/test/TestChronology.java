@@ -14,7 +14,7 @@ class TestChronology {
 //		HvlChronology.registerChronology(TestChronologyDuplicate.class);
 //		HvlChronology.loadChronologies(
 //				TestChronologyOne.LAUNCH_CODE + TestChronologyTwo.LAUNCH_CODE, 
-//				HvlChronology.LAUNCH_CODE + TestChronologyTwo.LAUNCH_CODE);
+//				HvlChronology.LAUNCH_CODE + TestChronologyOne.LAUNCH_CODE);
 //
 //		HvlChronology.initialize();
 //		HvlChronology.preUpdate(1f);
@@ -26,7 +26,7 @@ class TestChronology {
 		public static final int LAUNCH_CODE_RAW = 1, LAUNCH_CODE = (int)Math.pow(2, LAUNCH_CODE_RAW);
 
 		@HvlChronologyInitialize(label = "TestChrono1", chronology = HvlChronology.CHRONOLOGY_INIT_MIDDLE, launchCode = LAUNCH_CODE_RAW)
-		public static final HvlAction.A1<Boolean> ACTION_INIT = (debug) -> {
+		public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
 			HvlLogger.println(debug, TestChronology.class, "1 - Initialized!");
 		};
 
