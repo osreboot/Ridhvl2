@@ -71,6 +71,7 @@ public final class HvlChronology {
 				}
 			}
 		}catch(Exception e){
+			//TODO allow this exception to pass and stop the program as intended
 			HvlLogger.println("Exception thrown trying to register chronology from " + cArg.getSimpleName() + "!");
 			e.printStackTrace();
 		}

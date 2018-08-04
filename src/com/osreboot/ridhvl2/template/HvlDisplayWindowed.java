@@ -4,21 +4,26 @@ import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
-public final class HvlDisplayWindowed extends HvlDisplay{
+import com.osreboot.ridhvl2.HvlLogger;
 
-	private DisplayMode mode;
+public class HvlDisplayWindowed extends HvlDisplay{
+
+	private DisplayMode initialMode;
+	private String initialTitle;
 	
-	HvlDisplayWindowed(int refreshRateArg, boolean vsyncEnabledArg, boolean resizableArg, int widthArg, int heightArg){
-		super(refreshRateArg, vsyncEnabledArg, resizableArg);
-		mode = new DisplayMode(widthArg, heightArg);
+	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg){
+		super(refreshRateArg, false, resizableArg);
+		initialMode = new DisplayMode(widthArg, heightArg);
+		initialTitle = titleArg;
 	}
 
 	@Override
-	public void apply(){
+	protected void apply(){
 		try{
-			Display.setDisplayMode(mode);
-			Display.setVSyncEnabled(isVsyncEnabled());
+			Display.setDisplayMode(initialMode);
+			Display.setVSyncEnabled(false);
 			Display.setResizable(isResizable());
+			Display.setTitle(initialTitle);
 			Display.create();
 		}catch(LWJGLException e){
 			e.printStackTrace();
@@ -26,25 +31,25 @@ public final class HvlDisplayWindowed extends HvlDisplay{
 	}
 	
 	@Override
-	public void unapply(){
+	protected void unapply(){
 		Display.destroy();
 	}
 
 	@Override
-	public void preUpdate(float delta){
+	protected void preUpdate(float delta){
 		
 	}
 
 	@Override
-	public void postUpdate(float delta){
+	protected void postUpdate(float delta){
 		Display.update();
 		Display.sync(getRefreshRate());
 	}
 
 	@Override
 	public void setVsyncEnabled(boolean vsyncEnabledArg){
-		super.setVsyncEnabled(vsyncEnabledArg);
-		Display.setVSyncEnabled(vsyncEnabledArg);
+		super.setVsyncEnabled(false);
+		HvlLogger.println("VSync cannot be enabled with a windowed display!");
 	}
 
 	@Override

@@ -29,53 +29,36 @@ public abstract class HvlDisplay {
 	public static final HvlAction.A2<Boolean, Float> ACTION_POST_UPDATE = (debug, delta) -> {
 		getDisplay().postUpdate(delta);
 	};
-	
-	public static final int DEFAULT_REFRESH_RATE = 144;
-	public static final boolean 
-	DEFAULT_VSYNC = false,
-	DEFAULT_RESIZABLE = false;
-	
+
 	private static HvlDisplay display;
 	private static boolean displayInitialized = false;
-	
+
 	public static HvlDisplay getDisplay(){
 		return display;
 	}
 
-	public static void setDisplayWindowed(int refreshRateArg, boolean vsyncArg, boolean resizableArg, int widthArg, int heightArg){
-		if(display != null && displayInitialized) display.unapply();
-		display = new HvlDisplayWindowed(refreshRateArg, vsyncArg, resizableArg, widthArg, heightArg);
+	public static void setDisplay(HvlDisplay displayArg){
+		if(displayArg == null) throw new NullDisplayException();
+		if(display != null && displayInitialized) display.unapply();//TODO smooth transition (i.e. don't destroy display)
+		display = displayArg;
 		if(displayInitialized) display.apply();
 	}
-	
-	public static void setDisplayWindowed(int widthArg, int heightArg){
-		int refreshRate = DEFAULT_REFRESH_RATE;
-		boolean vsync = DEFAULT_VSYNC;
-		boolean resizable = DEFAULT_RESIZABLE;
-		if(display != null){
-			refreshRate = display.getRefreshRate();
-			vsync = display.isVsyncEnabled();
-			resizable = display.isResizable();
-			if(displayInitialized) display.unapply();
-		}
-		display = new HvlDisplayWindowed(refreshRate, vsync, resizable, widthArg, heightArg);
-		if(displayInitialized) display.apply();
-	}
-	
+
 	private int refreshRate;
 	private boolean vsyncEnabled, resizable;
+	//TODO iconPath
 
-	public HvlDisplay(int refreshRateArg, boolean vsyncEnabledArg, boolean resizableArg){
+	HvlDisplay(int refreshRateArg, boolean vsyncEnabledArg, boolean resizableArg){
 		refreshRate = refreshRateArg;
 		vsyncEnabled = vsyncEnabledArg;
 		resizable = resizableArg;
 	}
 
-	public abstract void apply();
-	public abstract void unapply();
+	protected abstract void apply();
+	protected abstract void unapply();
 
-	public abstract void preUpdate(float delta);
-	public abstract void postUpdate(float delta);
+	protected abstract void preUpdate(float delta);
+	protected abstract void postUpdate(float delta);
 
 	public boolean isVsyncEnabled(){
 		return vsyncEnabled;
@@ -90,15 +73,21 @@ public abstract class HvlDisplay {
 	}
 
 	public void setRefreshRate(int refreshRateArg){
-		refreshRate = refreshRateArg;
+		if(refreshRateArg < 1){
+			throw new InvalidRefreshRateException();
+		}else refreshRate = refreshRateArg;
 	}
-	
+
 	public boolean isResizable(){
 		return resizable;
 	}
 
 	public void setResizable(boolean resizableArg){
 		resizable = resizableArg;
+	}
+
+	public static class InvalidRefreshRateException extends RuntimeException{
+		private static final long serialVersionUID = -5066247796713528811L;
 	}
 
 	public static class NullDisplayException extends RuntimeException{
