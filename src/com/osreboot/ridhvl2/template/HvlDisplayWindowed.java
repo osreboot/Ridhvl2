@@ -24,6 +24,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 			Display.setVSyncEnabled(false);
 			Display.setResizable(isResizable());
 			Display.setTitle(initialTitle);
+			Display.setFullscreen(false);
 			Display.create();
 		}catch(LWJGLException e){
 			e.printStackTrace();

@@ -1,6 +1,15 @@
 package com.osreboot.ridhvl2.template;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import org.lwjgl.LWJGLException;
+import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.DisplayMode;
+
 import com.osreboot.ridhvl2.HvlAction;
+import com.osreboot.ridhvl2.HvlLogger;
 
 public abstract class HvlDisplay {
 
@@ -14,6 +23,15 @@ public abstract class HvlDisplay {
 
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
+		try{
+			DisplayMode[] displays = Display.getAvailableDisplayModes();
+			for(DisplayMode mode : displays)
+				addFullscreenDisplay(new HvlDisplayFullscreen(mode, false));
+			HvlLogger.println(debug, "Found " + getFullscreenDisplays().size() + " supported fullscreen display modes.");
+		}catch(LWJGLException e){
+			e.printStackTrace();
+		}
+
 		if(getDisplay() != null){
 			getDisplay().apply();
 			displayInitialized = true;
@@ -33,6 +51,8 @@ public abstract class HvlDisplay {
 	private static HvlDisplay display;
 	private static boolean displayInitialized = false;
 
+	private static ArrayList<HvlDisplayFullscreen> fullscreenDisplays = new ArrayList<>();
+
 	public static HvlDisplay getDisplay(){
 		return display;
 	}
@@ -44,6 +64,14 @@ public abstract class HvlDisplay {
 		if(displayInitialized) display.apply();
 	}
 
+	private static void addFullscreenDisplay(HvlDisplayFullscreen displayArg){
+		fullscreenDisplays.add(displayArg);
+	}
+	
+	public static List<HvlDisplayFullscreen> getFullscreenDisplays(){
+		return Collections.unmodifiableList(fullscreenDisplays);
+	}
+	
 	private int refreshRate;
 	private boolean vsyncEnabled, resizable;
 	//TODO iconPath
