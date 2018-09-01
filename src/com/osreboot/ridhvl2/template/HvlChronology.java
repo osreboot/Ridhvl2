@@ -9,6 +9,30 @@ import java.util.LinkedHashMap;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
 
+/**
+ * Handles the instantiation and execution of sequential events that run on program initialize and program 
+ * update.
+ * 
+ * <p>
+ * 
+ * In order for an event to be added, it needs to declare a <code>label</code>, a <code>chronology</code>,
+ * and a <code>launchCode</code>. The <code>label</code> is used solely for logging purposes and identification
+ * in Ridhvl2Toolkit. The <code>chronology</code> describes the event's order of execution. Two events of the
+ * same type cannot have the same chronology. The <code>launchCode</code> is used for determining if an event
+ * should be queued for execution by the end-user. Programs that declare HvlChronology events should always include constant variables describing their
+ * <code>launchCode</code> values, in the following format:
+ * 
+ * <p>
+ * 
+ * <code>public static final int LAUNCH_CODE_RAW = 1, LAUNCH_CODE = (int)Math.pow(2, LAUNCH_CODE_RAW);</code>
+ * 
+ * <p>
+ * 
+ * See {@linkplain TestChoronology} for an example of proper implementation and formatting.
+ * 
+ * @author os_reboot
+ *
+ */
 public final class HvlChronology {
 
 	public static final int 
