@@ -28,7 +28,8 @@ import com.osreboot.ridhvl2.HvlLogger;
  * 
  * <p>
  * 
- * See {@linkplain TestChoronology} for an example of proper implementation and formatting.
+ * See {@linkplain com.osreboot.ridhvl2.test.TestChronology TestChronology} for an example of proper 
+ * implementation and formatting.
  * 
  * @author os_reboot
  *
