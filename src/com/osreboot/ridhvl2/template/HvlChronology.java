@@ -15,11 +15,24 @@ import com.osreboot.ridhvl2.HvlLogger;
  * 
  * <p>
  * 
- * In order for an event to be added, it needs to declare a <code>label</code>, a <code>chronology</code>,
- * and a <code>launchCode</code>. The <code>label</code> is used solely for logging purposes and identification
- * in Ridhvl2Toolkit. The <code>chronology</code> describes the event's order of execution. Two events of the
- * same type cannot have the same chronology. The <code>launchCode</code> is used for determining if an event
- * should be queued for execution by the end-user. Programs that declare HvlChronology events should always include constant variables describing their
+ * Classes containing events need to be registered via the {@linkplain #registerChronology(Class)} method. 
+ * {@linkplain com.osreboot.ridhvl2.template.HvlChronologyRegistry HvlChronologyRegistry}'s
+ * {@linkplain com.osreboot.ridhvl2.template.HvlChronologyRegistry#registerRidhvlChronologies() 
+ * registerRidhvlChronologies()} method registers all Ridhvl event-containing classes. Once all events are 
+ * registered, {@linkplain #loadChronologies(long, long)} must be called with <code>launchCode</code> and 
+ * <code>debugCode</code> arguments in order to make events specified by the given <code>launchCode</code>
+ * active. Finally, calling the {@linkplain #initialize()} method runs all active initialize events and, 
+ * similarly, repeatedly calling {@linkplain #preUpdate(float)} and {@linkplain #postUpdate(float)} runs all 
+ * active update events.
+ * 
+ * <p>
+ * 
+ * In order for a registered event to be recognized, it needs to declare a <code>label</code>, a 
+ * <code>chronology</code>, and a <code>launchCode</code>. The <code>label</code> is used solely for logging 
+ * purposes and identification in Ridhvl2Toolkit. The <code>chronology</code> describes the event's order of 
+ * execution. Two events of the same type cannot have the same chronology. The <code>launchCode</code> is used 
+ * for determining if an event should be queued for execution by the end-user. Programs that declare 
+ * HvlChronology events should (by practice) always include constant variables describing their 
  * <code>launchCode</code> values, in the following format:
  * 
  * <p>
