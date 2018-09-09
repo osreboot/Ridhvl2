@@ -8,18 +8,33 @@ import com.osreboot.ridhvl2.template.HvlChronologyUpdate;
 
 class TestChronology {
 
-//	public static void main(String[] args){
-//		HvlChronology.registerChronology(TestChronologyOne.class);
-//		HvlChronology.registerChronology(TestChronologyTwo.class);
-//		HvlChronology.registerChronology(TestChronologyDuplicate.class);
-//		HvlChronology.loadChronologies(
-//				TestChronologyOne.LAUNCH_CODE + TestChronologyTwo.LAUNCH_CODE, 
-//				HvlChronology.LAUNCH_CODE + TestChronologyOne.LAUNCH_CODE);
-//
-//		HvlChronology.initialize();
-//		HvlChronology.preUpdate(1f);
-//		HvlChronology.postUpdate(1f);
-//	}
+	public static void main(String[] args){
+		HvlChronology.registerChronology(TestChronologyOne.class);
+		HvlChronology.registerChronology(TestChronologyTwo.class);
+		HvlChronology.registerChronology(TestChronologyDuplicate.class);
+		
+		HvlChronology.loadChronologies(
+				TestChronologyOne.LAUNCH_CODE + TestChronologyTwo.LAUNCH_CODE, 
+				HvlChronology.LAUNCH_CODE + TestChronologyOne.LAUNCH_CODE);
+
+		HvlChronology.initialize();
+		HvlChronology.preUpdate(1f);
+		HvlChronology.postUpdate(1f);
+		
+		HvlChronology.unloadChronologies();
+		
+		HvlChronology.loadChronologies(
+				TestChronologyOne.LAUNCH_CODE + TestChronologyTwo.LAUNCH_CODE, 
+				HvlChronology.LAUNCH_CODE + TestChronologyOne.LAUNCH_CODE + TestChronologyTwo.LAUNCH_CODE);
+
+		HvlChronology.initialize();
+		HvlChronology.preUpdate(1f);
+		HvlChronology.postUpdate(1f);
+		
+		HvlChronology.unloadChronologies();
+		
+		//TODO intentionally throw and catch exception for duplicate actions
+	}
 
 	public static class TestChronologyOne {
 

@@ -133,14 +133,14 @@ public final class HvlChronology {
 				if(!preInits.containsKey(chrono.annotation.chronology())){
 					preInits.put(chrono.annotation.chronology(), chrono);
 				}else{
-					HvlLogger.println("Error when trying to register initialize action " + chrono.annotation.label() + " to occupied slot " + chrono.annotation.chronology() + "!");
+					HvlLogger.println("Error when trying to load initialize action " + chrono.annotation.label() + " to occupied slot " + chrono.annotation.chronology() + "!");
 					throw new PredefinedChronologyException();
 				}
 			}else HvlLogger.println(getDebugOutput(), "Launch code disabled initialize action from " + chrono.annotation.label() + ".");
 		}
 		for(int i = CHRONOLOGY_INIT_EARLIEST; i <= CHRONOLOGY_INIT_LATEST; i++){
 			if(preInits.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Registering initialize action from " + preInits.get(i).annotation.label() + " to slot " + i + ".");
+				HvlLogger.println(getDebugOutput(), "Loading initialize action from " + preInits.get(i).annotation.label() + " to slot " + i + ".");
 				loadedInitialize.put(preInits.get(i).action, verifyDebugLaunchCode(preInits.get(i).annotation.launchCode()));
 			}
 		}
@@ -151,23 +151,32 @@ public final class HvlChronology {
 				if(!preUpdates.containsKey(chrono.annotation.chronology())){
 					preUpdates.put(chrono.annotation.chronology(), chrono);
 				}else{
-					HvlLogger.println("Error when trying to register update action " + chrono.annotation.label() + " to occupied slot " + chrono.annotation.chronology() + "!");
+					HvlLogger.println("Error when trying to load update action " + chrono.annotation.label() + " to occupied slot " + chrono.annotation.chronology() + "!");
 					throw new PredefinedChronologyException();
 				}
 			}else HvlLogger.println(getDebugOutput(), "Launch code disabled update action from " + chrono.annotation.label() + ".");
 		}
 		for(int i = CHRONOLOGY_UPDATE_PRE_EARLIEST; i <= CHRONOLOGY_UPDATE_PRE_LATEST; i++){
 			if(preUpdates.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Registering pre-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + ".");
+				HvlLogger.println(getDebugOutput(), "Loading pre-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + ".");
 				loadedPreUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
 			}
 		}
 		for(int i = CHRONOLOGY_UPDATE_POST_EARLIEST; i <= CHRONOLOGY_UPDATE_POST_LATEST; i++){
 			if(preUpdates.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Registering post-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + ".");
+				HvlLogger.println(getDebugOutput(), "Loading post-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + ".");
 				loadedPostUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
 			}
 		}
+	}
+	
+	public static void unloadChronologies(){
+		HvlLogger.println(getDebugOutput(), "Unloading all actions.");
+		launchCode = -1;
+		debugLaunchCode = -1;
+		loadedInitialize.clear();
+		loadedPreUpdate.clear();
+		loadedPostUpdate.clear();
 	}
 
 	public static final class Initialize{
