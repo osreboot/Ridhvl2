@@ -115,11 +115,11 @@ public final class HvlChronology {
 		}
 	}
 
-	private static boolean verifyLaunchCode(int codeArg){
+	public static boolean verifyLaunchCode(int codeArg){
 		return BigInteger.valueOf(launchCode).testBit(codeArg);
 	}
 
-	private static boolean verifyDebugLaunchCode(int codeArg){
+	public static boolean verifyDebugLaunchCode(int codeArg){
 		return BigInteger.valueOf(debugLaunchCode).testBit(codeArg);
 	}
 

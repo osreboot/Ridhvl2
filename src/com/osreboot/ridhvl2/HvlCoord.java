@@ -41,6 +41,17 @@ public final class HvlCoord implements Serializable{
 		x = cArg.getX();
 		y = cArg.getY();
 	}
+	
+	/**
+	 * Assigns a new 'x' and 'y' value.
+	 * 
+	 * @param xArg the new value of 'x'
+	 * @param yArg the new value of 'y'
+	 */
+	public void set(float xArg, float yArg){
+		x = xArg;
+		y = yArg;
+	}
 
 	/**
 	 * @return the 'x' value of the HvlCoord
@@ -59,7 +70,7 @@ public final class HvlCoord implements Serializable{
 	/**
 	 * Assigns a new 'x' value.
 	 * 
-	 * @param xArg to new value of 'x'
+	 * @param xArg the new value of 'x'
 	 */
 	public void setX(float xArg){
 		x = xArg;
@@ -68,7 +79,7 @@ public final class HvlCoord implements Serializable{
 	/**
 	 * Assigns a new 'y' value.
 	 * 
-	 * @param yArg to new value of 'y'
+	 * @param yArg the new value of 'y'
 	 */
 	public void setY(float yArg){
 		y = yArg;

@@ -21,19 +21,19 @@ public final class HvlQuad extends HvlPolygon{
 	}
 	
 	public HvlCoord[] getVertices(){
-		return getVertices();
+		return super.getVertices();
 	}
 	
 	public HvlCoord[] getUVs(){
-		return getUVs();
+		return super.getUVs();
 	}
 	
 	public void setVertices(HvlCoord c0Arg, HvlCoord c1Arg, HvlCoord c2Arg, HvlCoord c3Arg){
-		setVertices(c0Arg, c1Arg, c2Arg, c3Arg);
+		super.setVertices(c0Arg, c1Arg, c2Arg, c3Arg);
 	}
 	
 	public void setUVs(HvlCoord uv0Arg, HvlCoord uv1Arg, HvlCoord uv2Arg, HvlCoord uv3Arg){
-		setUVs(uv0Arg, uv1Arg, uv2Arg, uv3Arg);
+		super.setUVs(uv0Arg, uv1Arg, uv2Arg, uv3Arg);
 	}
 
 }

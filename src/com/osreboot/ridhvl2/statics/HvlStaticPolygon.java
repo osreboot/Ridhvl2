@@ -32,10 +32,14 @@ public class HvlStaticPolygon {
 					new HvlCoord(x + xl, y + yl), new HvlCoord(x, y + yl)
 					);
 		}else{
-			globalQuad.setVertices(
-					new HvlCoord(x, y), new HvlCoord(x + xl, y), 
-					new HvlCoord(x + xl, y + yl), new HvlCoord(x, y + yl)
-					);
+			globalQuad.getVertices()[0].set(x, y);
+			globalQuad.getVertices()[1].set(x + xl, y);
+			globalQuad.getVertices()[2].set(x + xl, y + yl);
+			globalQuad.getVertices()[3].set(x, y + yl);
+//			globalQuad.setVertices(
+//					new HvlCoord(x, y), new HvlCoord(x + xl, y), 
+//					new HvlCoord(x + xl, y + yl), new HvlCoord(x, y + yl)
+//					);
 		}
 		return globalQuad;
 	}
