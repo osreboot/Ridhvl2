@@ -34,5 +34,9 @@ public abstract class HvlTemplate {
 	public abstract void preUpdate(float delta);
 	public abstract void update(float delta);
 	public abstract void postUpdate(float delta);
+
+	public HvlTimer getTimer(){
+		return timer;
+	}
 	
 }

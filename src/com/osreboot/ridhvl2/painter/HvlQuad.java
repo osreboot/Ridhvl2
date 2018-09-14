@@ -20,6 +20,10 @@ public final class HvlQuad extends HvlPolygon{
 		super(new HvlCoord[]{c0Arg, c1Arg, c2Arg, c3Arg}, new HvlCoord[]{uv0Arg, uv1Arg, uv2Arg, uv3Arg});
 	}
 	
+	public HvlQuad(HvlQuad quadArg){
+		super(quadArg.getVertices(), quadArg.getUVs());
+	}
+	
 	public HvlCoord[] getVertices(){
 		return super.getVertices();
 	}
