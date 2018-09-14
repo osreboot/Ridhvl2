@@ -9,12 +9,8 @@ import com.osreboot.ridhvl2.template.HvlDisplayWindowed;
 import com.osreboot.ridhvl2.template.HvlTemplateI;
 
 public class TestTemplateI extends HvlTemplateI{
-
-	public static void main(String[] args) {
-		new TestTemplateI();
-	}
 	
-	public TestTemplateI() {
+	public TestTemplateI(){
 		super(new HvlDisplayWindowed(144, 512, 512, "TestTemplateI", false));
 	}
 
