@@ -3,15 +3,15 @@ package com.osreboot.ridhvl2.test;
 import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.template.HvlTimer;
 
-class TestTimer extends HvlTimer{
+public class TestTimer extends HvlTimer{
 	
-//	public static void main(String[] args){
-//		HvlLogger.println("Starting timer...");
-//		HvlTimer timer = new TestTimer();
-//		timer.setMaxDelta(MAXDELTA_CENTISECOND);
-//		timer.start();
-//		HvlLogger.println("Test completed!");
-//	}
+	public TestTimer(){
+		HvlLogger.println("Starting timer...");
+		HvlTimer timer = new TestTimer();
+		timer.setMaxDelta(MAXDELTA_CENTISECOND);
+		timer.start();
+		HvlLogger.println("Test completed!");
+	}
 	
 	int secondCounts = 0;
 	int stage = 0;

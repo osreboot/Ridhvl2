@@ -6,9 +6,9 @@ import com.osreboot.ridhvl2.template.HvlChronology;
 import com.osreboot.ridhvl2.template.HvlChronologyInitialize;
 import com.osreboot.ridhvl2.template.HvlChronologyUpdate;
 
-class TestChronology {
+public class TestChronology {
 
-	public static void main(String[] args){
+	public TestChronology(){
 		HvlChronology.registerChronology(TestChronologyOne.class);
 		HvlChronology.registerChronology(TestChronologyTwo.class);
 		HvlChronology.registerChronology(TestChronologyDuplicate.class);
