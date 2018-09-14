@@ -7,9 +7,8 @@ public class TestTimer extends HvlTimer{
 	
 	public TestTimer(){
 		HvlLogger.println("Starting timer...");
-		HvlTimer timer = new TestTimer();
-		timer.setMaxDelta(MAXDELTA_CENTISECOND);
-		timer.start();
+		setMaxDelta(MAXDELTA_CENTISECOND);
+		start();
 		HvlLogger.println("Test completed!");
 	}
 	
