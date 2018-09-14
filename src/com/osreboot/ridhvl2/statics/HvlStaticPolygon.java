@@ -10,7 +10,12 @@ public class HvlStaticPolygon {
 
 
 	/**
-	 * Re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
+	 * quad (specified by <code>x</code> and <code>y</code>) being the upper-left corner of the quad.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
 	 * technique that removes the need for users to store their own HvlQuad instances and allows for rapid
 	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
 	 * 
@@ -36,10 +41,6 @@ public class HvlStaticPolygon {
 			globalQuad.getVertices()[1].set(x + xl, y);
 			globalQuad.getVertices()[2].set(x + xl, y + yl);
 			globalQuad.getVertices()[3].set(x, y + yl);
-//			globalQuad.setVertices(
-//					new HvlCoord(x, y), new HvlCoord(x + xl, y), 
-//					new HvlCoord(x + xl, y + yl), new HvlCoord(x, y + yl)
-//					);
 		}
 		return globalQuad;
 	}

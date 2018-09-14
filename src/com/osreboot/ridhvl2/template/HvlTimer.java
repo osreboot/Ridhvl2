@@ -4,8 +4,8 @@ import org.lwjgl.Sys;
 
 /**
  * 
- * A managed single-thread loop that repeatedly calls <code>update(float delta)</code>. Can handle time
- * dilation, tracks total time elapsed, and calculates the time between <code>update</code> calls (in 
+ * A managed single-thread loop that repeatedly calls <code>tick(float delta)</code>. Can handle time
+ * dilation, tracks total time elapsed, and calculates the time between <code>tick</code> calls (in 
  * seconds)(<code>delta</code>).
  * 
  * @author os_reboot
@@ -43,7 +43,7 @@ public abstract class HvlTimer {
 			lastUpdateTimeMS = totalTimeMS;
 			if(deltaMS > 0 && deltaMS < totalTimeMS){
 				totalTimeS += ((float)deltaMS / 1000) * dilation;
-				update(((float)deltaMS / 1000) * dilation);
+				tick(((float)deltaMS / 1000) * dilation);
 			}
 		}
 	}
@@ -51,14 +51,14 @@ public abstract class HvlTimer {
 	/**
 	 * Called once per loop.
 	 * 
-	 * @param delta the time (in seconds) since the last <code>update</code> call
+	 * @param delta the time (in seconds) since the last <code>tick</code> call
 	 */
-	public abstract void update(float delta);
+	public abstract void tick(float delta);
 
 	/**
-	 * @return the number of <code>update</code> calls per second (predicted based on the last <code>delta</code> value)
+	 * @return the number of <code>tick</code> calls per second (predicted based on the last <code>delta</code> value)
 	 */
-	public float getUpdateRate(){
+	public float getTickRate(){
 		return 1f/((float)deltaMS / 1000);
 	}
 

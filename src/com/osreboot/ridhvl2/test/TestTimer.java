@@ -17,10 +17,10 @@ class TestTimer extends HvlTimer{
 	int stage = 0;
 	
 	@Override
-	public void update(float delta){
+	public void tick(float delta){
 		if(secondCounts < getTotalTime() - (stage * 10)){
 			secondCounts++;
-			HvlLogger.println("Time elapsed: " + secondCounts + " seconds @ " + getUpdateRate() + " Hz.");
+			HvlLogger.println("Time elapsed: " + secondCounts + " seconds @ " + getTickRate() + " Hz.");
 			if(secondCounts >= 10){
 				secondCounts = 0;
 				stage++;

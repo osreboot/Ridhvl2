@@ -3,6 +3,7 @@ package com.osreboot.ridhvl2.template;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.opengl.GL11;
 
 import com.osreboot.ridhvl2.HvlLogger;
 
@@ -38,12 +39,18 @@ public class HvlDisplayWindowed extends HvlDisplay{
 
 	@Override
 	protected void preUpdate(float delta){
-		
 	}
 
 	@Override
 	protected void postUpdate(float delta){
 		Display.update();
+		
+		if(Display.wasResized()){
+			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
+			GL11.glLoadIdentity();
+			GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
+		}
+		
 		Display.sync(getRefreshRate());
 	}
 

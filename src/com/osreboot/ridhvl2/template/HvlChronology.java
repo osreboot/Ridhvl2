@@ -299,5 +299,15 @@ public final class HvlChronology {
 	public static class PredefinedChronologyException extends RuntimeException{
 		private static final long serialVersionUID = -3134726851926392146L;
 	}
+	
+	public static class InactiveException extends RuntimeException{
+		private static final long serialVersionUID = -7857410333110944252L;
+		
+		public InactiveException(String labelArg, int launchCodeArg){
+			super("Tried to access inactive " + labelArg + "! Use it's launch code (" + launchCodeArg +
+					") when loading to activate it.");
+		}
+		
+	}
 
 }

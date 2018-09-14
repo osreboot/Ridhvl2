@@ -5,9 +5,9 @@ import org.newdawn.slick.opengl.Texture;
 
 //TODO implement HvlRenderFrame functionality
 /**
- * A flexible texture that is applied when drawing polygons with {@linkplain HvlPainter}. Usable in three modes 
- * (<code>COLOR, TEXTURE, RENDERFRAME</code>). HvlPainter will automatically analyze the mode and draw the texture with the
- * appropriate commands.
+ * A flexible texture-esq object that is applied when drawing polygons with {@linkplain HvlPainter}. Usable in 
+ * three modes (<code>COLOR, TEXTURE, RENDERFRAME</code>). HvlPainter will automatically analyze the mode and 
+ * draw the texture with the appropriate commands.
  * 
  * <p>
  * 
@@ -17,65 +17,6 @@ import org.newdawn.slick.opengl.Texture;
  *
  */
 public final class HvlPaint {
-
-	private static HvlPaint global;
-
-	/**
-	 * Re-assigns the value of a global variable and returns that variable. This is an optimization 
-	 * technique that removes the need for users to store their own HvlPaint instances and allows for rapid
-	 * {@linkplain HvlPainter} draw calls with varying HvlPaint values.
-	 * 
-	 * <p>
-	 * 
-	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
-	 * draw calls!
-	 * 
-	 * @param cArg the color value assigned to the returned HvlPaint
-	 * @return an instance of HvlPaint set to the specified value and mode
-	 */
-	public static HvlPaint hvlPaint(Color cArg){
-		if(global == null) global = new HvlPaint(cArg);
-		else global.setValue(cArg);
-		return global;
-	}
-
-	/**
-	 * Re-assigns the value of a global variable and returns that variable. This is an optimization 
-	 * technique that removes the need for users to store their own HvlPaint instances and allows for rapid
-	 * {@linkplain HvlPainter} draw calls with varying HvlPaint values.
-	 * 
-	 * <p>
-	 * 
-	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
-	 * draw calls!
-	 * 
-	 * @param tArg the texture value assigned to the returned HvlPaint
-	 * @return an instance of HvlPaint set to the specified value and mode
-	 */
-	public static HvlPaint hvlPaint(Texture tArg){
-		if(global == null) global = new HvlPaint(tArg);
-		else global.setValue(tArg);
-		return global;
-	}
-
-	//	/**
-	//	 * Re-assigns the value of a global variable and returns that variable. This is an optimization 
-	//	 * technique that removes the need for users to store their own HvlPaint instances and allows for rapid
-	//	 * {@linkplain HvlPainter} draw calls with varying HvlPaint values.
-	//	 * 
-	//	 * <p>	
-	//	 * 
-	//	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
-	//	 * draw calls!
-	//	 * 
-	//	 * @param fArg the frame value assigned to the returned HvlPaint
-	//	 * @return an instance of HvlPaint set to the specified value and mode
-	//	 */
-	//	public static HvlPaint hvlPaint(HvlRenderFrame fArg){
-	//		if(global == null) global = new HvlPaint(fArg);
-	//		else global.setValue(fArg);
-	//		return global;
-	//	}
 
 	/**
 	 * The setting of a HvlPaint that determines the commands used to apply the paint to a polygon. This
@@ -99,7 +40,7 @@ public final class HvlPaint {
 	 * 
 	 * @param cArg the value to assign to the 'color' variable
 	 */
-	HvlPaint(Color cArg){
+	public HvlPaint(Color cArg){
 		color = cArg;
 		mode = HvlPaintMode.COLOR;
 	}
@@ -109,7 +50,7 @@ public final class HvlPaint {
 	 * 
 	 * @param tArg the value to assign to the 'texture' variable
 	 */
-	HvlPaint(Texture tArg){
+	public HvlPaint(Texture tArg){
 		texture = tArg;
 		mode = HvlPaintMode.TEXTURE;
 	}
@@ -119,7 +60,7 @@ public final class HvlPaint {
 	//	 * 
 	//	 * @param fArg the value to assign to the 'frame' variable
 	//	 */
-	//	HvlPaint(HvlRenderFrame fArg){
+	//	public HvlPaint(HvlRenderFrame fArg){
 	//		frame = fArg;
 	//		mode = Mode.RENDERFRAME;
 	//	}
@@ -200,7 +141,7 @@ public final class HvlPaint {
 	//		mode = Mode.RENDERFRAME;
 	//	}
 
-	private static class WrongModeException extends RuntimeException{
+	public static class WrongModeException extends RuntimeException{
 		private static final long serialVersionUID = -7821681025532438849L;
 
 		private WrongModeException(HvlPaintMode modeError, HvlPaintMode modeCorrect){
