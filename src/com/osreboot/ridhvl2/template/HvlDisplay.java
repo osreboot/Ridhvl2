@@ -18,8 +18,8 @@ public abstract class HvlDisplay {
 	CHRONO_INIT = HvlChronology.CHRONOLOGY_INIT_EARLIEST + HvlChronology.CHRONOLOGY_INIT_INTERVAL,
 	CHRONO_PRE_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_PRE_EARLIEST + HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
 	CHRONO_POST_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_POST_LATEST - HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
-	LAUNCH_CODE_RAW = 1,
-	LAUNCH_CODE = 2;//2^1
+	LAUNCH_CODE = 1,
+	LAUNCH_CODE_RAW = 2;//2^1
 
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {

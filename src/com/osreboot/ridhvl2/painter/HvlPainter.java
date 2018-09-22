@@ -16,8 +16,10 @@ public final class HvlPainter{
 	CHRONO_INIT = HvlChronology.CHRONOLOGY_INIT_LATE + HvlChronology.CHRONOLOGY_INIT_INTERVAL,
 	CHRONO_PRE_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_PRE_LATE + HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
 	CHRONO_POST_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_POST_EARLY - HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
-	LAUNCH_CODE_RAW = 2,
-	LAUNCH_CODE = 4;//2^2
+	LAUNCH_CODE = 2,
+	LAUNCH_CODE_RAW = 4;//2^2
+	
+	private static boolean active;
 
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
@@ -36,6 +38,7 @@ public final class HvlPainter{
 
 	@HvlChronologyUpdate(label = LABEL, chronology = CHRONO_PRE_UPDATE, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A2<Boolean, Float> ACTION_PRE_UPDATE = (debug, delta) -> {
+		active = HvlChronology.verifyLaunchCode(LAUNCH_CODE);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
 	};
 
@@ -56,7 +59,7 @@ public final class HvlPainter{
 	 * @param paintArg the paint to use for <code>polygonArg</code>
 	 */
 	public static void draw(HvlPolygon polygonArg, HvlPaint paintArg){
-		if(HvlChronology.verifyLaunchCode(LAUNCH_CODE)){
+		if(active){
 			if(paintArg.getMode() == HvlPaintMode.COLOR){
 				GL11.glColor4f(paintArg.getValueColor().r, paintArg.getValueColor().g, paintArg.getValueColor().b, 
 						paintArg.getValueColor().a);

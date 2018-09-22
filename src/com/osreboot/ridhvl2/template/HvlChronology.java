@@ -37,7 +37,7 @@ import com.osreboot.ridhvl2.HvlLogger;
  * 
  * <p>
  * 
- * <code>public static final int LAUNCH_CODE_RAW = 1, LAUNCH_CODE = (int)Math.pow(2, LAUNCH_CODE_RAW);</code>
+ * <code>public static final int LAUNCH_CODE = 1, LAUNCH_CODE_RAW = (int)Math.pow(2, LAUNCH_CODE);</code>
  * 
  * <p>
  * 
@@ -67,10 +67,10 @@ public final class HvlChronology {
 	CHRONOLOGY_UPDATE_POST_MIDDLE = 75,
 	CHRONOLOGY_UPDATE_POST_LATE = 87,
 	CHRONOLOGY_UPDATE_POST_LATEST = 100,
-	LAUNCH_CODE = 1, //functionally does nothing, exists for structure purposes
-	LAUNCH_CODE_RAW = 0,
-	DEBUG_LAUNCH_CODE = 1,
-	DEBUG_LAUNCH_CODE_RAW = 0;
+	LAUNCH_CODE = 0, //functionally does nothing, exists for structure purposes
+	LAUNCH_CODE_RAW = 1, //functionally does nothing, exists for structure purposes
+	DEBUG_LAUNCH_CODE = 0,
+	DEBUG_LAUNCH_CODE_RAW = 1;
 
 	private HvlChronology(){}
 	
@@ -85,7 +85,7 @@ public final class HvlChronology {
 	}
 
 	public static boolean getDebugOutput(){
-		return verifyDebugLaunchCode(0);
+		return verifyDebugLaunchCode(DEBUG_LAUNCH_CODE);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -140,7 +140,8 @@ public final class HvlChronology {
 		}
 		for(int i = CHRONOLOGY_INIT_EARLIEST; i <= CHRONOLOGY_INIT_LATEST; i++){
 			if(preInits.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading initialize action from " + preInits.get(i).annotation.label() + " to slot " + i + ".");
+				HvlLogger.println(getDebugOutput(), "Loading initialize action from " + preInits.get(i).annotation.label() + " to slot " + i + 
+						(verifyDebugLaunchCode(preInits.get(i).annotation.launchCode()) ? " (debug)." : "."));
 				loadedInitialize.put(preInits.get(i).action, verifyDebugLaunchCode(preInits.get(i).annotation.launchCode()));
 			}
 		}
@@ -158,13 +159,15 @@ public final class HvlChronology {
 		}
 		for(int i = CHRONOLOGY_UPDATE_PRE_EARLIEST; i <= CHRONOLOGY_UPDATE_PRE_LATEST; i++){
 			if(preUpdates.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading pre-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + ".");
+				HvlLogger.println(getDebugOutput(), "Loading pre-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + 
+						(verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()) ? " (debug)." : "."));
 				loadedPreUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
 			}
 		}
 		for(int i = CHRONOLOGY_UPDATE_POST_EARLIEST; i <= CHRONOLOGY_UPDATE_POST_LATEST; i++){
 			if(preUpdates.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading post-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + ".");
+				HvlLogger.println(getDebugOutput(), "Loading post-update action from " + preUpdates.get(i).annotation.label() + " to slot " + i + 
+						(verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()) ? " (debug)." : "."));
 				loadedPostUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
 			}
 		}
