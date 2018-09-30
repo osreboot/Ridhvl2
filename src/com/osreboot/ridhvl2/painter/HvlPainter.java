@@ -2,6 +2,7 @@ package com.osreboot.ridhvl2.painter;
 
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.GL11;
+import org.newdawn.slick.Color;
 
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.painter.HvlPaint.HvlPaintMode;
@@ -40,6 +41,9 @@ public final class HvlPainter{
 	public static final HvlAction.A2<Boolean, Float> ACTION_PRE_UPDATE = (debug, delta) -> {
 		active = HvlChronology.verifyLaunchCode(LAUNCH_CODE);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
+		
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);//TODO usage flexibility
+		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 	};
 
 	private HvlPainter(){}
@@ -64,7 +68,9 @@ public final class HvlPainter{
 				GL11.glColor4f(paintArg.getValueColor().r, paintArg.getValueColor().g, paintArg.getValueColor().b, 
 						paintArg.getValueColor().a);
 			}else if(paintArg.getMode() == HvlPaintMode.TEXTURE){
-				//TODO
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				Color.white.bind();//TODO usage flexibility
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, paintArg.getValueTexture().getTextureID());
 			}else if(paintArg.getMode() == HvlPaintMode.RENDERFRAME){
 				//TODO
 			}
@@ -77,6 +83,9 @@ public final class HvlPainter{
 					GL11.glTexCoord2f(polygonArg.getUVs()[i].getX(), polygonArg.getUVs()[i].getY());
 			}
 			GL11.glEnd();
+			if(paintArg.getMode() == HvlPaintMode.TEXTURE){
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
+			}
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
 

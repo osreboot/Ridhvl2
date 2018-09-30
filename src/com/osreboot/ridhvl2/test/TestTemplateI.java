@@ -1,7 +1,7 @@
 package com.osreboot.ridhvl2.test;
 
-import static com.osreboot.ridhvl2.statics.HvlStaticPainter.hvlDraw;
-import static com.osreboot.ridhvl2.statics.HvlStaticPolygon.hvlQuad;
+import static com.osreboot.ridhvl2.HvlStatics.hvlDraw;
+import static com.osreboot.ridhvl2.HvlStatics.hvlQuad;
 
 import org.newdawn.slick.Color;
 
