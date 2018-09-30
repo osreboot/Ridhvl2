@@ -180,6 +180,8 @@ public final class HvlChronology {
 		loadedInitialize.clear();
 		loadedPreUpdate.clear();
 		loadedPostUpdate.clear();
+		Initialize.queue.clear();
+		Update.queue.clear();
 	}
 
 	public static final class Initialize{

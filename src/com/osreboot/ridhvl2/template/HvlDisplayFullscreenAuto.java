@@ -44,6 +44,11 @@ public class HvlDisplayFullscreenAuto extends HvlDisplay{
 	protected void postUpdate(float delta){
 		Display.update();
 		Display.sync(getRefreshRate());
+		
+		if(Display.isCloseRequested() && !HvlTemplate.newest().isExiting()){
+			Display.destroy();
+			HvlTemplate.newest().setExiting();
+		}
 	}
 
 	@Override

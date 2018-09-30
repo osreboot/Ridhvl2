@@ -65,6 +65,7 @@ public final class HvlPainter{
 	public static void draw(HvlPolygon polygonArg, HvlPaint paintArg){
 		if(active){
 			if(paintArg.getMode() == HvlPaintMode.COLOR){
+				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				GL11.glColor4f(paintArg.getValueColor().r, paintArg.getValueColor().g, paintArg.getValueColor().b, 
 						paintArg.getValueColor().a);
 			}else if(paintArg.getMode() == HvlPaintMode.TEXTURE){

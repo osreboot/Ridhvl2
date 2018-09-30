@@ -35,6 +35,9 @@ public abstract class HvlTemplateI extends HvlTemplate{
 	public HvlTemplateI(HvlDisplay displayArg, long launchCodeArg, long debugLaunchCodeArg){
 		super(0);
 		
+		//Set the timer's max delta to something reasonable for games
+		getTimer().setMaxDelta(HvlTimer.MAXDELTA_DECISECOND);
+		
 		//Register and load Ridhvl2's utilities
 		HvlChronologyRegistry.registerRidhvlChronologies();
 		HvlChronology.loadChronologies(launchCodeArg, debugLaunchCodeArg);
@@ -60,6 +63,12 @@ public abstract class HvlTemplateI extends HvlTemplate{
 	@Override
 	public final void postUpdate(float delta){
 		HvlChronology.postUpdate(delta);
+		
+		if(isExiting()){
+			HvlChronology.unloadChronologies();
+			HvlLoader.clearLoaders();
+			HvlDisplay.exit();
+		}
 	}
 
 }

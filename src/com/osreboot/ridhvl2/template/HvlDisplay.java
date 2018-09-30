@@ -72,6 +72,15 @@ public abstract class HvlDisplay {
 		return Collections.unmodifiableList(fullscreenDisplays);
 	}
 	
+	public static void exit(){
+		if(display != null && displayInitialized){
+			display.unapply();
+			display = null;
+		}
+		fullscreenDisplays.clear();
+		displayInitialized = false;
+	}
+	
 	private int refreshRate;
 	private boolean vsyncEnabled, resizable;
 	//TODO iconPath
