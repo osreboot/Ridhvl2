@@ -5,7 +5,9 @@ import java.util.Collections;
 import java.util.List;
 
 import com.osreboot.ridhvl2.HvlAction;
+import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.template.HvlChronology;
+import com.osreboot.ridhvl2.template.HvlChronologyExit;
 import com.osreboot.ridhvl2.template.HvlChronologyInitialize;
 
 public abstract class HvlLoader<T> {
@@ -13,9 +15,10 @@ public abstract class HvlLoader<T> {
 	public static final String LABEL = "HvlLoader";
 	public static final int 
 	CHRONO_INIT = HvlChronology.CHRONOLOGY_INIT_MIDDLE + HvlChronology.CHRONOLOGY_INIT_INTERVAL,
+	CHRONO_EXIT = HvlChronology.CHRONOLOGY_EXIT_MIDDLE + HvlChronology.CHRONOLOGY_EXIT_INTERVAL,
 	LAUNCH_CODE = 3,
 	LAUNCH_CODE_RAW = 8;//2^3
-	
+
 	public static boolean debug = false;
 
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
@@ -23,6 +26,11 @@ public abstract class HvlLoader<T> {
 		HvlLoader.debug = debug;
 	};
 	
+	@HvlChronologyExit(label = LABEL, chronology = CHRONO_EXIT, launchCode = LAUNCH_CODE)
+	public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
+		clearLoaders();
+	};
+
 	public static final String 
 	PATH_DEFAULT = "res",
 	TYPELABEL_TEXTURE = "TEXTURE",
@@ -39,6 +47,7 @@ public abstract class HvlLoader<T> {
 				}
 			}
 		}
+		HvlLogger.println(debug, "Adding a loader with type label " + loaderArg.getTypeLabel() + ".");
 		loaders.add(loaderArg);
 	}
 
@@ -47,6 +56,7 @@ public abstract class HvlLoader<T> {
 	}
 
 	public static void clearLoaders(){
+		HvlLogger.println(debug, "Clearing loader references!");
 		loaders.clear();
 	}
 

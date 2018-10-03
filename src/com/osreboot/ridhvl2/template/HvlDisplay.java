@@ -18,6 +18,7 @@ public abstract class HvlDisplay {
 	CHRONO_INIT = HvlChronology.CHRONOLOGY_INIT_EARLIEST + HvlChronology.CHRONOLOGY_INIT_INTERVAL,
 	CHRONO_PRE_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_PRE_EARLIEST + HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
 	CHRONO_POST_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_POST_LATEST - HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
+	CHRONO_EXIT = HvlChronology.CHRONOLOGY_EXIT_LATE + HvlChronology.CHRONOLOGY_EXIT_INTERVAL,
 	LAUNCH_CODE = 1,
 	LAUNCH_CODE_RAW = 2;//2^1
 
@@ -47,6 +48,16 @@ public abstract class HvlDisplay {
 	public static final HvlAction.A2<Boolean, Float> ACTION_POST_UPDATE = (debug, delta) -> {
 		getDisplay().postUpdate(delta);
 	};
+	
+	@HvlChronologyExit(label = LABEL, chronology = CHRONO_EXIT, launchCode = LAUNCH_CODE)
+	public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
+		if(getDisplay() != null && isDisplayInitialized()){
+			getDisplay().unapply();
+			display = null;
+		}
+		clearFullscreenDisplays();
+		displayInitialized = false;
+	};
 
 	private static HvlDisplay display;
 	private static boolean displayInitialized = false;
@@ -63,24 +74,23 @@ public abstract class HvlDisplay {
 		display = displayArg;
 		if(displayInitialized) display.apply();
 	}
+	
+	private static boolean isDisplayInitialized(){
+		return displayInitialized;
+	}
 
 	private static void addFullscreenDisplay(HvlDisplayFullscreen displayArg){
 		fullscreenDisplays.add(displayArg);
 	}
-	
+
 	public static List<HvlDisplayFullscreen> getFullscreenDisplays(){
 		return Collections.unmodifiableList(fullscreenDisplays);
 	}
 	
-	public static void exit(){
-		if(display != null && displayInitialized){
-			display.unapply();
-			display = null;
-		}
+	private static void clearFullscreenDisplays(){
 		fullscreenDisplays.clear();
-		displayInitialized = false;
 	}
-	
+
 	private int refreshRate;
 	private boolean vsyncEnabled, resizable;
 	//TODO iconPath

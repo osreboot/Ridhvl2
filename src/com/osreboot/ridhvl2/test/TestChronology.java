@@ -3,6 +3,7 @@ package com.osreboot.ridhvl2.test;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.template.HvlChronology;
+import com.osreboot.ridhvl2.template.HvlChronologyExit;
 import com.osreboot.ridhvl2.template.HvlChronologyInitialize;
 import com.osreboot.ridhvl2.template.HvlChronologyUpdate;
 
@@ -20,8 +21,13 @@ public class TestChronology {
 		HvlChronology.initialize();
 		HvlChronology.preUpdate(1f);
 		HvlChronology.postUpdate(1f);
+		HvlChronology.exit();
 		
 		HvlChronology.unloadChronologies();
+		
+		HvlChronology.registerChronology(TestChronologyOne.class);
+		HvlChronology.registerChronology(TestChronologyTwo.class);
+		HvlChronology.registerChronology(TestChronologyDuplicate.class);
 		
 		HvlChronology.loadChronologies(
 				TestChronologyOne.LAUNCH_CODE_RAW + TestChronologyTwo.LAUNCH_CODE_RAW, 
@@ -30,6 +36,7 @@ public class TestChronology {
 		HvlChronology.initialize();
 		HvlChronology.preUpdate(1f);
 		HvlChronology.postUpdate(1f);
+		HvlChronology.exit();
 		
 		HvlChronology.unloadChronologies();
 		
@@ -49,6 +56,11 @@ public class TestChronology {
 		public static final HvlAction.A2<Boolean, Float> ACTION_UPDATE = (debug, delta) -> {
 			HvlLogger.println(debug, TestChronology.class, "1 - Updated!");
 		};
+		
+		@HvlChronologyExit(label = "TestChrono1", chronology = HvlChronology.CHRONOLOGY_EXIT_MIDDLE, launchCode = LAUNCH_CODE)
+		public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
+			HvlLogger.println(debug, TestChronology.class, "1 - Exited!");
+		};
 
 	}
 
@@ -64,6 +76,11 @@ public class TestChronology {
 		@HvlChronologyUpdate(label = "TestChrono2", chronology = HvlChronology.CHRONOLOGY_UPDATE_PRE_MIDDLE - 1, launchCode = LAUNCH_CODE)
 		public static final HvlAction.A2<Boolean, Float> ACTION_UPDATE = (debug, delta) -> {
 			HvlLogger.println(debug, TestChronology.class, "2 - Updated!");
+		};
+		
+		@HvlChronologyExit(label = "TestChrono2", chronology = HvlChronology.CHRONOLOGY_EXIT_MIDDLE + HvlChronology.CHRONOLOGY_EXIT_INTERVAL, launchCode = LAUNCH_CODE)
+		public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
+			HvlLogger.println(debug, TestChronology.class, "2 - Exited!");
 		};
 
 	}
