@@ -58,8 +58,8 @@ public final class HvlMath {
 	 * 
 	 * This method can be used, for example, to interpolate between the output of a <code>sin</code> function
 	 * that varies with time and on-screen coordinates, so that an object may appear to bob up and down. In this
-	 * case, <code>xArg</code> would be the current output of the <code>sin</code> function, 
-	 * <code>inLowArg</code> and <code>inHighArg</code> would be <code>-1</code> and <code>1</code> respectively,
+	 * case, <code>xArg</code> would be the current output of the <code>sin</code> function and 
+	 * <code>inLowArg</code> and <code>inHighArg</code> would be <code>-1</code> and <code>1</code> respectively
 	 * (the boundaries of the <code>sin</code> function's output values). <code>outLowArg</code> and 
 	 * <code>outHighArg</code> would be the minimum and maximum projected screen coordinates (for example 100 and
 	 * 200, so the object repeatedly transitions between the y-coordinates 100 and 200 and then back).
@@ -74,6 +74,25 @@ public final class HvlMath {
 	 */
 	public static float map(float xArg, float inLowArg, float inHighArg, float outLowArg, float outHighArg){
 		return (xArg - inLowArg) * (outHighArg - outLowArg) / (inHighArg - inLowArg) + outLowArg;
+	}
+	
+	/**
+	 * Returns <code>xArg</code> constrained by the two boundary arguments <code>bound1Arg</code> and 
+	 * <code>bound2Arg</code>. The order of the boundary arguments doesn't matter, the returned value will always 
+	 * be equal to a boundary or between the two. If the boundaries are equal, the first boundary is returned.
+	 * 
+	 * @param xArg source value for the constrain operation
+	 * @param bound1Arg the first boundary for the constrain operation
+	 * @param bound2Arg the second boundary for the constrain operation (not necessarily greater than 
+	 * <code>bound1Arg</code>)
+	 * @return <code>xArg</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>
+	 */
+	public static float limit(float xArg, float bound1Arg, float bound2Arg){
+		if(bound1Arg > bound2Arg){
+			return Math.max(Math.min(xArg, bound1Arg), bound2Arg);
+		}else if(bound1Arg < bound2Arg){
+			return Math.max(Math.min(xArg, bound2Arg), bound1Arg);
+		}else return bound1Arg;
 	}
 	
 }
