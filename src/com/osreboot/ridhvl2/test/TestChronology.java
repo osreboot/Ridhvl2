@@ -14,7 +14,7 @@ public class TestChronology {
 		HvlChronology.registerChronology(TestChronologyTwo.class);
 		HvlChronology.registerChronology(TestChronologyDuplicate.class);
 		
-		HvlChronology.loadChronologies(
+		HvlChronology.loadEvents(
 				TestChronologyOne.LAUNCH_CODE_RAW + TestChronologyTwo.LAUNCH_CODE_RAW, 
 				HvlChronology.LAUNCH_CODE_RAW + TestChronologyOne.LAUNCH_CODE_RAW);
 
@@ -23,13 +23,13 @@ public class TestChronology {
 		HvlChronology.postUpdate(1f);
 		HvlChronology.exit();
 		
-		HvlChronology.unloadChronologies();
+		HvlChronology.unloadEvents();
 		
 		HvlChronology.registerChronology(TestChronologyOne.class);
 		HvlChronology.registerChronology(TestChronologyTwo.class);
 		HvlChronology.registerChronology(TestChronologyDuplicate.class);
 		
-		HvlChronology.loadChronologies(
+		HvlChronology.loadEvents(
 				TestChronologyOne.LAUNCH_CODE_RAW + TestChronologyTwo.LAUNCH_CODE_RAW, 
 				HvlChronology.LAUNCH_CODE_RAW + TestChronologyOne.LAUNCH_CODE_RAW + TestChronologyTwo.LAUNCH_CODE_RAW);
 
@@ -38,7 +38,7 @@ public class TestChronology {
 		HvlChronology.postUpdate(1f);
 		HvlChronology.exit();
 		
-		HvlChronology.unloadChronologies();
+		HvlChronology.unloadEvents();
 		
 		//TODO intentionally throw and catch exception for duplicate actions
 	}

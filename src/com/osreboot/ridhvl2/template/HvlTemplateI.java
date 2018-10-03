@@ -43,7 +43,7 @@ public abstract class HvlTemplateI extends HvlTemplate{
 
 		//Register and load Ridhvl2's utilities
 		HvlChronologyRegistry.registerRidhvlChronologies();
-		HvlChronology.loadChronologies(launchCodeArg, debugLaunchCodeArg);
+		HvlChronology.loadEvents(launchCodeArg, debugLaunchCodeArg);
 
 		//Initialize Ridhvl2's utilities
 		HvlChronology.initialize();
@@ -66,7 +66,7 @@ public abstract class HvlTemplateI extends HvlTemplate{
 
 		if(isExiting()){
 			HvlChronology.exit();
-			HvlChronology.unloadChronologies();
+			HvlChronology.unloadEvents();
 		}
 	}
 
