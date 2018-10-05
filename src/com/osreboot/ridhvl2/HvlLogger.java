@@ -9,7 +9,9 @@ package com.osreboot.ridhvl2;
  * @author os_reboot
  *
  */
-public class HvlLogger {
+public final class HvlLogger {
+	
+	private HvlLogger(){}
 
 	/**
 	 * Prints a message to the console, with the method caller's class name clearly identified. Uses

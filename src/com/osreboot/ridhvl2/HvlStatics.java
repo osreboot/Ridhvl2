@@ -17,7 +17,9 @@ import com.osreboot.ridhvl2.painter.HvlQuad;
  * @author os_reboot
  *
  */
-public class HvlStatics {
+public final class HvlStatics {
+	
+	private HvlStatics(){}
 
 	//========================\/\/\/   BEGIN POLYGON STATICS   \/\/\/========================//
 
