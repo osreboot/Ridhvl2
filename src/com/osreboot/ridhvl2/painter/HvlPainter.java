@@ -19,7 +19,7 @@ public final class HvlPainter{
 	CHRONO_POST_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_POST_EARLY - HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
 	LAUNCH_CODE = 2,
 	LAUNCH_CODE_RAW = 4;//2^2
-	
+
 	private static boolean active;
 
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
@@ -41,7 +41,7 @@ public final class HvlPainter{
 	public static final HvlAction.A2<Boolean, Float> ACTION_PRE_UPDATE = (debug, delta) -> {
 		active = HvlChronology.verifyLaunchCode(LAUNCH_CODE);
 		GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-		
+
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);//TODO usage flexibility
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 	};
@@ -87,6 +87,32 @@ public final class HvlPainter{
 			if(paintArg.getMode() == HvlPaintMode.TEXTURE){
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
 			}
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
+	}
+
+	/**
+	 * Applies a rotation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
+	 * <code>yArg</code> being the origin of the rotation, and <code>degreesArg</code> being the magnitude of
+	 * the rotation, in degrees.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method should only be used by internal Ridhvl2 processes! If trying to draw inside a template,
+	 * use the methods in {@linkplain com.osreboot.ridhvl2.statics.HvlStaticPainter HvlStaticPainter}.
+	 * 
+	 * @param xArg the x-origin of the rotation
+	 * @param yArg the y-origin of the rotation
+	 * @param degreesArg the magnitude of the rotation
+	 * @param actionArg the context that the rotation is applied to
+	 */
+	public static void rotate(float xArg, float yArg, float degreesArg, HvlAction.A0 actionArg){
+		if(active){
+			GL11.glPushMatrix();
+			GL11.glTranslatef(xArg, yArg, 0);
+			GL11.glRotatef(degreesArg, 0, 0, 1);
+			GL11.glTranslatef(-xArg, -yArg, 0);
+			actionArg.run();
+			GL11.glPopMatrix();
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
 
