@@ -1,5 +1,13 @@
 package com.osreboot.ridhvl2;
 
+/**
+ * 
+ * A collection of logic operations that are commonly used in game design, but don't appear in Java's standard 
+ * libraries.
+ * 
+ * @author os_reboot
+ *
+ */
 public final class HvlMath {
 	
 	private HvlMath(){}

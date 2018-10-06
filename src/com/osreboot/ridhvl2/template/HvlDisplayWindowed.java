@@ -17,6 +17,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 		super(refreshRateArg, false, resizableArg);
 		initialMode = new DisplayMode(widthArg, heightArg);
 		initialTitle = titleArg;
+		initialUndecorated = false;
 	}
 	
 	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg, boolean undecoratedArg){
@@ -34,7 +35,11 @@ public class HvlDisplayWindowed extends HvlDisplay{
 			Display.setResizable(isResizable());
 			Display.setTitle(initialTitle);
 			Display.setFullscreen(false);
+			
 			if(initialUndecorated) System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
+			else System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
+			//TODO more complete support for this setting
+			
 			Display.create();
 		}catch(LWJGLException e){
 			e.printStackTrace();
