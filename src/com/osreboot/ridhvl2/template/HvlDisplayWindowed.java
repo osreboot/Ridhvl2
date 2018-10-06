@@ -11,11 +11,19 @@ public class HvlDisplayWindowed extends HvlDisplay{
 
 	private DisplayMode initialMode;
 	private String initialTitle;
+	private boolean initialUndecorated;
 	
 	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg){
 		super(refreshRateArg, false, resizableArg);
 		initialMode = new DisplayMode(widthArg, heightArg);
 		initialTitle = titleArg;
+	}
+	
+	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg, boolean undecoratedArg){
+		super(refreshRateArg, false, resizableArg);
+		initialMode = new DisplayMode(widthArg, heightArg);
+		initialTitle = titleArg;
+		initialUndecorated = undecoratedArg;
 	}
 
 	@Override
@@ -26,6 +34,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 			Display.setResizable(isResizable());
 			Display.setTitle(initialTitle);
 			Display.setFullscreen(false);
+			if(initialUndecorated) System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
 			Display.create();
 		}catch(LWJGLException e){
 			e.printStackTrace();
