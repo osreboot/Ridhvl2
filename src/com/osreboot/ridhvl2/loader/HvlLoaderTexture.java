@@ -9,6 +9,13 @@ import org.newdawn.slick.opengl.Texture;
 import org.newdawn.slick.opengl.TextureLoader;
 import org.newdawn.slick.util.Log;
 
+/**
+ * A standard HvlLoader implementation designed to handle images in the form of 
+ * {@linkplain org.newdawn.slick.opengl.Texture Texture} objects.
+ * 
+ * @author os_reboot
+ *
+ */
 public class HvlLoaderTexture extends HvlLoader<Texture>{
 
 	public HvlLoaderTexture(){

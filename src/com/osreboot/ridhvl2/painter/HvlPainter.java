@@ -10,6 +10,13 @@ import com.osreboot.ridhvl2.template.HvlChronology;
 import com.osreboot.ridhvl2.template.HvlChronologyInitialize;
 import com.osreboot.ridhvl2.template.HvlChronologyUpdate;
 
+/**
+ * A drawing system based on LWJGL's {@linkplain org.lwjgl.opengl.GL11 GL11} access. Must be enabled by
+ * {@linkplain HvlChronology}'s launch code for methods to function.
+ * 
+ * @author os_reboot
+ *
+ */
 public final class HvlPainter{
 
 	public static final String LABEL = "HvlPainter";
