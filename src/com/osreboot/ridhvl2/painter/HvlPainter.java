@@ -68,6 +68,8 @@ public final class HvlPainter{
 	 * 
 	 * @param polygonArg the polygon to draw
 	 * @param paintArg the paint to use for <code>polygonArg</code>
+	 * @throws HvlChronology.InactiveException if HvlPainter is not enabled by {@linkplain HvlChronology}'s launch 
+	 * code
 	 */
 	public static void draw(HvlPolygon polygonArg, HvlPaint paintArg){
 		if(active){
@@ -111,6 +113,8 @@ public final class HvlPainter{
 	 * @param yArg the y-origin of the rotation
 	 * @param degreesArg the magnitude of the rotation
 	 * @param actionArg the context that the rotation is applied to
+	 * @throws HvlChronology.InactiveException if HvlPainter is not enabled by {@linkplain HvlChronology}'s launch 
+	 * code
 	 */
 	public static void rotate(float xArg, float yArg, float degreesArg, HvlAction.A0 actionArg){
 		if(active){

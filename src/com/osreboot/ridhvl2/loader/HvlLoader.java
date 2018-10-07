@@ -76,6 +76,10 @@ public abstract class HvlLoader<T> {
 	 * {@linkplain DuplicateTypeExtensionException} is thrown.
 	 * 
 	 * @param loaderArg the HvlLoader instance to add to the active list
+	 * @throws DuplicateTypeLabelException if the added loader is not type-unique (as specified by the loader's 
+	 * {@linkplain #getTypeLabel()})
+	 * @throws DuplicateTypeExtensionException if the added loader shares a supported resource extension with 
+	 * another active loader (as specified by {@linkplain #getTypeExtensions()})
 	 */
 	public static void addLoader(HvlLoader<?> loaderArg){
 		for(HvlLoader<?> l : loaders){
@@ -162,6 +166,13 @@ public abstract class HvlLoader<T> {
 	 */
 	public abstract boolean load(String basePathArg, String pathArg);
 
+	/**
+	 * Checks if the HvlLoader supports the file extension of a resource (as specified by the loader's 
+	 * {@linkplain HvlLoader#getTypeExtensions() getTypeExtensions()}).
+	 * 
+	 * @param pathArg the resource's complete file path (including name and extension)
+	 * @return <code>true</code> if the resource's extension is supported by the HvlLoader
+	 */
 	public boolean canLoad(String pathArg){
 		for(String s : typeExtensions){
 			if(pathArg.toUpperCase().endsWith(s.toUpperCase())) return true;

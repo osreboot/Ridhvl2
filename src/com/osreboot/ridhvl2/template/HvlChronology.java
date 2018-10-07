@@ -3,15 +3,20 @@ package com.osreboot.ridhvl2.template;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
 
 /**
- * Handles the instantiation and execution of sequential events that run on program initialize and program 
- * update.
+ * Handles the instantiation and execution of general-purpose sequential events intended to be run on program 
+ * initialize, program update and program exit. Event sequences are triggered with {@linkplain #initialize()}, 
+ * {@linkplain #preUpdate(float)}, {@linkplain #postUpdate(float)} and {@linkplain #exit()}. 
+ * {@linkplain HvlTemplateI} calls these methods appropriately. Consequently this class should only be used by 
+ * internal Ridhvl2 processes, or processes that intend to alter Ridhvl2's fundamental behavior in some way.
  * 
  * <p>
  * 
@@ -48,7 +53,35 @@ import com.osreboot.ridhvl2.HvlLogger;
  *
  */
 public final class HvlChronology {
+	
+	public static final int 
+	LAUNCH_CODE = 0, //functionally does nothing, exists for structure purposes
+	LAUNCH_CODE_RAW = 1,//2^0 //functionally does nothing, exists for structure purposes
+	DEBUG_LAUNCH_CODE = 0,
+	DEBUG_LAUNCH_CODE_RAW = 1;
 
+	private HvlChronology(){}
+	
+	/**
+	 * Standard values that represent possible sequence indexes for events. Each event occupies one index on this
+	 * scale, and that index cannot be occupied by another active event, with no exceptions. Each event type has
+	 * its own scale. Initialize events range from {@linkplain #CHRONOLOGY_INIT_EARLIEST} to 
+	 * {@linkplain #CHRONOLOGY_INIT_LATEST}. Pre-update events range from 
+	 * {@linkplain #CHRONOLOGY_UPDATE_PRE_EARLIEST} to {@linkplain #CHRONOLOGY_UPDATE_PRE_LATEST}. Post-update
+	 * events range from {@linkplain #CHRONOLOGY_UPDATE_POST_EARLIEST} to 
+	 * {@linkplain #CHRONOLOGY_UPDATE_POST_LATEST}. Finally, exit events range from {@linkplain #CHRONOLOGY_EXIT_EARLIEST} to 
+	 * {@linkplain #CHRONOLOGY_EXIT_LATEST}. All unoccupied event sequence indexes are automatically removed
+	 * upon {@linkplain #loadEvents(long, long)}, and event sequences are compressed so each active event occurs
+	 * in its respective order relative to other active events.
+	 * 
+	 * <p>
+	 * 
+	 * By convention, it is frowned upon to place an event directly on a sequence marker. Events should be offset
+	 * from sequence markers by their respective <code>INTERVAL</code> value, which provides room for events to be 
+	 * inserted in between any two other events, if such an order is absolutely necessary. <code>EARLIEST</code>
+	 * and <code>LATEST</code> markers should also be avoided, as these are the absolute minimum and maximum
+	 * sequence indexes that may be used for events, respectively.
+	 */
 	public static final int 
 	CHRONOLOGY_INIT_INTERVAL = 5,
 	CHRONOLOGY_INIT_EARLIEST = 0,
@@ -72,28 +105,48 @@ public final class HvlChronology {
 	CHRONOLOGY_EXIT_EARLY = 25,
 	CHRONOLOGY_EXIT_MIDDLE = 50,
 	CHRONOLOGY_EXIT_LATE = 75,
-	CHRONOLOGY_EXIT_LATEST = 100,
-	LAUNCH_CODE = 0, //functionally does nothing, exists for structure purposes
-	LAUNCH_CODE_RAW = 1, //functionally does nothing, exists for structure purposes
-	DEBUG_LAUNCH_CODE = 0,
-	DEBUG_LAUNCH_CODE_RAW = 1;
-
-	private HvlChronology(){}
+	CHRONOLOGY_EXIT_LATEST = 100;
 
 	private static long launchCode = -1, debugLaunchCode = -1;
 
+	/**
+	 * @return HvlChronology's current launch code. This returns <code>-1</code> before 
+	 * {@linkplain #loadEvents(long, long)} is called.
+	 */
 	public static long getLaunchCode(){
 		return launchCode;
 	}
 
+	/**
+	 * @return HvlChronology's current debug launch code. This returns <code>-1</code> before 
+	 * {@linkplain #loadEvents(long, long)} is called.
+	 */
 	public static long getDebugLaunchCode(){
 		return debugLaunchCode;
 	}
 
+	/**
+	 * @return <code>true</code> if HvlChronology's debug output is enabled by the current launch code
+	 */
 	public static boolean getDebugOutput(){
 		return verifyDebugLaunchCode(DEBUG_LAUNCH_CODE);
 	}
 
+	/**
+	 * Searches a class for fields with {@linkplain HvlChronologyInitialize}, {@linkplain HvlChronologyUpdate} and
+	 * {@linkplain HvlChronologyExit} annotations. If a field is found, that field's value is then cast to its
+	 * respective HvlChronology subclass, where it waits to be activated and loaded into the active event list.
+	 * This method can throw a large number of exceptions, primarily relating to reflection-based circumstances
+	 * where a field is of an improper type (to be cast) or is inaccessible.
+	 * 
+	 * <p>
+	 * 
+	 * For more on properly formatting these fields, see {@linkplain HvlChronology}'s class comment or
+	 * {@linkplain com.osreboot.ridhvl2.test.TestChronology TestChronology}. {@linkplain HvlDisplay} also contains
+	 * a great example of HvlChronology event field declaration.
+	 * 
+	 * @param cArg the class to search for HvlChronology event fields
+	 */
 	@SuppressWarnings("unchecked")
 	public static void registerChronology(Class<?> cArg){
 		try{
@@ -128,16 +181,61 @@ public final class HvlChronology {
 		}
 	}
 
+	/**
+	 * Tests the bit of the current launch code at <code>codeArg</code> index to see if that event is active. If
+	 * {@linkplain #loadEvents(long, long)} has not yet been called, this will always return <code>true</code>
+	 * (based on the rules of two's compliment).
+	 * 
+	 * @param codeArg the bit of the current launch code to test
+	 * @return <code>true</code> if the bit at <code>codeArg</code> is set
+	 */
 	public static boolean verifyLaunchCode(int codeArg){
 		return BigInteger.valueOf(launchCode).testBit(codeArg);
 	}
 
+	/**
+	 * Tests the bit of the current debug launch code at <code>codeArg</code> index to see if that event is set to 
+	 * debug mode. If {@linkplain #loadEvents(long, long)} has not yet been called, this will always return 
+	 * <code>true</code> (based on the rules of two's compliment).
+	 * 
+	 * @param codeArg the bit of the current debug launch code to test
+	 * @return <code>true</code> if the bit at <code>codeArg</code> is set
+	 */
 	public static boolean verifyDebugLaunchCode(int codeArg){
 		return BigInteger.valueOf(debugLaunchCode).testBit(codeArg);
 	}
 
+	/**
+	 * Selectively activates events stored in HvlChronology's subclass queues based on whether or not each event
+	 * is explicitly enabled by <code>launchCodeArg</code>. Activated events are given a debug mode value based
+	 * on whether or not each event is explicitly debug-enabled by <code>debugLaunchCodeArg</code>.
+	 * 
+	 * <p>
+	 * 
+	 * Default launch codes are supplied by {@linkplain HvlTemplateI} instances. <code>Long.MAX_VALUE</code> enables
+	 * all registered events, however this will become ineffective if Ridhvl2 ever includes events that require
+	 * radio-button-like behavior (it currently does not). <code>Long.MAX_VALUE - 1</code> as 
+	 * <code>debugLaunchCodeArg</code> is typically good practice, as this will enable debug output from all active 
+	 * events other than HvlChronology itself, which can produce extremely lengthy console print-outs on
+	 * initialization.
+	 * 
+	 * <p>
+	 * 
+	 * TODO Custom launch codes can also be generated by Ridhvl2TK's launch code editor.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method should only be called once on program initialize! If, in the same Java program, Ridhvl2 is
+	 * being completely reinitialized, then {@linkplain #unloadEvents()} must be called when the first instance of
+	 * Ridhvl2 shuts down.
+	 * 
+	 * @param launchCodeArg the value specifying which events should be activated for this Ridhvl2 instance
+	 * @param debugLaunchCodeArg the value specifying which events should have debug mode enabled for this Ridhvl2 
+	 * instance
+	 */
 	public static void loadEvents(long launchCodeArg, long debugLaunchCodeArg){
 		if(launchCodeArg < 0 || debugLaunchCodeArg < 0) throw new InvalidLoadConfigurationException();
+		if(launchCode >= 0 || debugLaunchCode >= 0) throw new AlreadyLoadedException();
 		launchCode = launchCodeArg;
 		debugLaunchCode = debugLaunchCodeArg;
 
@@ -252,8 +350,8 @@ public final class HvlChronology {
 
 	}
 
-	public static ArrayList<Initialize> getInitializeQueue(){
-		return new ArrayList<>(Initialize.queue);
+	public static List<Initialize> getInitializeQueue(){
+		return Collections.unmodifiableList(Initialize.queue);
 	}
 
 	public static final class Update{
@@ -286,8 +384,8 @@ public final class HvlChronology {
 
 	}
 
-	public static ArrayList<Update> getUpdateQueue(){
-		return new ArrayList<>(Update.queue);
+	public static List<Update> getUpdateQueue(){
+		return Collections.unmodifiableList(Update.queue);
 	}
 
 	public static final class Exit{
@@ -320,8 +418,8 @@ public final class HvlChronology {
 
 	}
 
-	public static ArrayList<Exit> getExitQueue(){
-		return new ArrayList<>(Exit.queue);
+	public static List<Exit> getExitQueue(){
+		return Collections.unmodifiableList(Exit.queue);
 	}
 
 	private static LinkedHashMap<HvlAction.A1<Boolean>, Boolean> loadedInitialize = new LinkedHashMap<>();
@@ -373,6 +471,10 @@ public final class HvlChronology {
 		}
 	}
 
+	public static class AlreadyLoadedException extends RuntimeException{
+		private static final long serialVersionUID = 8909278026333909960L;
+	}
+	
 	public static class InvalidChronologyException extends RuntimeException{
 		private static final long serialVersionUID = 9195870151660493054L;
 	}

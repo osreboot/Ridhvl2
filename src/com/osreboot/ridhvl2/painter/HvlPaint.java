@@ -9,10 +9,6 @@ import org.newdawn.slick.opengl.Texture;
  * three modes (<code>COLOR, TEXTURE, RENDERFRAME</code>). HvlPainter will automatically analyze the mode and 
  * draw the texture with the appropriate commands.
  * 
- * <p>
- * 
- * This class is intended to be statically imported.
- * 
  * @author os_reboot
  *
  */
@@ -141,6 +137,21 @@ public final class HvlPaint {
 	//		mode = Mode.RENDERFRAME;
 	//	}
 
+	/**
+	 * Thrown if a type-casting getter is improperly executed on a HvlPaint without first checking it's 
+	 * <code>mode</code> with {@linkplain HvlPaint#getMode()}. For example, executing the following lines:
+	 * 
+	 * <p>
+	 * 
+	 * <code>HvlPaint p = new HvlPaint(Color.white); p.getValueTexture();</code>
+	 * 
+	 * <p>
+	 * 
+	 * ...will throw a WrongModeException.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static class WrongModeException extends RuntimeException{
 		private static final long serialVersionUID = -7821681025532438849L;
 
