@@ -232,6 +232,11 @@ public final class HvlChronology {
 	 * @param launchCodeArg the value specifying which events should be activated for this Ridhvl2 instance
 	 * @param debugLaunchCodeArg the value specifying which events should have debug mode enabled for this Ridhvl2 
 	 * instance
+	 * @throws InvalidLoadConfigurationException if either <code>launchCodeArg</code> or 
+	 * <code>debugLaunchCodeArg</code> are less than 0
+	 * @throws AlreadyLoadedException if this method has already been called during the current Ridhvl2 instance
+	 * @throws PredefinedChronologyException if two events made active by <code>launchCodeArg</code> share the same
+	 * chronology value
 	 */
 	public static void loadEvents(long launchCodeArg, long debugLaunchCodeArg){
 		if(launchCodeArg < 0 || debugLaunchCodeArg < 0) throw new InvalidLoadConfigurationException();
@@ -614,7 +619,7 @@ public final class HvlChronology {
 
 	/**
 	 * Thrown if an attempt is made to call {@linkplain HvlChronology#loadEvents(long, long)} with either
-	 * <code>launchCodeArg</code> or <code>debugLaunchCodeArg</code> being less than 1.
+	 * <code>launchCodeArg</code> or <code>debugLaunchCodeArg</code> being less than 0.
 	 * 
 	 * @author os_reboot
 	 *

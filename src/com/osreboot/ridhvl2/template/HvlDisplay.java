@@ -11,6 +11,14 @@ import org.lwjgl.opengl.DisplayMode;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
 
+/**
+ * An instantiable wrapper that serves as a combination of LWJGL's {@linkplain Display} and {@linkplain DisplayMode}
+ * classes. The static aspects of this utility facilitate the swapping and manipulation of a single active instance
+ * of HvlDisplay, which in turn is responsible for handling the program's current LWJGL DisplayMode.
+ * 
+ * @author os_reboot
+ *
+ */
 public abstract class HvlDisplay {
 
 	public static final String LABEL = "HvlDisplay";
@@ -21,7 +29,7 @@ public abstract class HvlDisplay {
 	CHRONO_EXIT = HvlChronology.CHRONOLOGY_EXIT_LATE + HvlChronology.CHRONOLOGY_EXIT_INTERVAL,
 	LAUNCH_CODE = 1,
 	LAUNCH_CODE_RAW = 2;//2^1
-
+	
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
 		try{
@@ -64,13 +72,26 @@ public abstract class HvlDisplay {
 
 	private static ArrayList<HvlDisplayFullscreen> fullscreenDisplays = new ArrayList<>();
 
+	/**
+	 * @return the active HvlDisplay instance
+	 */
 	public static HvlDisplay getDisplay(){
 		return display;
 	}
 
+	/**
+	 * Sets the active HvlDisplay instance and applies it with {@linkplain #apply()}. If an HvlDisplay instance is
+	 * already active, it is first unapplied with {@linkplain #unapply()}.
+	 * 
+	 * @param displayArg the HvlDisplay instance to set as the active display
+	 * @throws NullDisplayException if the supplied HvlDisplay instance is null
+	 */
 	public static void setDisplay(HvlDisplay displayArg){
 		if(displayArg == null) throw new NullDisplayException();
-		if(display != null && displayInitialized) display.unapply();//TODO smooth transition (i.e. don't destroy display)
+		
+		if(display != null && displayInitialized) display.unapply();
+		//TODO smooth transition (i.e. don't destroy display)
+		
 		display = displayArg;
 		if(displayInitialized) display.apply();
 	}
@@ -83,6 +104,12 @@ public abstract class HvlDisplay {
 		fullscreenDisplays.add(displayArg);
 	}
 
+	/**
+	 * After HvlDisplay's {@linkplain HvlChronology} initialize event, this method returns an unmodifiable list of
+	 * all fullscreen HvlDisplay instances supported by the current system.
+	 * 
+	 * @return all fullscreen HvlDisplay instances supported by the current system
+	 */
 	public static List<HvlDisplayFullscreen> getFullscreenDisplays(){
 		return Collections.unmodifiableList(fullscreenDisplays);
 	}
@@ -107,36 +134,78 @@ public abstract class HvlDisplay {
 	protected abstract void preUpdate(float delta);
 	protected abstract void postUpdate(float delta);
 
+	/**
+	 * @return if the HvlDisplay's vertical-sync option is enabled
+	 */
 	public boolean isVsyncEnabled(){
 		return vsyncEnabled;
 	}
 
+	/**
+	 * Sets the HvlDisplay's vertical-sync option. This method may be disabled on HvlDisplay implementations that
+	 * don't support vsync.
+	 * 
+	 * @param vsyncEnabledArg the new <code>vsyncEnabled</code> value
+	 */
 	public void setVsyncEnabled(boolean vsyncEnabledArg){
 		vsyncEnabled = vsyncEnabledArg;
 	}
 
+	/**
+	 * @return the HvlDisplay's current refresh rate
+	 */
 	public int getRefreshRate(){
 		return refreshRate;
 	}
 
+	/**
+	 * Sets the HvlDisplay's refresh rate. This may be disabled on HvlDisplay implementations that don't support
+	 * changing refresh rates.
+	 * 
+	 * @param refreshRateArg the new <code>refreshRate</code> value
+	 * @throws InvalidRefreshRateException if <code>refreshRateArg</code> is less than 1
+	 */
 	public void setRefreshRate(int refreshRateArg){
 		if(refreshRateArg < 1){
 			throw new InvalidRefreshRateException();
 		}else refreshRate = refreshRateArg;
 	}
 
+	/**
+	 * @return if the HvlDisplay's resizability option is enabled
+	 */
 	public boolean isResizable(){
 		return resizable;
 	}
 
+	/**
+	 * Sets the HvlDisplay's resizability option. This may be disabled on HvlDisplay implementatons that don't
+	 * support resizable displays.
+	 * 
+	 * @param resizableArg
+	 */
 	public void setResizable(boolean resizableArg){
 		resizable = resizableArg;
 	}
 
+	/**
+	 * Thrown if an attempt is made to change a HvlDisplay's <code>refreshRate</code> to a value less than 1.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static class InvalidRefreshRateException extends RuntimeException{
 		private static final long serialVersionUID = -5066247796713528811L;
 	}
 
+	/**
+	 * Thrown if, when HvlDisplay's {@linkplain HvlChronology} initialize event is called, a HvlDisplay instance has
+	 * not been set as the active instance. This exception is not thrown if HvlDisplay isn't activated by the
+	 * HvlChronology launch code.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static class NullDisplayException extends RuntimeException{
 		private static final long serialVersionUID = -5076487588403656161L;
 	}

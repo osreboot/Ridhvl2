@@ -7,6 +7,7 @@ import org.newdawn.slick.Color;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.painter.HvlPaint.HvlPaintMode;
 import com.osreboot.ridhvl2.template.HvlChronology;
+import com.osreboot.ridhvl2.template.HvlChronologyExit;
 import com.osreboot.ridhvl2.template.HvlChronologyInitialize;
 import com.osreboot.ridhvl2.template.HvlChronologyUpdate;
 
@@ -24,10 +25,11 @@ public final class HvlPainter{
 	CHRONO_INIT = HvlChronology.CHRONOLOGY_INIT_LATE + HvlChronology.CHRONOLOGY_INIT_INTERVAL,
 	CHRONO_PRE_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_PRE_LATE + HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
 	CHRONO_POST_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_POST_EARLY - HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
+	CHRONO_EXIT = HvlChronology.CHRONOLOGY_EXIT_LATE + HvlChronology.CHRONOLOGY_EXIT_INTERVAL,
 	LAUNCH_CODE = 2,
 	LAUNCH_CODE_RAW = 4;//2^2
 
-	private static boolean active;
+	private static boolean active = false;
 
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
@@ -51,6 +53,11 @@ public final class HvlPainter{
 
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);//TODO usage flexibility
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+	};
+	
+	@HvlChronologyExit(label = LABEL, chronology = CHRONO_EXIT, launchCode = LAUNCH_CODE)
+	public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
+		active = false;
 	};
 
 	private HvlPainter(){}
