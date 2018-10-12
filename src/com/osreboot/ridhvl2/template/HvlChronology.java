@@ -307,6 +307,12 @@ public final class HvlChronology {
 		}
 	}
 
+	/**
+	 * Unloads all active events, resets internal launch codes and clears all HvlChronology subclass queues. This
+	 * method is intended to be called only when completely resetting Ridhvl2. After calling this method, all events
+	 * need to be re-registered with {@linkplain #registerChronology(Class)}. {@linkplain #loadEvents(long, long)} 
+	 * may be called for the second time in a single Java program instance if this method is called first.
+	 */
 	public static void unloadEvents(){
 		HvlLogger.println(getDebugOutput(), "Unloading all events.");
 		launchCode = -1;
@@ -320,6 +326,13 @@ public final class HvlChronology {
 		Exit.queue.clear();
 	}
 
+	/**
+	 * Represents an unloaded HvlChronology initialize event. This class is an {@linkplain HvlAction.A1} wrapper 
+	 * that includes data to identify the action as an HvlChronology event.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static final class Initialize{
 
 		private static ArrayList<Initialize> queue = new ArrayList<>();
@@ -336,24 +349,44 @@ public final class HvlChronology {
 			queue.add(this);
 		}
 
+		/**
+		 * @return the event's label
+		 */
 		public String getAnnotationLabel(){
 			return annotation.label();
 		}
 
+		/**
+		 * @return the event's launch code
+		 */
 		public int getAnnotationLaunchCode(){
 			return annotation.launchCode();
 		}
 
+		/**
+		 * @return the event's chronology
+		 */
 		public int getAnnotationChronology(){
 			return annotation.chronology();
 		}
 
 	}
 
+	/**
+	 * @return all registered initialize events in the form of {@linkplain HvlChronology.Initialize Initialize} 
+	 * instances
+	 */
 	public static List<Initialize> getInitializeQueue(){
 		return Collections.unmodifiableList(Initialize.queue);
 	}
 
+	/**
+	 * Represents an unloaded HvlChronology update event. This class is an {@linkplain HvlAction.A2} wrapper that 
+	 * includes data to identify the action as an HvlChronology event.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static final class Update{
 
 		private static ArrayList<Update> queue = new ArrayList<>();
@@ -370,24 +403,43 @@ public final class HvlChronology {
 			queue.add(this);
 		}
 
+		/**
+		 * @return the event's label
+		 */
 		public String getAnnotationLabel(){
 			return annotation.label();
 		}
 
+		/**
+		 * @return the event's launch code
+		 */
 		public int getAnnotationLaunchCode(){
 			return annotation.launchCode();
 		}
 
+		/**
+		 * @return the event's chronology
+		 */
 		public int getAnnotationChronology(){
 			return annotation.chronology();
 		}
 
 	}
 
+	/**
+	 * @return all registered update events in the form of {@linkplain HvlChronology.Update Update} instances
+	 */
 	public static List<Update> getUpdateQueue(){
 		return Collections.unmodifiableList(Update.queue);
 	}
 
+	/**
+	 * Represents an unloaded HvlChronology exit event. This class is an {@linkplain HvlAction.A1} wrapper that 
+	 * includes data to identify the action as an HvlChronology event.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static final class Exit{
 
 		private static ArrayList<Exit> queue = new ArrayList<>();
@@ -404,20 +456,32 @@ public final class HvlChronology {
 			queue.add(this);
 		}
 
+		/**
+		 * @return the event's label
+		 */
 		public String getAnnotationLabel(){
 			return annotation.label();
 		}
 
+		/**
+		 * @return the event's launch code
+		 */
 		public int getAnnotationLaunchCode(){
 			return annotation.launchCode();
 		}
 
+		/**
+		 * @return the event's chronology
+		 */
 		public int getAnnotationChronology(){
 			return annotation.chronology();
 		}
 
 	}
 
+	/**
+	 * @return all registered exit events in the form of {@linkplain HvlChronology.Exit Exit} instances
+	 */
 	public static List<Exit> getExitQueue(){
 		return Collections.unmodifiableList(Exit.queue);
 	}
@@ -427,6 +491,12 @@ public final class HvlChronology {
 	private static LinkedHashMap<HvlAction.A2<Boolean, Float>, Boolean> loadedPostUpdate = new LinkedHashMap<>();
 	private static LinkedHashMap<HvlAction.A1<Boolean>, Boolean> loadedExit = new LinkedHashMap<>();
 	
+	/**
+	 * Runs all active initialize events in the relative sequence specified by their respective 
+	 * <code>chronology</code> values. For information on registering events see 
+	 * {@linkplain #registerChronology(Class)} and for information on properly activating events see 
+	 * {@linkplain #loadEvents(long, long)}.
+	 */
 	public static void initialize(){
 		for(HvlAction.A1<Boolean> a : loadedInitialize.keySet()){
 			try{
@@ -438,6 +508,15 @@ public final class HvlChronology {
 		}
 	}
 
+	/**
+	 * Runs all active pre-update events (events with <code>chronology</code> values less than 
+	 * {@linkplain #CHRONOLOGY_UPDATE_POST_EARLIEST}) in the relative sequence specified by their respective 
+	 * <code>chronology</code> values. For information on registering events see 
+	 * {@linkplain #registerChronology(Class)} and for information on properly activating events see 
+	 * {@linkplain #loadEvents(long, long)}.
+	 * 
+	 * @param delta the time (in seconds) since the last program update
+	 */
 	public static void preUpdate(float delta){
 		for(HvlAction.A2<Boolean, Float> a : loadedPreUpdate.keySet()){
 			try{
@@ -449,6 +528,15 @@ public final class HvlChronology {
 		}
 	}
 
+	/**
+	 * Runs all active post-update events (events with <code>chronology</code> values greater than 
+	 * {@linkplain #CHRONOLOGY_UPDATE_PRE_LATEST}) in the relative sequence specified by their respective 
+	 * <code>chronology</code> values. For information on registering events see 
+	 * {@linkplain #registerChronology(Class)} and for information on properly activating events see 
+	 * {@linkplain #loadEvents(long, long)}.
+	 * 
+	 * @param delta the time (in seconds) since the last program update
+	 */
 	public static void postUpdate(float delta){
 		for(HvlAction.A2<Boolean, Float> a : loadedPostUpdate.keySet()){
 			try{
@@ -460,6 +548,11 @@ public final class HvlChronology {
 		}
 	}
 	
+	/**
+	 * Runs all active exit events in the relative sequence specified by their respective <code>chronology</code> 
+	 * values. For information on registering events see {@linkplain #registerChronology(Class)} and for information
+	 * on properly activating events see {@linkplain #loadEvents(long, long)}.
+	 */
 	public static void exit(){
 		for(HvlAction.A1<Boolean> a : loadedExit.keySet()){
 			try{
@@ -471,26 +564,85 @@ public final class HvlChronology {
 		}
 	}
 
+	/**
+	 * Thrown if an attempt is made to load HvlChronology event sequences twice in the same Ridhvl2 instance with 
+	 * {@linkplain HvlChronology#loadEvents(long, long)}, without calling {@linkplain HvlChronology#unloadEvents()}
+	 * first.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static class AlreadyLoadedException extends RuntimeException{
 		private static final long serialVersionUID = 8909278026333909960L;
 	}
 	
+	/**
+	 * Thrown if an attempt is made to register an HvlChronology event with a <code>chronology</code> value outside 
+	 * of its appropriate boundaries. See:
+	 * 
+	 * <p>
+	 * 
+	 * {@linkplain HvlChronology#CHRONOLOGY_INIT_EARLIEST}
+	 * <br>
+	 * {@linkplain HvlChronology#CHRONOLOGY_INIT_LATEST}
+	 * <br>
+	 * {@linkplain HvlChronology#CHRONOLOGY_UPDATE_PRE_EARLIEST}
+	 * <br>
+	 * {@linkplain HvlChronology#CHRONOLOGY_UPDATE_POST_LATEST}
+	 * <br>
+	 * {@linkplain HvlChronology#CHRONOLOGY_EXIT_EARLIEST}
+	 * <br>
+	 * {@linkplain HvlChronology#CHRONOLOGY_EXIT_LATEST}
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static class InvalidChronologyException extends RuntimeException{
 		private static final long serialVersionUID = 9195870151660493054L;
 	}
 
+	/**
+	 * Thrown if an attempt is made to register an HvlChronology event with a <code>launchCode</code> value of less
+	 * than 1.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static class InvalidLaunchCodeException extends RuntimeException{
 		private static final long serialVersionUID = -7657584019043303889L;
 	}
 
+	/**
+	 * Thrown if an attempt is made to call {@linkplain HvlChronology#loadEvents(long, long)} with either
+	 * <code>launchCodeArg</code> or <code>debugLaunchCodeArg</code> being less than 1.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static class InvalidLoadConfigurationException extends RuntimeException{
 		private static final long serialVersionUID = 2633380302403141329L;
 	}
 
+	/**
+	 * Thrown if an attempt is made during {@linkplain HvlChronology#loadEvents(long, long)} to assign an 
+	 * HvlChronology event to a chronology slot already occupied by another event. This is usually caused by two
+	 * registered events with the same chronology being activated and loaded within the same Ridhvl2 instance.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static class PredefinedChronologyException extends RuntimeException{
 		private static final long serialVersionUID = -3134726851926392146L;
 	}
 
+	/**
+	 * Thrown if an attempt is made to access a utility that hasn't yet been activated within a Ridhvl2 instance.
+	 * This is usually caused by a launch code that doesn't properly suit a Ridhvl2 program's needs. See
+	 * {@linkplain HvlChronology#loadEvents(long, long)} for more on launch codes.
+	 * 
+	 * @author os_reboot
+	 *
+	 */
 	public static class InactiveException extends RuntimeException{
 		private static final long serialVersionUID = -7857410333110944252L;
 
