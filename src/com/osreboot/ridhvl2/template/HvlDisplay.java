@@ -128,10 +128,28 @@ public abstract class HvlDisplay {
 		resizable = resizableArg;
 	}
 
+	/**
+	 * Called when the HvlDisplay is set as the active display.
+	 */
 	protected abstract void apply();
+	
+	/**
+	 * Called when the HvlDisplay is set as inactive.
+	 */
 	protected abstract void unapply();
 
+	/**
+	 * Called once per update, before {@linkplain HvlTemplate} updates.
+	 * 
+	 * @param delta the time (in seconds) since the last update
+	 */
 	protected abstract void preUpdate(float delta);
+	
+	/**
+	 * Called once per update, after {@linkplain HvlTemplate} updates.
+	 * 
+	 * @param delta the time (in seconds) since the last update
+	 */
 	protected abstract void postUpdate(float delta);
 
 	/**
