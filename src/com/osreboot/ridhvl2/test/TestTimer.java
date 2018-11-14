@@ -3,6 +3,21 @@ package com.osreboot.ridhvl2.test;
 import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.template.HvlTimer;
 
+/**
+ * A test class for {@linkplain HvlTimer}. This test demonstrates all aspects of HvlTimer functionality. The test
+ * starts by printing messages to the console at one second intervals, then sets the timer dilation to 0.5 and
+ * repeats the test output at half speed, then sets the dilation to 2.0 and repeats the test output at double speed,
+ * then simulates program idle time and repeats the test output after a short program delay (at normal speed).
+ * 
+ * <p>
+ * 
+ * The expected test output consists of four individual counts to ten, with (in order) one second delay, half second
+ * delay, two second delay and standard delay after a short idle period. The test should conclude by printing the
+ * message "Test completed!" in the console.
+ * 
+ * @author os_reboot
+ *
+ */
 public class TestTimer extends HvlTimer{
 	
 	public TestTimer(){

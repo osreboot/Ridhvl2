@@ -7,8 +7,21 @@ import com.osreboot.ridhvl2.template.HvlChronologyExit;
 import com.osreboot.ridhvl2.template.HvlChronologyInitialize;
 import com.osreboot.ridhvl2.template.HvlChronologyUpdate;
 
+/**
+ * A test class for {@linkplain HvlChronology}. This test registers a set of HvlChronology events, loads a launch
+ * code-specified subset of those events, executes HvlChronology's base program stages, unloads the events and 
+ * finally loads a different subset of the events and repeats the process.
+ * 
+ * <p>
+ * 
+ * The expected test output consists of two separate pairs of loading and unloading stages, with event-originating 
+ * debug output in between each loading and unloading pair.
+ * 
+ * @author os_reboot
+ *
+ */
 public class TestChronology {
-
+	
 	public TestChronology(){
 		HvlChronology.registerChronology(TestChronologyOne.class);
 		HvlChronology.registerChronology(TestChronologyTwo.class);
