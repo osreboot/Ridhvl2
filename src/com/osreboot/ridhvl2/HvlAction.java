@@ -1,5 +1,32 @@
 package com.osreboot.ridhvl2;
 
+import com.osreboot.ridhvl2.template.HvlChronology;
+
+/**
+ * A simple framework that provides methods useful for parameter-based functionality. Updated from the original
+ * Ridhvl to be interfaces so they can work as Java 8 lambda expressions.
+ * 
+ * <p>
+ * 
+ * Example:<br>
+ * <code>void runAction(HvlAction.A1<String> actionArg){<br>
+ * &nbspactionArg.run("test");<br>
+ * }<br></code>
+ * ...<br>
+ * <code>runAction((arg) -> System.out.println(arg));//prints "test" to console</code>
+ * 
+ * <p>
+ * 
+ * Interface names always start with 'A' followed by the number of arguments. If the interface name ends with 'r',
+ * then the first type parameter represents the HvlAction's return type (otherwise the HvlAction is void).
+ * 
+ * <p>
+ * 
+ * {@linkplain HvlChronology} and TODO {@linkplain HvlMenu} depend heavily on this framework.
+ * 
+ * @author os_reboot
+ *
+ */
 public final class HvlAction {
 	
 	private HvlAction(){}

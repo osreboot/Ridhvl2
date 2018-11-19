@@ -14,7 +14,12 @@ import com.osreboot.ridhvl2.HvlLogger;
 /**
  * An instantiable wrapper that serves as a combination of LWJGL's {@linkplain Display} and {@linkplain DisplayMode}
  * classes. The static aspects of this utility facilitate the swapping and manipulation of a single active instance
- * of HvlDisplay, which in turn is responsible for handling the program's current LWJGL DisplayMode.
+ * of HvlDisplay, which is itself responsible for handling the program's current LWJGL DisplayMode.
+ * 
+ * <p>
+ * 
+ * Users looking for instances to feed to {@linkplain HvlTemplateI} constructors should refer to one of HvlDisplay's
+ * many subclasses, such as {@linkplain HvlDisplayFullscreenAuto} or {@linkplain HvlDisplayWindowed}.
  * 
  * @author os_reboot
  *
@@ -160,8 +165,8 @@ public abstract class HvlDisplay {
 	}
 
 	/**
-	 * Sets the HvlDisplay's vertical-sync option. This method may be disabled on HvlDisplay implementations that
-	 * don't support vsync.
+	 * Sets the HvlDisplay's vertical-sync option. This may be disabled on HvlDisplay implementations that don't 
+	 * support vsync.
 	 * 
 	 * @param vsyncEnabledArg the new <code>vsyncEnabled</code> value
 	 */

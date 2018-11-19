@@ -55,11 +55,28 @@ public abstract class HvlTemplateI extends HvlTemplate{
 		start();
 	}
 
+	/**
+	 * Called once on program initialization, before the first {@linkplain #update(float)} call (during 
+	 * HvlTemplateI's <code>super</code> constructor call). This should be used to perform initialization
+	 * operations, such as loading resources and defining variables.
+	 */
+	@Override
+	public abstract void initialize();
+	
 	@Override
 	public final void preUpdate(float delta){
 		HvlChronology.preUpdate(delta);
 	}
 
+	/**
+	 * Called repeatedly at a rate specified by the current {@linkplain HvlDisplay}. This should be used to cycle
+	 * all program logic and perform all draw calls, and do anything else the program is intended to accomplish.
+	 * 
+	 * @param delta the time (in seconds) since the last {@linkplain #update(float)} call
+	 */
+	@Override
+	public abstract void update(float delta);
+	
 	@Override
 	public final void postUpdate(float delta){
 		HvlChronology.postUpdate(delta);
@@ -69,5 +86,17 @@ public abstract class HvlTemplateI extends HvlTemplate{
 			HvlChronology.unloadEvents();
 		}
 	}
+	
+	/**
+	 * Called once after a program exit is requested. This should be used to perform a last-second save of a user's
+	 * files or game state, or other similar exit operations. This method will be automatically called in all clean
+	 * exit cases, such as the closure of a {@linkplain HvlDisplay} window.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: This method does NOT request a program exit. To request a program exit, call {@linkplain #setExiting()}.
+	 */
+	@Override
+	public void exit(){}
 
 }

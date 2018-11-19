@@ -6,6 +6,20 @@ import org.lwjgl.opengl.DisplayMode;
 
 import com.osreboot.ridhvl2.HvlLogger;
 
+/**
+ * An implementation of {@linkplain HvlDisplay} that exclusively tracks one (fullscreen) LWJGL
+ * {@linkplain org.lwjgl.opengl.Display DisplayMode}. HvlDisplayFullscreen should only be instantiated by internal
+ * Ridhvl2 processes. Use {@linkplain HvlDisplay#getFullscreenDisplays()} to get all available instances.
+ * Alternatively, use {@linkplain HvlDisplayFullscreenAuto} to automatically select the best available
+ * HvlDisplayFullscreen instance.
+ * 
+ * <p>
+ * 
+ * {@linkplain #setResizable(boolean)} is disabled for HvlDisplayFullscreen.
+ * 
+ * @author os_reboot
+ *
+ */
 public class HvlDisplayFullscreen extends HvlDisplay{
 
 	private DisplayMode mode;
@@ -15,6 +29,12 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 		mode = modeArg;
 	}
 	
+	/**
+	 * Gets the LWJGL {@linkplain org.lwjgl.opengl.Display DisplayMode}. This can be used to get information about
+	 * the display.
+	 * 
+	 * @return the LWJGL DisplayMode
+	 */
 	DisplayMode getDisplayMode(){
 		return mode;
 	}

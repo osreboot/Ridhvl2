@@ -18,11 +18,19 @@ import org.newdawn.slick.util.Log;
  */
 public class HvlLoaderTexture extends HvlLoader<Texture>{
 
+	/**
+	 * Constructs an HvlLoaderTexture instance with the default path being "res".
+	 */
 	public HvlLoaderTexture(){
 		super("res", HvlLoader.TYPELABEL_TEXTURE, "PNG");
 		Log.setVerbose(false);
 	}
 	
+	/**
+	 * Constructs an HvlLoaderTexture instance with a user-specified default path.
+	 * 
+	 * @param defaultPathArg the default path for the HvlLoaderTexture
+	 */
 	public HvlLoaderTexture(String defaultPathArg){
 		super(defaultPathArg, HvlLoader.TYPELABEL_TEXTURE, "PNG");
 		Log.setVerbose(false);

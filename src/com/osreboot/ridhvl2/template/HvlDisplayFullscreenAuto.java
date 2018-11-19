@@ -4,10 +4,33 @@ import org.lwjgl.opengl.Display;
 
 import com.osreboot.ridhvl2.HvlLogger;
 
+/**
+ * An implementation of {@linkplain HvlDisplay} that automatically selects and applies the best
+ * {@linkplain HvlDisplayFullscreen}. Displays are valued (in order) by bits per pixel, refresh rate and the 
+ * product of the display's width and height.
+ * 
+ * <p>
+ * 
+ * {@linkplain #setResizable(boolean)} is disabled for HvlDisplayFullscreenAuto.
+ * 
+ * <p>
+ * 
+ * In order to change significant display properties that aren't included as instance methods, instantiate a new
+ * HvlDisplay subclass and apply it with {@linkplain HvlDisplay#setDisplay(HvlDisplay)}.
+ * 
+ * @author os_reboot
+ *
+ */
 public class HvlDisplayFullscreenAuto extends HvlDisplay{
 
 	private HvlDisplayFullscreen autoDisplay;
 
+	/**
+	 * Constructs an HvlDisplayFullscreenAuto. Note that the display is not selected until {@linkplain #apply()} is
+	 * called.
+	 * 
+	 * @param vsyncArg the value of the HvlDisplay's vertical-sync option
+	 */
 	public HvlDisplayFullscreenAuto(boolean vsyncArg){
 		super(144, vsyncArg, false);
 		autoDisplay = null;

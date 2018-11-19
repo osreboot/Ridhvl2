@@ -7,6 +7,22 @@ import org.lwjgl.opengl.GL11;
 
 import com.osreboot.ridhvl2.HvlLogger;
 
+/**
+ * An implementation of {@linkplain HvlDisplay} that handles a windowed LWJGL 
+ * {@linkplain org.lwjgl.opengl.Display Display}.
+ * 
+ * <p>
+ * 
+ * {@linkplain #setVsyncEnabled(boolean)} is disabled for HvlDisplayWindowed.
+ * 
+ * <p>
+ * 
+ * In order to change significant display properties that aren't included as instance methods, instantiate a new
+ * HvlDisplay subclass and apply it with {@linkplain HvlDisplay#setDisplay(HvlDisplay)}.
+ * 
+ * @author os_reboot
+ *
+ */
 public class HvlDisplayWindowed extends HvlDisplay{
 
 	private DisplayMode initialMode;
