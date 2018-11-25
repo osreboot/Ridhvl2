@@ -78,6 +78,11 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 		Display.setVSyncEnabled(vsyncEnabledArg);
 	}
 
+	/**
+	 * This method is disabled for HvlDisplayFullscreen.
+	 * 
+	 * @param resizableArg <code>resizable</code> is always false, regardless of this value
+	 */
 	@Override
 	public void setResizable(boolean resizableArg){
 		super.setResizable(false);

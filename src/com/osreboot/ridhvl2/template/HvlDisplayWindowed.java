@@ -29,6 +29,20 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	private String initialTitle;
 	private boolean initialUndecorated;
 	
+	/**
+	 * Constructor that defaults to a decorated window. Use 
+	 * {@linkplain #HvlDisplayWindowed(int, int, int, String, boolean, boolean)} to supply a custom decorated value.
+	 * 
+	 * <p>
+	 * 
+	 * See {@linkplain HvlDisplayWindowed} for more information.
+	 * 
+	 * @param refreshRateArg the maximum refresh rate of the display
+	 * @param widthArg the width (in pixels) of the display
+	 * @param heightArg the height (in pixels) of the display
+	 * @param titleArg the title of the window
+	 * @param resizableArg whether or not the window is resizable
+	 */
 	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg){
 		super(refreshRateArg, false, resizableArg);
 		initialMode = new DisplayMode(widthArg, heightArg);
@@ -36,6 +50,21 @@ public class HvlDisplayWindowed extends HvlDisplay{
 		initialUndecorated = false;
 	}
 	
+	/**
+	 * Constructor that takes a custom decorated value. Use 
+	 * {@linkplain #HvlDisplayWindowed(int, int, int, String, boolean)} to assume a default decorated value.
+	 * 
+	 * <p>
+	 * 
+	 * See {@linkplain HvlDisplayWindowed} for more information.
+	 * 
+	 * @param refreshRateArg the maximum refresh rate of the display
+	 * @param widthArg the width (in pixels) of the display
+	 * @param heightArg the height (in pixels) of the display
+	 * @param titleArg the title of the window
+	 * @param resizableArg whether or not the window is resizable
+	 * @param undecoratedArg whether or not the window is undecorated
+	 */
 	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg, boolean undecoratedArg){
 		super(refreshRateArg, false, resizableArg);
 		initialMode = new DisplayMode(widthArg, heightArg);
@@ -88,6 +117,11 @@ public class HvlDisplayWindowed extends HvlDisplay{
 		}
 	}
 
+	/**
+	 * This method is disabled for HvlDisplayWindowed.
+	 * 
+	 * @param vsyncEnabledArg <code>vsyncEnabled</code> is always false, regardless of this value
+	 */
 	@Override
 	public void setVsyncEnabled(boolean vsyncEnabledArg){
 		super.setVsyncEnabled(false);
