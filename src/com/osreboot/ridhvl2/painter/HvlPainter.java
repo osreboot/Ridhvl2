@@ -107,6 +107,31 @@ public final class HvlPainter{
 	}
 
 	/**
+	 * Applies a translation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
+	 * <code>yArg</code> being the offset of the translation.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method should only be used by internal Ridhvl2 processes! If trying to draw inside a template,
+	 * use the methods in {@linkplain com.osreboot.ridhvl2.statics.HvlStaticPainter HvlStaticPainter}.
+	 * 
+	 * @param xArg the x-offset of the translation
+	 * @param yArg the y-offset of the translation
+	 * @param actionArg the context that the translation is applied to
+	 * @throws HvlChronology.InactiveException if HvlPainter is not enabled by {@linkplain HvlChronology}'s launch 
+	 * code
+	 */
+	public static void translate(float xArg, float yArg, HvlAction.A0 actionArg){
+		if(active){
+			GL11.glPushMatrix();
+			GL11.glTranslatef(xArg, yArg, 0);
+			actionArg.run();
+			GL11.glTranslatef(-xArg, -yArg, 0);
+			GL11.glPopMatrix();
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
+	}
+	
+	/**
 	 * Applies a rotation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
 	 * <code>yArg</code> being the origin of the rotation, and <code>degreesArg</code> being the magnitude of
 	 * the rotation, in degrees.

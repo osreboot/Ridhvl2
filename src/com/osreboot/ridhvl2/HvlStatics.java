@@ -239,6 +239,19 @@ public final class HvlStatics {
 	}
 	
 	/**
+	 * Applies a translation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
+	 * <code>yArg</code> being the offset of the translation. Uses the same translation procedure from 
+	 * {@linkplain com.osreboot.ridhvl2.painter.HvlPainter HvlPainter}.
+	 * 
+	 * @param xArg the x-offset of the translation
+	 * @param yArg the y-offset of the translation
+	 * @param actionArg the context that the translation is applied to
+	 */
+	public static void hvlTranslate(float xArg, float yArg, HvlAction.A0 actionArg){
+		HvlPainter.translate(xArg, yArg, actionArg);
+	}
+	
+	/**
 	 * Applies a rotation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
 	 * <code>yArg</code> being the origin of the rotation, and <code>degreesArg</code> being the magnitude of
 	 * the rotation, in degrees. Uses the same rotation procedure from 
