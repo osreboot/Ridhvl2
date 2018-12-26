@@ -11,7 +11,7 @@ import java.io.Serializable;
 public final class HvlCoord implements Serializable{
 	private static final long serialVersionUID = -7935326529984578377L;
 	
-	private float x, y;
+	public float x, y;
 	
 	/**
 	 * Constructs a HvlCoord from the given coordinate values.
@@ -38,8 +38,8 @@ public final class HvlCoord implements Serializable{
 	 * @param cArg the HvlCoord to inherit values from
 	 */
 	public HvlCoord(HvlCoord cArg){
-		x = cArg.getX();
-		y = cArg.getY();
+		x = cArg.x;
+		y = cArg.y;
 	}
 	
 	/**
@@ -52,49 +52,17 @@ public final class HvlCoord implements Serializable{
 		x = xArg;
 		y = yArg;
 	}
-
-	/**
-	 * @return the 'x' value of the HvlCoord
-	 */
-	public float getX(){
-		return x;
-	}
-
-	/**
-	 * @return the 'x' value of the HvlCoord
-	 */
-	public float getY(){
-		return y;
-	}
-
-	/**
-	 * Assigns a new 'x' value.
-	 * 
-	 * @param xArg the new value of 'x'
-	 */
-	public void setX(float xArg){
-		x = xArg;
-	}
-	
-	/**
-	 * Assigns a new 'y' value.
-	 * 
-	 * @param yArg the new value of 'y'
-	 */
-	public void setY(float yArg){
-		y = yArg;
-	}
 	
 	@Override
 	public boolean equals(Object object){
 		if(object != null && object instanceof HvlCoord){
-			return ((HvlCoord)object).getX() == getY() && ((HvlCoord)object).getY() == getX();
+			return ((HvlCoord)object).x == y && ((HvlCoord)object).y == x;
 		}else return false;
 	}
 	
 	@Override
 	public String toString(){
-		return "[" + getX() + "," + getY() + "]";
+		return "[" + x + "," + y + "]";
 	}
 	
 }
