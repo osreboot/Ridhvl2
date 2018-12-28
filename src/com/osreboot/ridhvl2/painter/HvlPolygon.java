@@ -3,7 +3,7 @@ package com.osreboot.ridhvl2.painter;
 import com.osreboot.ridhvl2.HvlCoord;
 
 /**
- * An polygon in the form of an array of three or more vertex coordinates, and an equally sized array of UV 
+ * A polygon in the form of an array of three or more vertex coordinates, and an equally sized array of UV 
  * coordinates. Coordinates are stored in the form of {@linkplain HvlCoord}s. After the constructor polygon vertex
  * counts cannot be changed, however the coordinate values of both vertices and UVs may be adjusted. HvlPolygon
  * objects are used to specify the drawing volume and texture UVs in {@linkplain HvlPainter} operations.
