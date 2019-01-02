@@ -10,7 +10,7 @@ import com.osreboot.ridhvl2.template.HvlTemplateI;
 
 /**
  * A test class for {@linkplain HvlTemplateI}. This test creates a standard bordered window and draws a single blue
- * quad in the upper-left corner. The test also prints test messages into the console on program initialzie and exit.
+ * quad in the upper-left corner. The test also prints test messages into the console on program initialize and exit.
  * 
  * <p>
  * 
