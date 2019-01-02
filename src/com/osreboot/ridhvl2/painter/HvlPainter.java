@@ -95,9 +95,9 @@ public final class HvlPainter{
 			if(polygonArg instanceof HvlQuad) GL11.glBegin(GL11.GL_QUADS);
 			else GL11.glBegin(GL11.GL_TRIANGLE_FAN);
 			for(int i = 0; i < polygonArg.getVertices().length; i++){
-				GL11.glVertex2f(polygonArg.getVertices()[i].x, polygonArg.getVertices()[i].y);
 				if(paintArg.getMode() != HvlPaintMode.COLOR) 
 					GL11.glTexCoord2f(polygonArg.getUVs()[i].x, polygonArg.getUVs()[i].y);
+				GL11.glVertex2f(polygonArg.getVertices()[i].x, polygonArg.getVertices()[i].y);
 			}
 			GL11.glEnd();
 			if(paintArg.getMode() == HvlPaintMode.TEXTURE){

@@ -15,10 +15,10 @@ public final class HvlQuad extends HvlPolygon{
 	 * texture.
 	 */
 	public static final HvlCoord[] COORDS_DEFAULT_UVS = new HvlCoord[]{
+			new HvlCoord(0, 0),
 			new HvlCoord(1, 0),
 			new HvlCoord(1, 1),
 			new HvlCoord(0, 1),
-			new HvlCoord(0, 0),
 	};
 
 	/**
