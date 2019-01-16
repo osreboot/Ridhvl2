@@ -74,5 +74,3 @@ public class Ridhvl2Test extends HvlTemplateI{
 
 }
 ```
-
----
