@@ -24,10 +24,9 @@ import static com.osreboot.ridhvl2.HvlStatics.*;
 import com.osreboot.ridhvl2.template.HvlDisplayWindowed;
 import com.osreboot.ridhvl2.template.HvlTemplateI;
 
-/*
- * There are a number of templates to choose from. HvlTemplateI automatically
- * sets up the utilities necessary to make a game.
- */
+// [Selecting a Template]:
+// - There are a number of templates to choose from!
+// - HvlTemplateI automatically sets up the utilities for making games.
 public class Ridhvl2Test extends HvlTemplateI{
 
     public static void main(String[] args){
@@ -44,8 +43,8 @@ public class Ridhvl2Test extends HvlTemplateI{
     //---------------------------------------------------------------------//
   
     // [Initialize]: 
-    // Automatically called once on program startup. 
-    // Used to load resources and initialize variables.
+    // - Automatically called once on program startup. 
+    // - Used to load resources and initialize variables.
     
     @Override
     public void initialize(){
@@ -59,8 +58,8 @@ public class Ridhvl2Test extends HvlTemplateI{
     //---------------------------------------------------------------------//
 
     // [Update]:
-    // Automatically called once every frame update.
-    // Used to render graphics and update game logic.
+    // - Automatically called once every frame update.
+    // - Used to render graphics and update game logic.
     // "delta" is the time in seconds since the last update.
     
     @Override
