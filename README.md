@@ -9,7 +9,9 @@ Ridhvl2 depends on [Lwjgl 2](http://legacy.lwjgl.org/), [slick-util](http://slic
 
 Pull requests that provide *helpful* and *logical* additions will be accepted. Additionally, questions and ideas can be discussed in our [Discord server](https://discord.gg/E8GTCNH).
 
-## Minimum Viable Product
+---
+
+#### Minimum Viable Product
 
 This code is for demonstrational purposes only. Please see the [wiki](https://github.com/osreboot/Ridhvl2/wiki) for proper documentation.
 
@@ -72,3 +74,5 @@ public class Ridhvl2Test extends HvlTemplateI{
 
 }
 ```
+
+---
