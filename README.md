@@ -39,15 +39,22 @@ public class Ridhvl2Test extends HvlTemplateI{
         super(new HvlDisplayWindowed(144, 1280, 720, "Ridhvl2 Test!", false));
     }
   
+    // [Initialize] ->
+    // - Automatically called once on program startup.
+    // - Used to load resources and initialize variables.
     @Override
-    public void initialize(){ // automatically called once on program startup
+    public void initialize(){
         // [Resource Loading] ->
         // - Ridhvl2 defaults to searching in the "/res" folder. 
         // - hvlLoad(String) loads any type of resource (images, sounds, etc.).
         // - Resources are stored in the order that they were loaded.
-        hvlLoad("Ridhvl2.png");
+        hvlLoad("RIDHVL2.png");
     }
 
+    // [Update] ->
+    // - Automatically called once every frame update.
+    // - Used to render graphics and update game logic.
+    // - "delta" is the time in seconds since the last update.
     @Override
     public void update(float delta){ // automatically called once per frame
         // [Drawing a Quad] ->
