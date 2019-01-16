@@ -46,7 +46,7 @@ public class Ridhvl2Test extends HvlTemplateI{
     // Used to load resources and initialize variables.
     
     @Override
-    public void initialize(){ // automatically called once on program startup
+    public void initialize(){
         // [Resource Loading] ->
         // - Ridhvl2 defaults to searching in the "/res" folder. 
         // - hvlLoad(String) loads any type of resource (images, sounds, etc.).
@@ -62,7 +62,7 @@ public class Ridhvl2Test extends HvlTemplateI{
     // "delta" is the time in seconds since the last update.
     
     @Override
-    public void update(float delta){ // automatically called once per frame
+    public void update(float delta){
         // [Drawing a Quad] ->
         // - hvlDraw(polygon, paint) renders a polygon to the display.
         // - hvlQuad(...) creates a four-sided polygon (rectangle) described by screen coordinates.
