@@ -50,7 +50,7 @@ public class Ridhvl2Test extends HvlTemplateI{
         // [Resource Loading] ->
         // - Ridhvl2 defaults to searching in the "/res" folder. 
         // - hvlLoad(String) loads any type of resource (images, sounds, etc.).
-        // - Resources are stored in the order that they were loaded.
+        // - Resources are stored in the order that they are loaded.
         hvlLoad("RIDHVL2.png");
     }
 
