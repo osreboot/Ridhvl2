@@ -46,7 +46,7 @@ public class Ridhvl2Test extends HvlTemplateI{
     // Used to load resources and initialize variables.
     
     @Override
-    public void initialize(){
+    public void initialize(){ // automatically called once on program startup
         // [Resource Loading] ->
         // - Ridhvl2 defaults to searching in the "/res" folder. 
         // - hvlLoad(String) loads any type of resource (images, sounds, etc.).
