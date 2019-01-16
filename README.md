@@ -39,6 +39,8 @@ public class Ridhvl2Test extends HvlTemplateI{
         super(new HvlDisplayWindowed(144, 1280, 720, "Ridhvl2 Test!", false));
     }
   
+    //---------------------------------------------------------------------//
+  
     // [Initialize]: 
     // Automatically called once on program startup. 
     // Used to load resources and initialize variables.
@@ -51,6 +53,8 @@ public class Ridhvl2Test extends HvlTemplateI{
         // - Resources are stored in the order that they were loaded.
         hvlLoad("RIDHVL2.png");
     }
+
+    //---------------------------------------------------------------------//
 
     // [Update]:
     // Automatically called once every frame update.
