@@ -43,8 +43,7 @@ public class Ridhvl2Test extends HvlTemplateI{
     //---------------------------------------------------------------------//
   
     // [Initialize]: 
-    // - Automatically called once on program startup. 
-    // - Used to load resources and initialize variables.
+    // - Automatically called once on program startup.
     
     @Override
     public void initialize(){
@@ -59,7 +58,6 @@ public class Ridhvl2Test extends HvlTemplateI{
 
     // [Update]:
     // - Automatically called once every frame update.
-    // - Used to render graphics and update game logic.
     // "delta" is the time in seconds since the last update.
     
     @Override
