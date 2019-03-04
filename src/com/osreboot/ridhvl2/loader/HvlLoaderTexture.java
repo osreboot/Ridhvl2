@@ -22,8 +22,7 @@ public class HvlLoaderTexture extends HvlLoader<Texture>{
 	 * Constructs an HvlLoaderTexture instance with the default path being "res".
 	 */
 	public HvlLoaderTexture(){
-		super("res", HvlLoader.TYPELABEL_TEXTURE, "PNG", "JPG", "JPEG");
-		Log.setVerbose(false);
+		this("res");
 	}
 
 	/**
