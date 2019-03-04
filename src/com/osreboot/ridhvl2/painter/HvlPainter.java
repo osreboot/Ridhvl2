@@ -54,7 +54,7 @@ public final class HvlPainter{
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);//TODO usage flexibility
 		GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 	};
-	
+
 	@HvlChronologyExit(label = LABEL, chronology = CHRONO_EXIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
 		active = false;
@@ -95,8 +95,13 @@ public final class HvlPainter{
 			if(polygonArg instanceof HvlQuad) GL11.glBegin(GL11.GL_QUADS);
 			else GL11.glBegin(GL11.GL_TRIANGLE_FAN);
 			for(int i = 0; i < polygonArg.getVertices().length; i++){
-				if(paintArg.getMode() != HvlPaintMode.COLOR) 
-					GL11.glTexCoord2f(polygonArg.getUVs()[i].x, polygonArg.getUVs()[i].y);
+				if(paintArg.getMode() != HvlPaintMode.COLOR){
+					//TODO test non-square texture drawing again when UV support is added
+					if(paintArg.getMode() == HvlPaintMode.TEXTURE){
+						GL11.glTexCoord2f(polygonArg.getUVs()[i].x * paintArg.getValueTexture().getWidth(), 
+								polygonArg.getUVs()[i].y * paintArg.getValueTexture().getHeight());
+					}else GL11.glTexCoord2f(polygonArg.getUVs()[i].x, polygonArg.getUVs()[i].y);
+				}
 				GL11.glVertex2f(polygonArg.getVertices()[i].x, polygonArg.getVertices()[i].y);
 			}
 			GL11.glEnd();
@@ -130,7 +135,7 @@ public final class HvlPainter{
 			GL11.glPopMatrix();
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
-	
+
 	/**
 	 * Applies a rotation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
 	 * <code>yArg</code> being the origin of the rotation, and <code>degreesArg</code> being the magnitude of
