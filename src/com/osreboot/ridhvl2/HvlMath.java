@@ -23,7 +23,9 @@ public final class HvlMath {
 	 * <code>stepTowards(0, 5, 10)</code> returns <code>5</code> because 0 + 5 = 5<br>
 	 * <code>stepTowards(0, 5, -10)</code> returns <code>-5</code> because 0 - 5 = -5<br>
 	 * <code>stepTowards(0, 20, 10)</code> returns <code>10</code> because 0 + 20 > 10<br>
-	 * <code>stepTowards(0, 20, -10)</code> returns <code>-10</code> because 0 - 20 < -10
+	 * <code>stepTowards(0, 20, -10)</code> returns <code>-10</code> because 0 - 20 < -10<br>
+	 * <code>stepTowards(0, -1, 2)</code> returns <code>1</code> because 0 + 1 = 1<br>
+	 * <code>stepTowards(0, -1, -2)</code> returns <code>-1</code> because 0 - 1 = -1
 	 * 
 	 * <p>
 	 * 
@@ -38,9 +40,9 @@ public final class HvlMath {
 	 */
 	public static float stepTowards(float xArg, float modifierArg, float goalArg){
 		if(goalArg > xArg){
-			if(xArg + modifierArg < goalArg) return xArg + modifierArg; else return goalArg;
+			if(xArg + Math.abs(modifierArg) < goalArg) return xArg + Math.abs(modifierArg); else return goalArg;
 		}else{
-			if(xArg - modifierArg > goalArg) return xArg - modifierArg; else return goalArg;
+			if(xArg - Math.abs(modifierArg) > goalArg) return xArg - Math.abs(modifierArg); else return goalArg;
 		}
 	}
 	

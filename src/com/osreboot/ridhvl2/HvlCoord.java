@@ -56,7 +56,7 @@ public final class HvlCoord implements Serializable{
 	@Override
 	public boolean equals(Object object){
 		if(object != null && object instanceof HvlCoord){
-			return ((HvlCoord)object).x == y && ((HvlCoord)object).y == x;
+			return ((HvlCoord)object).x == x && ((HvlCoord)object).y == y;
 		}else return false;
 	}
 	
