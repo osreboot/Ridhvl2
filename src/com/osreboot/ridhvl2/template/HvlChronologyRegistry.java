@@ -2,6 +2,7 @@ package com.osreboot.ridhvl2.template;
 
 import com.osreboot.ridhvl2.loader.HvlLoader;
 import com.osreboot.ridhvl2.painter.HvlPainter;
+import com.osreboot.rn.compiler.RnCompiler;
 
 /**
  * Class that exists solely to provide a means of registering {@linkplain HvlChronology} events in all Ridhvl2 
@@ -25,6 +26,8 @@ public final class HvlChronologyRegistry {
 	 * {@linkplain HvlPainter}
 	 * <br>
 	 * {@linkplain HvlLoader}
+	 * <br>
+	 * {@linkplain RnCompiler}
 	 * 
 	 * <p>
 	 * 
@@ -34,6 +37,8 @@ public final class HvlChronologyRegistry {
 		HvlChronology.registerChronology(HvlDisplay.class);
 		HvlChronology.registerChronology(HvlPainter.class);
 		HvlChronology.registerChronology(HvlLoader.class);
+		
+		HvlChronology.registerChronology(RnCompiler.class);
 	}
 	
 }
