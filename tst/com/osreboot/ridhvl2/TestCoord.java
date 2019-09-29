@@ -68,7 +68,6 @@ public final class TestCoord {
 		}
 	}
 
-	@SuppressWarnings("unlikely-arg-type")
 	@Test
 	public void testEquals(){
 		for(float x = -ABSOLUTE_TEST_RANGE; x <= ABSOLUTE_TEST_RANGE; x++){

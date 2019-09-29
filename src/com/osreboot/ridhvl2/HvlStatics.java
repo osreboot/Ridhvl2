@@ -239,6 +239,21 @@ public final class HvlStatics {
 	}
 	
 	/**
+	 * Casts <code>textureArg</code> and <code>colorArg</code> to a {@linkplain HvlPaint} and then equivalently 
+	 * draws <code>polygonArg</code> with said HvlPaint. Uses the same drawing procedure from 
+	 * {@linkplain com.osreboot.ridhvl2.painter.HvlPainter HvlPainter}.
+	 * 
+	 * @param polygonArg the polygon to draw
+	 * @param textureArg the texture of the paint to use for <code>polygonArg</code>
+	 * @param colorArg the color of the paint to use for <code>polygonArg</code>
+	 */
+	public static void hvlDraw(HvlPolygon polygonArg, Texture textureArg, Color colorArg){
+		if(globalPaint == null) globalPaint = new HvlPaint(colorArg, textureArg);
+		else globalPaint.setValue(colorArg, textureArg);
+		HvlPainter.draw(polygonArg, globalPaint);
+	}
+	
+	/**
 	 * Applies a translation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
 	 * <code>yArg</code> being the offset of the translation. Uses the same translation procedure from 
 	 * {@linkplain com.osreboot.ridhvl2.painter.HvlPainter HvlPainter}.

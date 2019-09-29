@@ -71,7 +71,7 @@ public final class HvlPainter{
 	 * <p>
 	 * 
 	 * NOTE: this method should only be used by internal Ridhvl2 processes! If trying to draw inside a template,
-	 * use the methods in {@linkplain com.osreboot.ridhvl2.statics.HvlStaticPainter HvlStaticPainter}.
+	 * use the methods in {@linkplain com.osreboot.ridhvl2.HvlStatics HvlStatics}.
 	 * 
 	 * @param polygonArg the polygon to draw
 	 * @param paintArg the paint to use for <code>polygonArg</code>
@@ -81,23 +81,41 @@ public final class HvlPainter{
 	public static void draw(HvlPolygon polygonArg, HvlPaint paintArg){
 		if(active){
 			if(paintArg.getMode() == HvlPaintMode.COLOR){
+				
+				// Prepare for solid-color polygon rendering
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
 				GL11.glColor4f(paintArg.getValueColor().r, paintArg.getValueColor().g, paintArg.getValueColor().b, 
 						paintArg.getValueColor().a);
+				
 			}else if(paintArg.getMode() == HvlPaintMode.TEXTURE){
+				
+				// Prepare for textured polygon rendering with solid white texture alpha
 				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				Color.white.bind();//TODO usage flexibility
+				Color.white.bind();
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, paintArg.getValueTexture().getTextureID());
+				
+			}else if(paintArg.getMode() == HvlPaintMode.TEXTURE_COLORIZED){
+				
+				// Prepare for textured polygon rendering with colorized alpha
+				GL11.glEnable(GL11.GL_TEXTURE_2D);
+				GL11.glColor4f(paintArg.getValueColor().r, paintArg.getValueColor().g, paintArg.getValueColor().b, 
+						paintArg.getValueColor().a);
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, paintArg.getValueTexture().getTextureID());
+				
 			}else if(paintArg.getMode() == HvlPaintMode.RENDERFRAME){
+				
+				// Prepare for HvlRenderFrame rendering
 				//TODO
+				
 			}
 
+			// Render the polygon
 			if(polygonArg instanceof HvlQuad) GL11.glBegin(GL11.GL_QUADS);
 			else GL11.glBegin(GL11.GL_TRIANGLE_FAN);
 			for(int i = 0; i < polygonArg.getVertices().length; i++){
 				if(paintArg.getMode() != HvlPaintMode.COLOR){
 					//TODO test non-square texture drawing again when UV support is added
-					if(paintArg.getMode() == HvlPaintMode.TEXTURE){
+					if(paintArg.getMode() == HvlPaintMode.TEXTURE || paintArg.getMode() == HvlPaintMode.TEXTURE_COLORIZED){
 						GL11.glTexCoord2f(polygonArg.getUVs()[i].x * paintArg.getValueTexture().getWidth(), 
 								polygonArg.getUVs()[i].y * paintArg.getValueTexture().getHeight());
 					}else GL11.glTexCoord2f(polygonArg.getUVs()[i].x, polygonArg.getUVs()[i].y);
@@ -105,9 +123,12 @@ public final class HvlPainter{
 				GL11.glVertex2f(polygonArg.getVertices()[i].x, polygonArg.getVertices()[i].y);
 			}
 			GL11.glEnd();
-			if(paintArg.getMode() == HvlPaintMode.TEXTURE){
+			
+			// Cleanup after polygon rendering
+			if(paintArg.getMode() == HvlPaintMode.TEXTURE || paintArg.getMode() == HvlPaintMode.TEXTURE_COLORIZED){
 				GL11.glDisable(GL11.GL_TEXTURE_2D);
 			}
+			
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
 

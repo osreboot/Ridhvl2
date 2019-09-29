@@ -24,7 +24,7 @@ public class HvlPolygon {
 	 * @throws InvalidVertexCountException if either <code>vArgs</code> or <code>uvArgs</code> have less than three
 	 * elements, or are not equal in size
 	 */
-	protected HvlPolygon(HvlCoord[] vArgs, HvlCoord[] uvArgs){
+	public HvlPolygon(HvlCoord[] vArgs, HvlCoord[] uvArgs){
 		if(vArgs.length < 3 || uvArgs.length < 3 || vArgs.length != uvArgs.length) throw new InvalidVertexCountException();
 		vertices = vArgs;
 		uvs = uvArgs;
@@ -33,14 +33,14 @@ public class HvlPolygon {
 	/**
 	 * @return the HvlPolygon's vertex array
 	 */
-	protected HvlCoord[] getVertices(){
+	public HvlCoord[] getVertices(){
 		return vertices;
 	}
 	
 	/**
 	 * @return the HvlPolygon's UV array
 	 */
-	protected HvlCoord[] getUVs(){
+	public HvlCoord[] getUVs(){
 		return uvs;
 	}
 	
@@ -52,7 +52,7 @@ public class HvlPolygon {
 	 * @throws InvalidVertexCountException if <code>vArgs</code> is not equal in size to the HvlPolygon's existing
 	 * vertex array (see {@linkplain #getVertices()})
 	 */
-	protected void setVertices(HvlCoord[] vArgs){
+	public void setVertices(HvlCoord[] vArgs){
 		if(vArgs.length < 3 || vArgs.length != vertices.length) throw new InvalidVertexCountException();
 		vertices = vArgs;
 	}
@@ -68,7 +68,7 @@ public class HvlPolygon {
 	 * @throws InvalidVertexCountException if the sum of the supplied vertex arguments is not equal in size to the 
 	 * HvlPolygon's existing vertex array (see {@linkplain #getVertices()})
 	 */
-	protected void setVertices(HvlCoord v0Arg, HvlCoord v1Arg, HvlCoord v2Arg, HvlCoord... vArgs){
+	public void setVertices(HvlCoord v0Arg, HvlCoord v1Arg, HvlCoord v2Arg, HvlCoord... vArgs){
 		if(vArgs.length + 3 != vertices.length) throw new InvalidVertexCountException();
 		vertices[0] = v0Arg;
 		vertices[1] = v1Arg;
@@ -85,7 +85,7 @@ public class HvlPolygon {
 	 * @throws InvalidVertexCountException if <code>uvArgs</code> is not equal in size to the HvlPolygon's existing
 	 * UV array (see {@linkplain #getUVs()})
 	 */
-	protected void setUVs(HvlCoord[] uvArgs){
+	public void setUVs(HvlCoord[] uvArgs){
 		if(uvArgs.length < 3 || uvArgs.length != uvs.length) throw new InvalidVertexCountException();
 		uvs = uvArgs;
 	}
@@ -101,7 +101,7 @@ public class HvlPolygon {
 	 * @throws InvalidVertexCountException if the sum of the supplied UV arguments is not equal in size to the 
 	 * HvlPolygon's existing UV array (see {@linkplain #getUVs()})
 	 */
-	protected void setUVs(HvlCoord uv0Arg, HvlCoord uv1Arg, HvlCoord uv2Arg, HvlCoord... uvArgs){
+	public void setUVs(HvlCoord uv0Arg, HvlCoord uv1Arg, HvlCoord uv2Arg, HvlCoord... uvArgs){
 		if(uvArgs.length + 3 != uvs.length) throw new InvalidVertexCountException();
 		uvs[0] = uv0Arg;
 		uvs[1] = uv1Arg;
