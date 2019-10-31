@@ -1,8 +1,6 @@
 package com.osreboot.ridhvl2;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -10,11 +8,11 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Base64;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.osreboot.ridhvl2.HvlAction.A0r;
+import com.osreboot.ridhvl2.menu.HvlType;
 
 public interface HvlConfig {
 
@@ -79,33 +77,32 @@ public interface HvlConfig {
 
 	public static final HvlConfig PJSON = new HvlConfig(){
 		public static final String
-		MESSAGE_TRACE_START = "/*[",
-		MESSAGE_TRACE_END = " <- CLASS TRACE, DO NOT MODIFY]*/";
+		MESSAGE_TRACE_START = "/*[CLASS TRACE, DO NOT MODIFY -> ",
+		MESSAGE_TRACE_END = "]*/";
 
 		@Override
 		public <T> T load(String pathArg){
 			return load(pathArg, () -> {throw new ConfigMissingException(this, pathArg);});
 		}
 		
-		@SuppressWarnings("unchecked")
 		@Override
 		public <T> T load(String pathArg, A0r<T> notFoundArg){
 			if(exists(pathArg)){
 				try{
 					BufferedReader reader = new BufferedReader(new FileReader(pathArg));
-					String input = reader.readLine();
-					input = input.substring(MESSAGE_TRACE_START.length(), input.length() - MESSAGE_TRACE_END.length());
-					String gson = "";
+					String typeName = reader.readLine();
+					typeName = typeName.substring(MESSAGE_TRACE_START.length(), typeName.length() - MESSAGE_TRACE_END.length());
+					String rawGson = "";
 					String line = "";
 					while((line = reader.readLine()) != null)
-						gson += line;
+						rawGson += line;
 					reader.close();
 
-					ObjectInputStream objectInputStream = new ObjectInputStream(new ByteArrayInputStream(Base64.getDecoder().decode(input)));
-					Class<T> c = (Class<T>)objectInputStream.readObject();
-					objectInputStream.close();
-
-					return new Gson().<T>fromJson(gson, c);//TODO catch this potential JsonSyntaxException
+					Class<T> c = HvlType.getCachedForName(typeName);
+					
+					Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+					
+					return gson.<T>fromJson(rawGson, c);//TODO catch this potential JsonSyntaxException
 				}catch(Exception e){
 					e.printStackTrace();//TODO allow this exception to pass so user can catch it
 					return null;
@@ -116,16 +113,14 @@ public interface HvlConfig {
 		@Override
 		public <T> boolean save(T objectArg, String pathArg){
 			try{
-				ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-				ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);
-				objectOutputStream.writeObject(objectArg.getClass());
-				objectOutputStream.close();
-
 				FileWriter writer = new FileWriter(pathArg);
 				writer.write(MESSAGE_TRACE_START);
-				writer.write(Base64.getEncoder().encodeToString(byteArrayOutputStream.toByteArray()));
+				writer.write(objectArg.getClass().getName());
 				writer.write(MESSAGE_TRACE_END + "\n");
-				new GsonBuilder().setPrettyPrinting().create().toJson(objectArg, writer);
+				
+				Gson gson = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
+				gson.toJson(objectArg, writer);
+				
 				writer.flush();
 				writer.close();
 				return true;

@@ -102,6 +102,52 @@ public final class HvlStatics {
 		}
 		return globalQuad;
 	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
+	 * quad (specified by <code>x</code> and <code>y</code>) being the upper-left corner of the quad. See 
+	 * {@linkplain #hvlQuadc(float, float, float, float)} for other HvlQuad options.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlQuad instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param x the x-origin of the quad
+	 * @param y the y-origin of the quad
+	 * @param xl the x-size of the quad
+	 * @param yl the y-size of the quad
+	 * @param u0 the x-coordinate of the upper-left texture vertex
+	 * @param v0 the y-coordinate of the upper-left texture vertex
+	 * @param u1 the x-coordinate of the bottom-right texture vertex
+	 * @param v1 the y-coordinate of the bottom-right texture vertex
+	 * @return an instance of HvlQuad with coordinates set to the specified values
+	 */
+	public static HvlQuad hvlQuad(float x, float y, float xl, float yl, float u0, float v0, float u1, float v1){
+		if(globalQuad == null){
+			globalQuad = new HvlQuad(
+					new HvlCoord(x, y), new HvlCoord(x + xl, y), 
+					new HvlCoord(x + xl, y + yl), new HvlCoord(x, y + yl),
+					new HvlCoord(u0, v0), new HvlCoord(u1, v0), 
+					new HvlCoord(u1, v1), new HvlCoord(u0, v1));
+		}else{
+			globalQuad.getVertices()[0].set(x, y);
+			globalQuad.getVertices()[1].set(x + xl, y);
+			globalQuad.getVertices()[2].set(x + xl, y + yl);
+			globalQuad.getVertices()[3].set(x, y + yl);
+			globalQuad.getUVs()[0].set(u0, v0);
+			globalQuad.getUVs()[1].set(u1, v0);
+			globalQuad.getUVs()[2].set(u1, v1);
+			globalQuad.getUVs()[3].set(u0, v1);
+		}
+		return globalQuad;
+	}
 
 	//========================/\/\/\    END POLYGON STATICS    /\/\/\========================//
 
