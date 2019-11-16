@@ -17,77 +17,56 @@ public final class HvlType {
 	LAUNCH_CODE = 4,
 	LAUNCH_CODE_RAW = 16;//2^4
 
+	private static boolean active = false;
 	public static boolean debug = false;
 
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
+		active = HvlChronology.verifyLaunchCode(LAUNCH_CODE);
 		HvlType.debug = debug;
-		
+
 		loadedClasses = new HashMap<>();
-		registerAutomaticCasts();
 	};
 
 	@HvlChronologyExit(label = LABEL, chronology = CHRONO_EXIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
-		clearAutomaticCasts();
 		clearForNameCache();
+		active = false;
 	};
-	
+
 	private HvlType(){}
-	
+
 	private static HashMap<String, Class<?>> loadedClasses;
-	
-	private static HashMap<String, HvlAction.A1r<Object, Object>> automaticCasts;
 
 	@SuppressWarnings("unchecked")
 	public static <T> Class<T> getCachedForName(String typeNameArg){
-		try{
-			if(loadedClasses.containsKey(typeNameArg))
-				return (Class<T>)loadedClasses.get(typeNameArg);
-			else{
-				Class<T> loadedClass = (Class<T>)Class.forName(typeNameArg);
-				loadedClasses.put(typeNameArg, loadedClass);
-				return loadedClass;
+		if(active){
+			try{
+				if(loadedClasses.containsKey(typeNameArg))
+					return (Class<T>)loadedClasses.get(typeNameArg);
+				else{
+					Class<T> loadedClass = (Class<T>)Class.forName(typeNameArg);
+					loadedClasses.put(typeNameArg, loadedClass);
+					return loadedClass;
+				}
+			}catch(ClassNotFoundException exception){
+				throw new RuntimeException();//TODO formalize this exception
 			}
-		}catch(ClassNotFoundException exception){
-			throw new RuntimeException();//TODO formalize this exception
-		}
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
 
 	public static void cacheForName(Class<?> typeArg){
-		if(!loadedClasses.containsKey(typeArg.getName()))
-			loadedClasses.put(typeArg.getName(), typeArg);
+		if(active){
+			if(!loadedClasses.containsKey(typeArg.getName()))
+				loadedClasses.put(typeArg.getName(), typeArg);
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
-	
+
 	private static void clearForNameCache(){
-		HvlLogger.println(debug, "Clearing class name cache.");
-		loadedClasses.clear();
+		if(active){
+			HvlLogger.println(debug, "Clearing class name cache.");
+			loadedClasses.clear();
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
-	
-	private static void registerAutomaticCasts(){
-		HvlLogger.println(debug, "Populating re-cast map.");
-		
-		automaticCasts = new HashMap<>();
-		automaticCasts.put("java.lang.Float", (objectArg) -> {
-			if(objectArg instanceof Double)
-				return ((Double)objectArg).floatValue();
-			else return (float)objectArg;
-		});
-	}
-	
-	protected static boolean hasRecast(String typeNameArg){
-		return automaticCasts.containsKey(typeNameArg);
-	}
-	
-	protected static Object recast(String typeNameArg, Object objectArg){
-		if(automaticCasts.containsKey(typeNameArg))
-			return automaticCasts.get(typeNameArg).run(objectArg);
-		else throw new RuntimeException();//TODO formalize this exception
-	}
-	
-	private static void clearAutomaticCasts(){
-		HvlLogger.println(debug, "Clearing re-cast map!");
-		automaticCasts.clear();
-	}
-	
+
 }

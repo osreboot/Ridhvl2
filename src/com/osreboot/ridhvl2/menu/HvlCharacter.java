@@ -9,6 +9,10 @@ public class HvlCharacter implements Serializable{
 	
 	private HvlCoord uv0, uv1;
 	
+	// Constructor for Jackson deserialization
+	@SuppressWarnings("unused")
+	private HvlCharacter(){}
+	
 	public HvlCharacter(HvlCoord uv0Arg, HvlCoord uv1Arg){
 		uv0 = uv0Arg;
 		uv1 = uv1Arg;

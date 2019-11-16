@@ -9,8 +9,12 @@ import java.io.FileWriter;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.osreboot.ridhvl2.HvlAction.A0r;
 import com.osreboot.ridhvl2.menu.HvlType;
 
@@ -92,17 +96,19 @@ public interface HvlConfig {
 					BufferedReader reader = new BufferedReader(new FileReader(pathArg));
 					String typeName = reader.readLine();
 					typeName = typeName.substring(MESSAGE_TRACE_START.length(), typeName.length() - MESSAGE_TRACE_END.length());
-					String rawGson = "";
+					String rawJson = "";
 					String line = "";
 					while((line = reader.readLine()) != null)
-						rawGson += line;
+						rawJson += line;
 					reader.close();
 
 					Class<T> c = HvlType.getCachedForName(typeName);
 					
-					Gson gson = new GsonBuilder().enableComplexMapKeySerialization().create();
+					ObjectMapper objectMapper = new ObjectMapper();
+					objectMapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+					objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
 					
-					return gson.<T>fromJson(rawGson, c);//TODO catch this potential JsonSyntaxException
+					return objectMapper.<T>readValue(rawJson, c);//TODO catch this potential JsonSyntaxException
 				}catch(Exception e){
 					e.printStackTrace();//TODO allow this exception to pass so user can catch it
 					return null;
@@ -118,11 +124,15 @@ public interface HvlConfig {
 				writer.write(objectArg.getClass().getName());
 				writer.write(MESSAGE_TRACE_END + "\n");
 				
-				Gson gson = new GsonBuilder().setPrettyPrinting().enableComplexMapKeySerialization().create();
-				gson.toJson(objectArg, writer);
+				ObjectMapper objectMapper = new ObjectMapper();
+				objectMapper.setVisibility(PropertyAccessor.ALL, Visibility.NONE);
+				objectMapper.setVisibility(PropertyAccessor.FIELD, Visibility.ANY);
+				objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 				
-				writer.flush();
-				writer.close();
+				DefaultPrettyPrinter prettyPrinter = new DefaultPrettyPrinter();
+				prettyPrinter.indentArraysWith(DefaultIndenter.SYSTEM_LINEFEED_INSTANCE);
+				
+				objectMapper.writer(prettyPrinter).writeValue(writer, objectArg);
 				return true;
 			}catch(Exception e){
 				e.printStackTrace();//TODO allow this exception to pass so user can catch it

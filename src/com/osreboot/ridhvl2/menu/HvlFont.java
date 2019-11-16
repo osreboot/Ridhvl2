@@ -9,7 +9,7 @@ import java.util.Set;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
-public class HvlFont extends HvlTaggable{
+public class HvlFont extends HvlTaggableOpen{
 	private static final long serialVersionUID = 7326153102489408036L;
 
 	public static final String FILE_EXTENSION = "hvlft"; 
@@ -24,6 +24,9 @@ public class HvlFont extends HvlTaggable{
 
 	private transient Texture loadedTexture;
 
+	// Constructor for Jackson derialization
+	private HvlFont(){}
+	
 	public HvlFont(HashMap<Character, HvlCharacter> charactersArg, Texture loadedTextureArg, String textureArg){
 		super(TAG_TEXTURE, TAG_REGEX_NEWLINE, TAG_SCALE, TAG_X_SPACING, TAG_Y_SPACING);
 		characters = charactersArg;
