@@ -24,6 +24,7 @@ import com.osreboot.ridhvl2.HvlLogger;
 public class HvlDisplayFullscreenAuto extends HvlDisplay{
 
 	private HvlDisplayFullscreen autoDisplay;
+	private HvlEnvironment environment;
 
 	/**
 	 * Constructs an HvlDisplayFullscreenAuto. Note that the display is not selected until {@linkplain #apply()} is
@@ -59,9 +60,7 @@ public class HvlDisplayFullscreenAuto extends HvlDisplay{
 	}
 
 	@Override
-	protected void preUpdate(float delta){
-
-	}
+	protected void preUpdate(float delta){}
 
 	@Override
 	protected void postUpdate(float delta){
@@ -88,6 +87,15 @@ public class HvlDisplayFullscreenAuto extends HvlDisplay{
 	public void setResizable(boolean resizableArg){
 		super.setResizable(false);
 		HvlLogger.println("Resizability cannot be modified with a fullscreen display!");
+	}
+	
+	@Override
+	public HvlEnvironment getEnvironment(){
+		if(environment == null)
+			environment = new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight());
+		else environment.set(0, 0, Display.getWidth(), Display.getHeight());
+		
+		return environment;
 	}
 
 }

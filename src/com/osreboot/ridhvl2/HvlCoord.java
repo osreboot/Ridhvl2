@@ -1,6 +1,7 @@
 package com.osreboot.ridhvl2;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A single 2D coordinate represented by an x and y floating point value.
@@ -58,6 +59,11 @@ public final class HvlCoord implements Serializable{
 		if(object != null && object instanceof HvlCoord){
 			return ((HvlCoord)object).x == x && ((HvlCoord)object).y == y;
 		}else return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hash(x, y);
 	}
 	
 	@Override

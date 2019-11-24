@@ -28,6 +28,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	private DisplayMode initialMode;
 	private String initialTitle;
 	private boolean initialUndecorated;
+	private HvlEnvironment environment;
 	
 	/**
 	 * Constructor that defaults to a decorated window. Use 
@@ -97,8 +98,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	}
 
 	@Override
-	protected void preUpdate(float delta){
-	}
+	protected void preUpdate(float delta){}
 
 	@Override
 	protected void postUpdate(float delta){
@@ -132,6 +132,15 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	public void setResizable(boolean resizableArg){
 		super.setResizable(resizableArg);
 		Display.setResizable(resizableArg);
+	}
+	
+	@Override
+	public HvlEnvironment getEnvironment(){
+		if(environment == null)
+			environment = new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight());
+		else environment.set(0, 0, Display.getWidth(), Display.getHeight());
+		
+		return environment;
 	}
 	
 }

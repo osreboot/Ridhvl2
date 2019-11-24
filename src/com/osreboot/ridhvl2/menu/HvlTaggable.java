@@ -2,6 +2,7 @@ package com.osreboot.ridhvl2.menu;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
@@ -20,6 +21,12 @@ import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 public abstract class HvlTaggable implements Serializable{
 	private static final long serialVersionUID = -7986790903295832118L;
 
+	protected static HvlTagTransient<?>[] accumulate(HvlTagTransient<?>[] tags0Arg, HvlTagTransient<?>... tags1Arg){
+		HvlTagTransient<?>[] output = Arrays.copyOf(tags0Arg, tags0Arg.length + tags1Arg.length);
+		System.arraycopy(tags1Arg, 0, output, tags0Arg.length, tags1Arg.length);
+		return output;
+	}
+	
 	@JsonSerialize(using = TagMapSerializer.class)
 	@JsonDeserialize(using = TagMapDeserializer.class)
 	private HashMap<HvlTag<?>, Object> properties;

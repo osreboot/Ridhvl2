@@ -8,6 +8,7 @@ import com.osreboot.ridhvl2.painter.HvlPaint;
 import com.osreboot.ridhvl2.painter.HvlPainter;
 import com.osreboot.ridhvl2.painter.HvlPolygon;
 import com.osreboot.ridhvl2.painter.HvlQuad;
+import com.osreboot.ridhvl2.template.HvlEnvironment;
 
 /**
  * A collection of static methods that grant easy access to the most common Ridhvl2 operations. This class
@@ -411,4 +412,19 @@ public final class HvlStatics {
 
 	//========================/\/\/\    END LOADER STATICS     /\/\/\========================//
 
+	//========================\/\/\/    BEGIN MENU STATICS     \/\/\/========================//
+	
+	private static HvlEnvironment globalEnvironment;
+	
+	public static HvlEnvironment hvlEnvironment(float xArg, float yArg, float widthArg, float heightArg){
+		if(globalEnvironment == null) globalEnvironment = new HvlEnvironment();
+		globalEnvironment.setAndUnlockX(xArg);
+		globalEnvironment.setAndUnlockY(yArg);
+		globalEnvironment.setAndUnlockWidth(widthArg);
+		globalEnvironment.setAndUnlockHeight(heightArg);
+		return globalEnvironment;
+	}
+	
+	//========================/\/\/\     END MENU STATICS      /\/\/\========================//
+	
 }

@@ -23,6 +23,7 @@ import com.osreboot.ridhvl2.HvlLogger;
 public class HvlDisplayFullscreen extends HvlDisplay{
 
 	private DisplayMode mode;
+	private HvlEnvironment environment;
 
 	HvlDisplayFullscreen(DisplayMode modeArg, boolean vsyncArg){
 		super(modeArg.getFrequency(), vsyncArg, false);
@@ -58,9 +59,7 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 	}
 
 	@Override
-	protected void preUpdate(float delta){
-
-	}
+	protected void preUpdate(float delta){}
 
 	@Override
 	protected void postUpdate(float delta){
@@ -87,6 +86,15 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 	public void setResizable(boolean resizableArg){
 		super.setResizable(false);
 		HvlLogger.println("Resizability cannot be modified with a fullscreen display!");
+	}
+
+	@Override
+	public HvlEnvironment getEnvironment(){
+		if(environment == null)
+			environment = new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight());
+		else environment.set(0, 0, Display.getWidth(), Display.getHeight());
+		
+		return environment;
 	}
 
 }
