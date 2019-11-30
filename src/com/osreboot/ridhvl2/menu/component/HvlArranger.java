@@ -45,10 +45,8 @@ public class HvlArranger extends HvlContainer{
 	}
 
 	public HvlArranger(boolean horizontal){
-		super(TAG_HORIZONTAL, TAG_ALIGN);
-		set(TAG_UPDATE, DEFAULT_UPDATE);
+		this();
 		set(TAG_HORIZONTAL, horizontal);
-		set(TAG_ALIGN, 0f);
 	}
 
 }
