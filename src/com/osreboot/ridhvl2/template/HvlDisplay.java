@@ -10,6 +10,7 @@ import org.lwjgl.opengl.DisplayMode;
 
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
+import com.osreboot.ridhvl2.menu.HvlEnvironment;
 
 /**
  * An instantiable wrapper that serves as a combination of LWJGL's {@linkplain Display} and {@linkplain DisplayMode}

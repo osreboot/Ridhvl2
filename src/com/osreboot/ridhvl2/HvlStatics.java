@@ -4,11 +4,11 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
 import com.osreboot.ridhvl2.loader.HvlLoader;
+import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.painter.HvlPaint;
 import com.osreboot.ridhvl2.painter.HvlPainter;
 import com.osreboot.ridhvl2.painter.HvlPolygon;
 import com.osreboot.ridhvl2.painter.HvlQuad;
-import com.osreboot.ridhvl2.template.HvlEnvironment;
 
 /**
  * A collection of static methods that grant easy access to the most common Ridhvl2 operations. This class
@@ -19,7 +19,7 @@ import com.osreboot.ridhvl2.template.HvlEnvironment;
  *
  */
 public final class HvlStatics {
-	
+
 	private HvlStatics(){}
 
 	//========================\/\/\/   BEGIN POLYGON STATICS   \/\/\/========================//
@@ -103,7 +103,7 @@ public final class HvlStatics {
 		}
 		return globalQuad;
 	}
-	
+
 	/**
 	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
 	 * quad (specified by <code>x</code> and <code>y</code>) being the upper-left corner of the quad. See 
@@ -284,7 +284,7 @@ public final class HvlStatics {
 		else globalPaint.setValue(textureArg);
 		HvlPainter.draw(polygonArg, globalPaint);
 	}
-	
+
 	/**
 	 * Casts <code>textureArg</code> and <code>colorArg</code> to a {@linkplain HvlPaint} and then equivalently 
 	 * draws <code>polygonArg</code> with said HvlPaint. Uses the same drawing procedure from 
@@ -299,7 +299,7 @@ public final class HvlStatics {
 		else globalPaint.setValue(colorArg, textureArg);
 		HvlPainter.draw(polygonArg, globalPaint);
 	}
-	
+
 	/**
 	 * Applies a translation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
 	 * <code>yArg</code> being the offset of the translation. Uses the same translation procedure from 
@@ -312,7 +312,7 @@ public final class HvlStatics {
 	public static void hvlTranslate(float xArg, float yArg, HvlAction.A0 actionArg){
 		HvlPainter.translate(xArg, yArg, actionArg);
 	}
-	
+
 	/**
 	 * Applies a rotation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
 	 * <code>yArg</code> being the origin of the rotation, and <code>degreesArg</code> being the magnitude of
@@ -413,18 +413,21 @@ public final class HvlStatics {
 	//========================/\/\/\    END LOADER STATICS     /\/\/\========================//
 
 	//========================\/\/\/    BEGIN MENU STATICS     \/\/\/========================//
-	
+
 	private static HvlEnvironment globalEnvironment;
-	
+
 	public static HvlEnvironment hvlEnvironment(float xArg, float yArg, float widthArg, float heightArg){
-		if(globalEnvironment == null) globalEnvironment = new HvlEnvironment();
-		globalEnvironment.setAndUnlockX(xArg);
-		globalEnvironment.setAndUnlockY(yArg);
-		globalEnvironment.setAndUnlockWidth(widthArg);
-		globalEnvironment.setAndUnlockHeight(heightArg);
+		if(globalEnvironment == null)
+			globalEnvironment = new HvlEnvironment(xArg, yArg, widthArg, heightArg);
+		else{
+			globalEnvironment.setAndUnlockX(xArg);
+			globalEnvironment.setAndUnlockY(yArg);
+			globalEnvironment.setAndUnlockWidth(widthArg);
+			globalEnvironment.setAndUnlockHeight(heightArg);
+		}
 		return globalEnvironment;
 	}
-	
+
 	//========================/\/\/\     END MENU STATICS      /\/\/\========================//
-	
+
 }

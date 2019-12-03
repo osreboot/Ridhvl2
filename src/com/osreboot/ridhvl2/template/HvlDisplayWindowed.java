@@ -1,11 +1,14 @@
 package com.osreboot.ridhvl2.template;
 
+import static com.osreboot.ridhvl2.HvlStatics.hvlEnvironment;
+
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import com.osreboot.ridhvl2.HvlLogger;
+import com.osreboot.ridhvl2.menu.HvlEnvironment;
 
 /**
  * An implementation of {@linkplain HvlDisplay} that handles a windowed LWJGL 
@@ -138,7 +141,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	public HvlEnvironment getEnvironment(){
 		if(environment == null)
 			environment = new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight());
-		else environment.set(0, 0, Display.getWidth(), Display.getHeight());
+		else environment.copyFromAndUnlock(hvlEnvironment(0, 0, Display.getWidth(), Display.getHeight()));
 		
 		return environment;
 	}

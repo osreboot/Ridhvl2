@@ -4,9 +4,9 @@ import java.util.ArrayList;
 
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.menu.HvlComponent;
+import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
-import com.osreboot.ridhvl2.template.HvlEnvironment;
 
 public abstract class HvlContainer extends HvlComponent{
 	private static final long serialVersionUID = -694629727484246566L;

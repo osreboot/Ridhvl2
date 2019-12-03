@@ -2,7 +2,6 @@ package com.osreboot.ridhvl2.menu;
 
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.template.HvlDisplay;
-import com.osreboot.ridhvl2.template.HvlEnvironment;
 
 public abstract class HvlComponent extends HvlTaggableOpen{
 	private static final long serialVersionUID = 906931523772672751L;
@@ -27,11 +26,15 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 
 	public final void update(float delta){
 		environment.copyFrom(HvlDisplay.getDisplay().getEnvironment());
+		environment.setRestricted(true);
+		
 		get(TAG_UPDATE).run(delta, environment, this);
 	}
 
 	public final void update(float delta, HvlEnvironment environmentArg){
 		environment.copyFrom(environmentArg);
+		environment.setRestricted(true);
+		
 		get(TAG_UPDATE).run(delta, environment, this);
 	}
 

@@ -3,6 +3,7 @@ package com.osreboot.ridhvl2.template;
 import org.lwjgl.opengl.Display;
 
 import com.osreboot.ridhvl2.HvlLogger;
+import com.osreboot.ridhvl2.menu.HvlEnvironment;
 
 /**
  * An implementation of {@linkplain HvlDisplay} that automatically selects and applies the best
@@ -24,7 +25,6 @@ import com.osreboot.ridhvl2.HvlLogger;
 public class HvlDisplayFullscreenAuto extends HvlDisplay{
 
 	private HvlDisplayFullscreen autoDisplay;
-	private HvlEnvironment environment;
 
 	/**
 	 * Constructs an HvlDisplayFullscreenAuto. Note that the display is not selected until {@linkplain #apply()} is
@@ -91,11 +91,7 @@ public class HvlDisplayFullscreenAuto extends HvlDisplay{
 	
 	@Override
 	public HvlEnvironment getEnvironment(){
-		if(environment == null)
-			environment = new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight());
-		else environment.set(0, 0, Display.getWidth(), Display.getHeight());
-		
-		return environment;
+		return autoDisplay.getEnvironment();
 	}
 
 }
