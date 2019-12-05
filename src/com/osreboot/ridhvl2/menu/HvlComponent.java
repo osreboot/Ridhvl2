@@ -24,17 +24,21 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 		environment = new HvlEnvironment();
 	}
 
+	final void deepCopyEnvironmentFrom(HvlComponent defaultArg){
+		environment.deepCopyFrom(defaultArg.environment);
+	}
+
 	public final void update(float delta){
 		environment.copyFrom(HvlDisplay.getDisplay().getEnvironment());
 		environment.setRestricted(true);
-		
+
 		get(TAG_UPDATE).run(delta, environment, this);
 	}
 
 	public final void update(float delta, HvlEnvironment environmentArg){
 		environment.copyFrom(environmentArg);
 		environment.setRestricted(true);
-		
+
 		get(TAG_UPDATE).run(delta, environment, this);
 	}
 
@@ -52,7 +56,23 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 		draw(delta);
 	}
 
-	public HvlEnvironment getEnvironment(){
+	public final HvlComponent unlockedWidth(float widthArg){
+		environment.setAndUnlockWidth(widthArg);
+		return this;
+	}
+	
+	public final HvlComponent unlockedHeight(float heightArg){
+		environment.setAndUnlockHeight(heightArg);
+		return this;
+	}
+	
+	public final HvlComponent unlockedSize(float widthArg, float heightArg){
+		environment.setAndUnlockWidth(widthArg);
+		environment.setAndUnlockHeight(heightArg);
+		return this;
+	}
+
+	public final HvlEnvironment getEnvironment(){
 		return environment;
 	}
 

@@ -5,12 +5,17 @@ import static com.osreboot.ridhvl2.HvlStatics.hvlEnvironment;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlMath;
 import com.osreboot.ridhvl2.menu.HvlComponent;
+import com.osreboot.ridhvl2.menu.HvlDefault;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
 
 public class HvlArranger extends HvlContainer{
 	private static final long serialVersionUID = 3570176741498793473L;
+
+	public static final HvlArranger fromDefault(){
+		return HvlDefault.applyIfExists(HvlArranger.class, new HvlArranger());
+	}
 
 	public static final HvlTag<Boolean> TAG_HORIZONTAL = new HvlTag<>(Boolean.class, "horizontal");
 	public static final HvlTag<Float> TAG_ALIGN_X = new HvlTag<>(Float.class, "align_x");
@@ -67,8 +72,17 @@ public class HvlArranger extends HvlContainer{
 		set(TAG_ALIGN_Y, 0f);
 	}
 
+	public HvlArranger(boolean horizontalArg, float xAlignArg, float yAlignArg){
+		this();
+		HvlDefault.applyIfExists(HvlArranger.class, this);
+		set(TAG_HORIZONTAL, horizontalArg);
+		set(TAG_ALIGN_X, xAlignArg);
+		set(TAG_ALIGN_Y, yAlignArg);
+	}
+	
 	public HvlArranger(boolean horizontalArg){
 		this();
+		HvlDefault.applyIfExists(HvlArranger.class, this);
 		set(TAG_HORIZONTAL, horizontalArg);
 	}
 

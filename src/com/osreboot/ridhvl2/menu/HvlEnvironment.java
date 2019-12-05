@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.template.HvlChronology;
+import com.osreboot.ridhvl2.template.HvlChronologyExit;
 import com.osreboot.ridhvl2.template.HvlChronologyInitialize;
 import com.osreboot.ridhvl2.template.HvlChronologyUpdate;
 import com.osreboot.ridhvl2.template.HvlDisplay;
@@ -15,6 +16,7 @@ public final class HvlEnvironment{
 	public static final int 
 	CHRONO_INIT = HvlChronology.CHRONOLOGY_INIT_EARLY + HvlChronology.CHRONOLOGY_INIT_INTERVAL,
 	CHRONO_POST_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_POST_MIDDLE - HvlChronology.CHRONOLOGY_UPDATE_INTERVAL,
+	CHRONO_EXIT = HvlChronology.CHRONOLOGY_EXIT_MIDDLE + (2 * HvlChronology.CHRONOLOGY_EXIT_INTERVAL),
 	LAUNCH_CODE = 5,
 	LAUNCH_CODE_RAW = 32;//2^5
 
@@ -33,6 +35,12 @@ public final class HvlEnvironment{
 	@HvlChronologyUpdate(label = LABEL, chronology = CHRONO_POST_UPDATE, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A2<Boolean, Float> ACTION_POST_UPDATE = (debug, delta) -> {
 		unrestrictAllEnvironments();
+	};
+
+	@HvlChronologyExit(label = LABEL, chronology = CHRONO_EXIT, launchCode = LAUNCH_CODE)
+	public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
+		unrestrictAllEnvironments();
+		active = false;
 	};
 
 	private static ArrayList<HvlEnvironment> restrictedEnvironments;
@@ -65,7 +73,18 @@ public final class HvlEnvironment{
 		setLock(false, false, false, false);
 	}
 
-	protected void copyFrom(HvlEnvironment environment){
+	void deepCopyFrom(HvlEnvironment environment){
+		x = environment.x;
+		y = environment.y;
+		width = environment.width;
+		height = environment.height;
+		xLocked = environment.xLocked;
+		yLocked = environment.yLocked;
+		widthLocked = environment.widthLocked;
+		heightLocked = environment.heightLocked;
+	}
+	
+	void copyFrom(HvlEnvironment environment){
 		if(xLocked) x = environment.x;
 		if(yLocked) y = environment.y;
 		if(widthLocked) width = environment.width;
