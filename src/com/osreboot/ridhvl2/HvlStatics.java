@@ -424,6 +424,20 @@ public final class HvlStatics {
 			globalEnvironment.setAndUnlockY(yArg);
 			globalEnvironment.setAndUnlockWidth(widthArg);
 			globalEnvironment.setAndUnlockHeight(heightArg);
+			globalEnvironment.setAndUnlockBlocked(false);
+		}
+		return globalEnvironment;
+	}
+	
+	public static HvlEnvironment hvlEnvironment(float xArg, float yArg, float widthArg, float heightArg, boolean blockedArg){
+		if(globalEnvironment == null)
+			globalEnvironment = new HvlEnvironment(xArg, yArg, widthArg, heightArg, blockedArg);
+		else{
+			globalEnvironment.setAndUnlockX(xArg);
+			globalEnvironment.setAndUnlockY(yArg);
+			globalEnvironment.setAndUnlockWidth(widthArg);
+			globalEnvironment.setAndUnlockHeight(heightArg);
+			globalEnvironment.setAndUnlockBlocked(blockedArg);
 		}
 		return globalEnvironment;
 	}

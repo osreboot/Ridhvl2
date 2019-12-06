@@ -3,6 +3,7 @@ package com.osreboot.ridhvl2.template;
 import com.osreboot.ridhvl2.loader.HvlLoader;
 import com.osreboot.ridhvl2.menu.HvlDefault;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
+import com.osreboot.ridhvl2.menu.HvlMenu;
 import com.osreboot.ridhvl2.menu.HvlType;
 import com.osreboot.ridhvl2.painter.HvlPainter;
 
@@ -34,6 +35,8 @@ public final class HvlChronologyRegistry {
 	 * {@linkplain HvlEnvironment}
 	 * <br>
 	 * {@linkplain HvlDefault}
+	 * <br>
+	 * {@linkplain HvlMenu}
 	 * 
 	 * <p>
 	 * 
@@ -46,6 +49,7 @@ public final class HvlChronologyRegistry {
 		HvlChronology.registerChronology(HvlType.class);
 		HvlChronology.registerChronology(HvlEnvironment.class);
 		HvlChronology.registerChronology(HvlDefault.class);
+		HvlChronology.registerChronology(HvlMenu.class);
 	}
 	
 }

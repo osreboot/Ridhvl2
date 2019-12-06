@@ -36,19 +36,21 @@ public final class HvlDefault{
 	};
 
 	private HvlDefault(){}
-	
+
 	private static HashMap<String, HvlTaggableOpen> defaults;
 
 	public static void setDefaults(HashMap<String, HvlTaggableOpen> defaultsArg){
-		defaults = defaultsArg;
+		if(active){
+			defaults = defaultsArg;
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
-	
+
 	public static HashMap<String, HvlTaggableOpen> getDefaults(){
 		if(active){
 			return defaults;
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
-	
+
 	public static <T extends HvlTaggableOpen> void put(String typeArg, T taggableArg){
 		if(active){
 			defaults.put(typeArg, taggableArg);
@@ -59,7 +61,7 @@ public final class HvlDefault{
 	public static <T extends HvlTaggableOpen> void put(T taggableArg){
 		put(taggableArg.getClass().getName(), taggableArg);
 	}
-	
+
 	public static <T extends HvlTaggableOpen> void put(Class<T> typeArg, T taggableArg){
 		put(typeArg.getName(), taggableArg);
 	}
@@ -89,7 +91,7 @@ public final class HvlDefault{
 				if(taggableArg instanceof HvlComponent){
 					((HvlComponent)taggableArg).deepCopyEnvironmentFrom((HvlComponent)defaultTaggable);
 				}
-				
+
 				HvlLogger.println(debug, "Applied default of type \"" + typeArg + "\".");
 				return taggableArg;
 			}

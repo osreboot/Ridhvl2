@@ -53,24 +53,29 @@ public final class HvlEnvironment{
 	}
 
 	private float x, y, width, height;
-	private boolean restricted, xLocked, yLocked, widthLocked, heightLocked;
+	private boolean restricted, blocked, xLocked, yLocked, widthLocked, heightLocked, blockedLocked;
 
 	public HvlEnvironment(){
 		copyFrom(HvlDisplay.getDisplay().getEnvironment());
-		setLock(true, true, true, true);
+		setLock(true, true, true, true, true);
 	}
 
 	public HvlEnvironment(HvlEnvironment environment){
 		copyFrom(environment);
-		setLock(true, true, true, true);
+		setLock(true, true, true, true, true);
 	}
-
-	public HvlEnvironment(float xArg, float yArg, float widthArg, float heightArg){
+	
+	public HvlEnvironment(float xArg, float yArg, float widthArg, float heightArg, boolean blockedArg){
 		x = xArg;
 		y = yArg;
 		width = widthArg;
 		height = heightArg;
-		setLock(false, false, false, false);
+		blocked = blockedArg;
+		setLock(false, false, false, false, false);
+	}
+
+	public HvlEnvironment(float xArg, float yArg, float widthArg, float heightArg){
+		this(xArg, yArg, widthArg, heightArg, false);
 	}
 
 	void deepCopyFrom(HvlEnvironment environment){
@@ -78,10 +83,12 @@ public final class HvlEnvironment{
 		y = environment.y;
 		width = environment.width;
 		height = environment.height;
+		blocked = environment.blocked;
 		xLocked = environment.xLocked;
 		yLocked = environment.yLocked;
 		widthLocked = environment.widthLocked;
 		heightLocked = environment.heightLocked;
+		blockedLocked = environment.blockedLocked;
 	}
 	
 	void copyFrom(HvlEnvironment environment){
@@ -89,6 +96,7 @@ public final class HvlEnvironment{
 		if(yLocked) y = environment.y;
 		if(widthLocked) width = environment.width;
 		if(heightLocked) height = environment.height;
+		if(blockedLocked) blocked = environment.blocked;
 	}
 
 	public void copyFromAndUnlock(HvlEnvironment environment){
@@ -99,7 +107,8 @@ public final class HvlEnvironment{
 			y = environment.y;
 			width = environment.width;
 			height = environment.height;
-			setLock(false, false, false, false);
+			blocked = environment.blocked;
+			setLock(false, false, false, false, false);
 		}
 	}
 
@@ -113,7 +122,7 @@ public final class HvlEnvironment{
 		restricted = restrictedArg;
 	}
 
-	public void setLock(boolean xLockedArg, boolean yLockedArg, boolean widthLockedArg, boolean heightLockedArg){
+	public void setLock(boolean xLockedArg, boolean yLockedArg, boolean widthLockedArg, boolean heightLockedArg, boolean blockedLockedArg){
 		if(active && restricted)
 			throw new EnvironmentRestrictedException();
 		else{
@@ -121,6 +130,7 @@ public final class HvlEnvironment{
 			yLocked = yLockedArg;
 			widthLocked = widthLockedArg;
 			heightLocked = heightLockedArg;
+			blockedLocked = blockedLockedArg;
 		}
 	}
 
@@ -159,6 +169,15 @@ public final class HvlEnvironment{
 			heightLocked = false;
 		}
 	}
+	
+	public void setAndUnlockBlocked(boolean blockedArg){
+		if(active && restricted)
+			throw new EnvironmentRestrictedException("blocked");
+		else{
+			blocked = blockedArg;
+			blockedLocked = false;
+		}
+	}
 
 	public float getX(){
 		return x;
@@ -175,8 +194,12 @@ public final class HvlEnvironment{
 	public float getHeight(){
 		return height;
 	}
+	
+	public boolean isBlocked(){
+		return blocked;
+	}
 
-	public boolean isLockChangeRestricted(){
+	public boolean isRestricted(){
 		return restricted;
 	}
 
@@ -194,6 +217,10 @@ public final class HvlEnvironment{
 
 	public boolean isHeightLocked(){
 		return heightLocked;
+	}
+	
+	public boolean isBlockedLocked(){
+		return blockedLocked;
 	}
 
 	/**

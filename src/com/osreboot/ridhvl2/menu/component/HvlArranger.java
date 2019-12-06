@@ -2,6 +2,8 @@ package com.osreboot.ridhvl2.menu.component;
 
 import static com.osreboot.ridhvl2.HvlStatics.hvlEnvironment;
 
+import java.util.ArrayList;
+
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlMath;
 import com.osreboot.ridhvl2.menu.HvlComponent;
@@ -14,7 +16,8 @@ public class HvlArranger extends HvlContainer{
 	private static final long serialVersionUID = 3570176741498793473L;
 
 	public static final HvlArranger fromDefault(){
-		return HvlDefault.applyIfExists(HvlArranger.class, new HvlArranger());
+		return (HvlArranger)HvlDefault.applyIfExists(HvlArranger.class, new HvlArranger())
+				.set(TAG_CHILDREN, new ArrayList<>());
 	}
 
 	public static final HvlTag<Boolean> TAG_HORIZONTAL = new HvlTag<>(Boolean.class, "horizontal");
@@ -39,7 +42,7 @@ public class HvlArranger extends HvlContainer{
 				float interpolatedY = HvlMath.map(child.getEnvironment().isHeightLocked() ? 0f : component.get(TAG_ALIGN_Y), 0, 1f, 
 						environment.getY(), environment.getY() + environment.getHeight() - child.getEnvironment().getHeight()); //TODO replace with HvlMath.lerp
 				child.update(delta, hvlEnvironment(currentX, interpolatedY, 
-						child.getEnvironment().isWidthLocked() ? lockedSize : 0, environment.getHeight()));
+						child.getEnvironment().isWidthLocked() ? lockedSize : 0, environment.getHeight(), environment.isBlocked()));
 				currentX += child.getEnvironment().getWidth();
 			}
 		}else{
@@ -58,7 +61,7 @@ public class HvlArranger extends HvlContainer{
 				float interpolatedX = HvlMath.map(child.getEnvironment().isWidthLocked() ? 0f : component.get(TAG_ALIGN_X), 0, 1f, 
 						environment.getX(), environment.getX() + environment.getWidth() - child.getEnvironment().getWidth()); //TODO replace with HvlMath.lerp
 				child.update(delta, hvlEnvironment(interpolatedX, currentY, 
-						environment.getWidth(), child.getEnvironment().isHeightLocked() ? lockedSize : 0));
+						environment.getWidth(), child.getEnvironment().isHeightLocked() ? lockedSize : 0, environment.isBlocked()));
 				currentY += child.getEnvironment().getHeight();
 			}
 		}
@@ -79,7 +82,7 @@ public class HvlArranger extends HvlContainer{
 		set(TAG_ALIGN_X, xAlignArg);
 		set(TAG_ALIGN_Y, yAlignArg);
 	}
-	
+
 	public HvlArranger(boolean horizontalArg){
 		this();
 		HvlDefault.applyIfExists(HvlArranger.class, this);
