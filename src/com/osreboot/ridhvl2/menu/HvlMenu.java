@@ -73,6 +73,13 @@ public final class HvlMenu {
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
 
+	public static HvlComponent top(){
+		if(active){
+			return componentsQueued == null ? components.get(components.size() - 1) :
+				componentsQueued.get(componentsQueued.size() - 1);
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
+	}
+
 	public static void push(HvlComponent componentArg){
 		if(active){
 			if(componentsQueued == null)

@@ -11,6 +11,7 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 	TAG_UPDATE = new HvlTagTransient(HvlAction.A3.class, "update"),
 	TAG_DRAW = new HvlTagTransient(HvlAction.A3.class, "draw");
 
+	public static final HvlTag<String> TAG_NAME = new HvlTag<>(String.class, "name");
 	public static final HvlTag<Float> TAG_OVERRIDE_X = new HvlTag<>(Float.class, "override_x");
 	public static final HvlTag<Float> TAG_OVERRIDE_Y = new HvlTag<>(Float.class, "override_y");
 	public static final HvlTag<Float> TAG_OVERRIDE_WIDTH = new HvlTag<>(Float.class, "override_width");
@@ -27,6 +28,7 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 		super(accumulate(tags,
 				TAG_UPDATE,
 				TAG_DRAW,
+				TAG_NAME,
 				TAG_OVERRIDE_X,
 				TAG_OVERRIDE_Y,
 				TAG_OVERRIDE_WIDTH,
@@ -34,6 +36,7 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 				TAG_OVERRIDE_BLOCKED));
 		set(TAG_UPDATE, DEFAULT_UPDATE);
 		set(TAG_DRAW, DEFAULT_DRAW);
+		set(TAG_NAME, "");
 		set(TAG_OVERRIDE_X, null);
 		set(TAG_OVERRIDE_Y, null);
 		set(TAG_OVERRIDE_WIDTH, null);
@@ -97,19 +100,27 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 		return environment;
 	}
 
+	public HvlComponent name(String nameArg){
+		return set(TAG_NAME, nameArg);
+	}
+
+	public String getName(){
+		return get(TAG_NAME);
+	}
+
 	public HvlComponent overrideX(float xArg){
 		return set(TAG_OVERRIDE_X, xArg);
 	}
-	
+
 	public HvlComponent overrideY(float yArg){
 		return set(TAG_OVERRIDE_Y, yArg);
 	}
-	
+
 	public HvlComponent overridePosition(float xArg, float yArg){
 		return set(TAG_OVERRIDE_X, xArg)
 				.set(TAG_OVERRIDE_Y, yArg);
 	}
-	
+
 	public HvlComponent overrideWidth(float widthArg){
 		return set(TAG_OVERRIDE_WIDTH, widthArg);
 	}

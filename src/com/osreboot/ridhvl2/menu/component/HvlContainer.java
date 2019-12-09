@@ -31,4 +31,44 @@ public abstract class HvlContainer extends HvlComponent{
 		set(TAG_CHILDREN, new ArrayList<>());
 	}
 
+	public HvlComponent add(HvlComponent childArg){
+		get(TAG_CHILDREN).add(childArg);
+		return this;
+	}
+	
+	public HvlComponent get(String nameArg){
+		for(HvlComponent child : get(TAG_CHILDREN)){
+			if(child.getName().equals(nameArg))
+				return child;
+		}
+		return null;
+	}
+	
+	public HvlComponent get(int indexArg){
+		return get(TAG_CHILDREN).get(indexArg);
+	}
+	
+	public void remove(String nameArg){
+		get(TAG_CHILDREN).remove(get(nameArg));
+	}
+	
+	public void remove(int indexArg){
+		get(TAG_CHILDREN).remove(indexArg);
+	}
+	
+	public HvlComponent find(String nameArg){
+		for(HvlComponent child : get(TAG_CHILDREN)){
+			if(child.getName().equals(nameArg))
+				return child;
+		}
+		for(HvlComponent child : get(TAG_CHILDREN)){
+			if(child instanceof HvlContainer){
+				HvlComponent searchResult = ((HvlContainer)child).find(nameArg);
+				if(searchResult != null)
+					return searchResult;
+			}
+		}
+		return null;
+	}
+
 }
