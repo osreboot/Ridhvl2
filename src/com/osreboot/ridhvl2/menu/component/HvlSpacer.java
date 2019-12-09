@@ -18,8 +18,8 @@ public class HvlSpacer extends HvlComponent{
 	public HvlSpacer(float widthArg, float heightArg){
 		this();
 		HvlDefault.applyIfExists(HvlSpacer.class, this);
-		getEnvironment().setAndUnlockWidth(widthArg);
-		getEnvironment().setAndUnlockHeight(heightArg);
+		set(TAG_OVERRIDE_WIDTH, widthArg);
+		set(TAG_OVERRIDE_HEIGHT, heightArg);
 	}
 	
 	public HvlSpacer(float sizeArg){

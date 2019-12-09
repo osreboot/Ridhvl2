@@ -88,10 +88,6 @@ public final class HvlDefault{
 				for(HvlTagTransient tag : taggableArg.validTagsOpen())
 					taggableArg.setOpen(tag, defaultTaggable.getOpen(tag));
 
-				if(taggableArg instanceof HvlComponent){
-					((HvlComponent)taggableArg).deepCopyEnvironmentFrom((HvlComponent)defaultTaggable);
-				}
-
 				HvlLogger.println(debug, "Applied default of type \"" + typeArg + "\".");
 				return taggableArg;
 			}

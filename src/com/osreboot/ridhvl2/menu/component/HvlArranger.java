@@ -26,43 +26,46 @@ public class HvlArranger extends HvlContainer{
 
 	public static final HvlAction.A3<Float, HvlEnvironment, HvlComponent> 
 	DEFAULT_UPDATE = (delta, environment, component) -> {
+		//TODO refactor this function to use 'native' and 'override' terminology instead of 'locked' and 'unlocked'
 		if(component.get(TAG_HORIZONTAL)){
 			int lockedCount = 0;
 			float unlockedSize = 0;
 			for(HvlComponent child : component.get(TAG_CHILDREN)){
-				if(child.getEnvironment().isWidthLocked()){
+				if(child.get(TAG_OVERRIDE_WIDTH) == null){
 					lockedCount++;
-				}else unlockedSize += child.getEnvironment().getWidth();
+				}else unlockedSize += child.get(TAG_OVERRIDE_WIDTH);
 			}
 
 			float lockedSize = lockedCount > 0 ? (environment.getWidth() - unlockedSize)/lockedCount : 0;
 			float currentX = lockedCount > 0 ? environment.getX() : 
 				HvlMath.map(component.get(TAG_ALIGN_X), 0, 1f, environment.getX(), environment.getX() + environment.getWidth() - unlockedSize);
 			for(HvlComponent child : component.get(TAG_CHILDREN)){
-				float interpolatedY = HvlMath.map(child.getEnvironment().isHeightLocked() ? 0f : component.get(TAG_ALIGN_Y), 0, 1f, 
-						environment.getY(), environment.getY() + environment.getHeight() - child.getEnvironment().getHeight()); //TODO replace with HvlMath.lerp
+				float interpolatedY = child.get(TAG_OVERRIDE_HEIGHT) == null ? environment.getY() : 
+					HvlMath.map(component.get(TAG_ALIGN_Y), 0, 1f, 
+							environment.getY(), environment.getY() + environment.getHeight() - child.get(TAG_OVERRIDE_HEIGHT)); //TODO replace with HvlMath.lerp
 				child.update(delta, hvlEnvironment(currentX, interpolatedY, 
-						child.getEnvironment().isWidthLocked() ? lockedSize : 0, environment.getHeight(), environment.isBlocked()));
-				currentX += child.getEnvironment().getWidth();
+						child.get(TAG_OVERRIDE_WIDTH) == null ? lockedSize : 0, environment.getHeight(), environment.isBlocked()));
+				currentX += child.getLastEnvironment().getWidth();
 			}
 		}else{
 			int lockedCount = 0;
 			float unlockedSize = 0;
 			for(HvlComponent child : component.get(TAG_CHILDREN)){
-				if(child.getEnvironment().isHeightLocked()){
+				if(child.get(TAG_OVERRIDE_HEIGHT) == null){
 					lockedCount++;
-				}else unlockedSize += child.getEnvironment().getHeight();
+				}else unlockedSize += child.get(TAG_OVERRIDE_HEIGHT);
 			}
 
 			float lockedSize = lockedCount > 0 ? (environment.getHeight() - unlockedSize)/lockedCount : 0;
 			float currentY = lockedCount > 0 ? environment.getY() : 
 				HvlMath.map(component.get(TAG_ALIGN_Y), 0, 1f, environment.getY(), environment.getY() + environment.getHeight() - unlockedSize);
 			for(HvlComponent child : component.get(TAG_CHILDREN)){
-				float interpolatedX = HvlMath.map(child.getEnvironment().isWidthLocked() ? 0f : component.get(TAG_ALIGN_X), 0, 1f, 
-						environment.getX(), environment.getX() + environment.getWidth() - child.getEnvironment().getWidth()); //TODO replace with HvlMath.lerp
+				float interpolatedX = child.get(TAG_OVERRIDE_WIDTH) == null ? environment.getX() : 
+					HvlMath.map(component.get(TAG_ALIGN_X), 0, 1f,
+						environment.getX(), environment.getX() + environment.getWidth() - child.get(TAG_OVERRIDE_WIDTH)); //TODO replace with HvlMath.lerp
 				child.update(delta, hvlEnvironment(interpolatedX, currentY, 
-						environment.getWidth(), child.getEnvironment().isHeightLocked() ? lockedSize : 0, environment.isBlocked()));
-				currentY += child.getEnvironment().getHeight();
+						environment.getWidth(), child.get(TAG_OVERRIDE_HEIGHT) == null ? lockedSize : 0, environment.isBlocked()));
+				currentY += child.getLastEnvironment().getHeight();
 			}
 		}
 	};

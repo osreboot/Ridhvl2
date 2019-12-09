@@ -5,6 +5,7 @@ import org.newdawn.slick.opengl.Texture;
 
 import com.osreboot.ridhvl2.loader.HvlLoader;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
+import com.osreboot.ridhvl2.menu.HvlEnvironmentVolatile;
 import com.osreboot.ridhvl2.painter.HvlPaint;
 import com.osreboot.ridhvl2.painter.HvlPainter;
 import com.osreboot.ridhvl2.painter.HvlPolygon;
@@ -414,31 +415,21 @@ public final class HvlStatics {
 
 	//========================\/\/\/    BEGIN MENU STATICS     \/\/\/========================//
 
-	private static HvlEnvironment globalEnvironment;
+	private static HvlEnvironmentVolatile globalEnvironment;
 
+	@SuppressWarnings("deprecation")
 	public static HvlEnvironment hvlEnvironment(float xArg, float yArg, float widthArg, float heightArg){
 		if(globalEnvironment == null)
-			globalEnvironment = new HvlEnvironment(xArg, yArg, widthArg, heightArg);
-		else{
-			globalEnvironment.setAndUnlockX(xArg);
-			globalEnvironment.setAndUnlockY(yArg);
-			globalEnvironment.setAndUnlockWidth(widthArg);
-			globalEnvironment.setAndUnlockHeight(heightArg);
-			globalEnvironment.setAndUnlockBlocked(false);
-		}
+			globalEnvironment = new HvlEnvironmentVolatile(xArg, yArg, widthArg, heightArg, false);
+		else globalEnvironment.setAndRefresh(xArg, yArg, widthArg, heightArg, false);
 		return globalEnvironment;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static HvlEnvironment hvlEnvironment(float xArg, float yArg, float widthArg, float heightArg, boolean blockedArg){
 		if(globalEnvironment == null)
-			globalEnvironment = new HvlEnvironment(xArg, yArg, widthArg, heightArg, blockedArg);
-		else{
-			globalEnvironment.setAndUnlockX(xArg);
-			globalEnvironment.setAndUnlockY(yArg);
-			globalEnvironment.setAndUnlockWidth(widthArg);
-			globalEnvironment.setAndUnlockHeight(heightArg);
-			globalEnvironment.setAndUnlockBlocked(blockedArg);
-		}
+			globalEnvironment = new HvlEnvironmentVolatile(xArg, yArg, widthArg, heightArg, blockedArg);
+		else globalEnvironment.setAndRefresh(xArg, yArg, widthArg, heightArg, blockedArg);
 		return globalEnvironment;
 	}
 

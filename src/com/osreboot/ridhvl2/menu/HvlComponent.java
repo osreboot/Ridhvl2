@@ -11,6 +11,12 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 	TAG_UPDATE = new HvlTagTransient(HvlAction.A3.class, "update"),
 	TAG_DRAW = new HvlTagTransient(HvlAction.A3.class, "draw");
 
+	public static final HvlTag<Float> TAG_OVERRIDE_X = new HvlTag<>(Float.class, "override_x");
+	public static final HvlTag<Float> TAG_OVERRIDE_Y = new HvlTag<>(Float.class, "override_y");
+	public static final HvlTag<Float> TAG_OVERRIDE_WIDTH = new HvlTag<>(Float.class, "override_width");
+	public static final HvlTag<Float> TAG_OVERRIDE_HEIGHT = new HvlTag<>(Float.class, "override_height");
+	public static final HvlTag<Boolean> TAG_OVERRIDE_BLOCKED = new HvlTag<>(Boolean.class, "override_blocked");
+
 	public static final HvlAction.A3<Float, HvlEnvironment, HvlComponent>
 	DEFAULT_UPDATE = (delta, environment, component) -> {},
 	DEFAULT_DRAW = (delta, environment, component) -> {};
@@ -18,26 +24,42 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 	private transient final HvlEnvironment environment;
 
 	protected HvlComponent(HvlTagTransient<?>... tags){
-		super(accumulate(tags, TAG_UPDATE, TAG_DRAW));
+		super(accumulate(tags,
+				TAG_UPDATE,
+				TAG_DRAW,
+				TAG_OVERRIDE_X,
+				TAG_OVERRIDE_Y,
+				TAG_OVERRIDE_WIDTH,
+				TAG_OVERRIDE_HEIGHT,
+				TAG_OVERRIDE_BLOCKED));
 		set(TAG_UPDATE, DEFAULT_UPDATE);
 		set(TAG_DRAW, DEFAULT_DRAW);
+		set(TAG_OVERRIDE_X, null);
+		set(TAG_OVERRIDE_Y, null);
+		set(TAG_OVERRIDE_WIDTH, null);
+		set(TAG_OVERRIDE_HEIGHT, null);
+		set(TAG_OVERRIDE_BLOCKED, null);
 		environment = new HvlEnvironment();
 	}
 
-	final void deepCopyEnvironmentFrom(HvlComponent defaultArg){
-		environment.deepCopyFrom(defaultArg.environment);
-	}
-
 	public final void update(float delta){
-		environment.copyFrom(HvlDisplay.getDisplay().getEnvironment());
-		environment.setRestricted(true);
+		environment.forceMutate(HvlDisplay.getDisplay().getEnvironment());
+		if(get(TAG_OVERRIDE_X) != null) environment.forceMutateX(get(TAG_OVERRIDE_X));
+		if(get(TAG_OVERRIDE_Y) != null) environment.forceMutateY(get(TAG_OVERRIDE_Y));
+		if(get(TAG_OVERRIDE_WIDTH) != null) environment.forceMutateWidth(get(TAG_OVERRIDE_WIDTH));
+		if(get(TAG_OVERRIDE_HEIGHT) != null) environment.forceMutateHeight(get(TAG_OVERRIDE_HEIGHT));
+		if(get(TAG_OVERRIDE_BLOCKED) != null) environment.forceMutateBlocked(get(TAG_OVERRIDE_BLOCKED));
 
 		get(TAG_UPDATE).run(delta, environment, this);
 	}
 
 	public final void update(float delta, HvlEnvironment environmentArg){
-		environment.copyFrom(environmentArg);
-		environment.setRestricted(true);
+		environment.forceMutate(environmentArg);
+		if(get(TAG_OVERRIDE_X) != null) environment.forceMutateX(get(TAG_OVERRIDE_X));
+		if(get(TAG_OVERRIDE_Y) != null) environment.forceMutateY(get(TAG_OVERRIDE_Y));
+		if(get(TAG_OVERRIDE_WIDTH) != null) environment.forceMutateWidth(get(TAG_OVERRIDE_WIDTH));
+		if(get(TAG_OVERRIDE_HEIGHT) != null) environment.forceMutateHeight(get(TAG_OVERRIDE_HEIGHT));
+		if(get(TAG_OVERRIDE_BLOCKED) != null) environment.forceMutateBlocked(get(TAG_OVERRIDE_BLOCKED));
 
 		get(TAG_UPDATE).run(delta, environment, this);
 	}
@@ -56,26 +78,6 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 		draw(delta);
 	}
 
-	public final HvlComponent unlockedWidth(float widthArg){
-		environment.setAndUnlockWidth(widthArg);
-		return this;
-	}
-	
-	public final HvlComponent unlockedHeight(float heightArg){
-		environment.setAndUnlockHeight(heightArg);
-		return this;
-	}
-	
-	public final HvlComponent unlockedSize(float widthArg, float heightArg){
-		environment.setAndUnlockWidth(widthArg);
-		environment.setAndUnlockHeight(heightArg);
-		return this;
-	}
-
-	public final HvlEnvironment getEnvironment(){
-		return environment;
-	}
-
 	@Override
 	public <T> HvlComponent set(HvlTagTransient<T> tagArg, T valueArg){
 		return (HvlComponent)super.set(tagArg, valueArg);
@@ -89,6 +91,36 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 	@Override
 	public <T> HvlComponent setOpen(HvlTagTransient<T> tagArg, T valueArg){
 		return (HvlComponent)super.setOpen(tagArg, valueArg);
+	}
+
+	public HvlEnvironment getLastEnvironment(){
+		return environment;
+	}
+
+	public HvlComponent overrideX(float xArg){
+		return set(TAG_OVERRIDE_X, xArg);
+	}
+	
+	public HvlComponent overrideY(float yArg){
+		return set(TAG_OVERRIDE_Y, yArg);
+	}
+	
+	public HvlComponent overridePosition(float xArg, float yArg){
+		return set(TAG_OVERRIDE_X, xArg)
+				.set(TAG_OVERRIDE_Y, yArg);
+	}
+	
+	public HvlComponent overrideWidth(float widthArg){
+		return set(TAG_OVERRIDE_WIDTH, widthArg);
+	}
+
+	public HvlComponent overrideHeight(float heightArg){
+		return set(TAG_OVERRIDE_HEIGHT, heightArg);
+	}
+
+	public HvlComponent overrideSize(float widthArg, float heightArg){
+		return set(TAG_OVERRIDE_WIDTH, widthArg)
+				.set(TAG_OVERRIDE_HEIGHT, heightArg);
 	}
 
 }

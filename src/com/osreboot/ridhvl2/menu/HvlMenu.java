@@ -29,7 +29,7 @@ public final class HvlMenu {
 		active = HvlChronology.verifyLaunchCode(LAUNCH_CODE);
 		HvlMenu.debug = debug;
 		components = new ArrayList<>();
-		tempEnvironment = new HvlEnvironment();
+		tempEnvironment = new HvlEnvironmentMutable();
 	};
 
 	@HvlChronologyUpdate(label = LABEL, chronology = CHRONO_PRE_UPDATE, launchCode = LAUNCH_CODE)
@@ -49,7 +49,7 @@ public final class HvlMenu {
 	private HvlMenu(){}
 
 	private static ArrayList<HvlComponent> components, componentsQueued;
-	private static HvlEnvironment tempEnvironment;
+	private static HvlEnvironmentMutable tempEnvironment;
 
 	private static void advanceComponents(){
 		if(componentsQueued != null){
@@ -97,10 +97,10 @@ public final class HvlMenu {
 
 	public static void update(float delta, HvlEnvironment environmentArg){
 		if(active){
-			boolean parentEnvironmentBlocked = environmentArg.isBlocked();
-			tempEnvironment.copyFromAndUnlock(environmentArg);
+			tempEnvironment.set(environmentArg);
+			boolean parentEnvironmentBlocked = tempEnvironment.isBlocked();
 			for(int i = 0; i < components.size(); i++){
-				tempEnvironment.setAndUnlockBlocked((i != components.size() - 1) || parentEnvironmentBlocked);
+				tempEnvironment.setBlocked((i != components.size() - 1) || parentEnvironmentBlocked);
 				components.get(i).update(delta, tempEnvironment);
 			}
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);

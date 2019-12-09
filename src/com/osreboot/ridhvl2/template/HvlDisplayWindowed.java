@@ -1,7 +1,5 @@
 package com.osreboot.ridhvl2.template;
 
-import static com.osreboot.ridhvl2.HvlStatics.hvlEnvironment;
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -31,7 +29,6 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	private DisplayMode initialMode;
 	private String initialTitle;
 	private boolean initialUndecorated;
-	private HvlEnvironment environment;
 	
 	/**
 	 * Constructor that defaults to a decorated window. Use 
@@ -139,11 +136,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	
 	@Override
 	public HvlEnvironment getEnvironment(){
-		if(environment == null)
-			environment = new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight());
-		else environment.copyFromAndUnlock(hvlEnvironment(0, 0, Display.getWidth(), Display.getHeight()));
-		
-		return environment;
+		return new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight(), false);
 	}
 	
 }

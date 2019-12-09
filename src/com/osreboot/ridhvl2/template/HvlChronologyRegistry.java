@@ -32,8 +32,6 @@ public final class HvlChronologyRegistry {
 	 * <br>
 	 * {@linkplain HvlType}
 	 * <br>
-	 * {@linkplain HvlEnvironment}
-	 * <br>
 	 * {@linkplain HvlDefault}
 	 * <br>
 	 * {@linkplain HvlMenu}

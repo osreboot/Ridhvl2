@@ -1,7 +1,5 @@
 package com.osreboot.ridhvl2.template;
 
-import static com.osreboot.ridhvl2.HvlStatics.hvlEnvironment;
-
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -26,7 +24,6 @@ import com.osreboot.ridhvl2.menu.HvlEnvironment;
 public class HvlDisplayFullscreen extends HvlDisplay{
 
 	private DisplayMode mode;
-	private HvlEnvironment environment;
 
 	HvlDisplayFullscreen(DisplayMode modeArg, boolean vsyncArg){
 		super(modeArg.getFrequency(), vsyncArg, false);
@@ -93,11 +90,7 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 
 	@Override
 	public HvlEnvironment getEnvironment(){
-		if(environment == null)
-			environment = new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight());
-		else environment.copyFromAndUnlock(hvlEnvironment(0, 0, Display.getWidth(), Display.getHeight()));
-		
-		return environment;
+		return new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight(), false);
 	}
 
 }
