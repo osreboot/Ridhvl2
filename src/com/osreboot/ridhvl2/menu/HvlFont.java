@@ -39,11 +39,11 @@ public class HvlFont extends HvlTaggable{
 	}
 
 	public void draw(String textArg, float xArg, float yArg){
-		draw(textArg, xArg, yArg, Color.white, 1.0f);
+		draw(textArg, xArg, yArg, Color.white, get(TAG_SCALE));
 	}
 
 	public void draw(String textArg, float xArg, float yArg, Color colorArg){
-		draw(textArg, xArg, yArg, colorArg, 1.0f);
+		draw(textArg, xArg, yArg, colorArg, get(TAG_SCALE));
 	}
 
 	public void draw(String textArg, float xArg, float yArg, float scaleArg){
