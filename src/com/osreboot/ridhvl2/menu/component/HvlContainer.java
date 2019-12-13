@@ -1,6 +1,7 @@
 package com.osreboot.ridhvl2.menu.component;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.menu.HvlComponent;
@@ -14,12 +15,14 @@ public abstract class HvlContainer extends HvlComponent{
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static final HvlTag<ArrayList<HvlComponent>> TAG_CHILDREN = new HvlTag(ArrayList.class, "children");
 
-	public static final HvlAction.A3<Float, HvlEnvironment, HvlComponent> DEFAULT_UPDATE = (delta, environment, component) -> {
+	public static final HvlAction.A3<Float, HvlEnvironment, HvlComponent>
+	DEFAULT_UPDATE = (delta, environment, component) -> {
 		for(HvlComponent child : component.get(TAG_CHILDREN))
 			child.update(delta);
 	};
 
-	public static final HvlAction.A3<Float, HvlEnvironment, HvlComponent> DEFAULT_DRAW = (delta, environment, component) -> {
+	public static final HvlAction.A3<Float, HvlEnvironment, HvlComponent>
+	DEFAULT_DRAW = (delta, environment, component) -> {
 		for(HvlComponent child : component.get(TAG_CHILDREN))
 			child.draw(delta);
 	};
@@ -35,7 +38,7 @@ public abstract class HvlContainer extends HvlComponent{
 		get(TAG_CHILDREN).add(childArg);
 		return this;
 	}
-	
+
 	public HvlComponent get(String nameArg){
 		for(HvlComponent child : get(TAG_CHILDREN)){
 			if(child.getName().equals(nameArg))
@@ -43,32 +46,50 @@ public abstract class HvlContainer extends HvlComponent{
 		}
 		return null;
 	}
-	
+
 	public HvlComponent get(int indexArg){
 		return get(TAG_CHILDREN).get(indexArg);
 	}
-	
+
 	public void remove(String nameArg){
 		get(TAG_CHILDREN).remove(get(nameArg));
 	}
-	
+
 	public void remove(int indexArg){
 		get(TAG_CHILDREN).remove(indexArg);
 	}
-	
-	public HvlComponent find(String nameArg){
+
+	@SuppressWarnings("unchecked")
+	public <T extends HvlComponent> T find(String nameArg){
 		for(HvlComponent child : get(TAG_CHILDREN)){
 			if(child.getName().equals(nameArg))
-				return child;
+				return (T)child;
 		}
 		for(HvlComponent child : get(TAG_CHILDREN)){
 			if(child instanceof HvlContainer){
 				HvlComponent searchResult = ((HvlContainer)child).find(nameArg);
 				if(searchResult != null)
-					return searchResult;
+					return (T)searchResult;
 			}
 		}
 		return null;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <T extends HvlComponent> List<T> findAll(String nameArg){
+		ArrayList<T> output = new ArrayList<>();
+		for(HvlComponent child : get(TAG_CHILDREN)){
+			if(child.getName().equals(nameArg))
+				output.add((T)child);
+		}
+		for(HvlComponent child : get(TAG_CHILDREN)){
+			if(child instanceof HvlContainer){
+				HvlComponent searchResult = ((HvlContainer)child).find(nameArg);
+				if(searchResult != null)
+					output.add((T)searchResult);
+			}
+		}
+		return output;
 	}
 
 }

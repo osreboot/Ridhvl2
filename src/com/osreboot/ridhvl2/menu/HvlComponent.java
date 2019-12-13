@@ -96,7 +96,7 @@ public abstract class HvlComponent extends HvlTaggableOpen{
 		return (HvlComponent)super.setOpen(tagArg, valueArg);
 	}
 
-	public HvlEnvironment getLastEnvironment(){
+	public final HvlEnvironment getLastEnvironment(){
 		return environment;
 	}
 

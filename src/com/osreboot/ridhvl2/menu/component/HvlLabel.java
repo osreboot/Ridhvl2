@@ -14,7 +14,7 @@ import com.osreboot.ridhvl2.menu.HvlTagTransient;
 public class HvlLabel extends HvlComponent{
 	private static final long serialVersionUID = 6541669450721020192L;
 
-	public static final HvlLabel fromDefault(){
+	public static HvlLabel fromDefault(){
 		return HvlDefault.applyIfExists(HvlLabel.class, new HvlLabel());
 	}
 
@@ -36,7 +36,13 @@ public class HvlLabel extends HvlComponent{
 	};
 
 	protected HvlLabel(HvlTagTransient<?>... tags){
-		super(accumulate(tags, TAG_FONT, TAG_TEXT, TAG_COLOR, TAG_SCALE, TAG_ALIGN_X, TAG_ALIGN_Y));
+		super(accumulate(tags,
+				TAG_FONT,
+				TAG_TEXT,
+				TAG_COLOR,
+				TAG_SCALE,
+				TAG_ALIGN_X,
+				TAG_ALIGN_Y));
 		set(TAG_DRAW, DEFAULT_DRAW);
 	}
 
@@ -49,6 +55,19 @@ public class HvlLabel extends HvlComponent{
 		set(TAG_SCALE, scaleArg);
 		set(TAG_ALIGN_X, 0f);
 		set(TAG_ALIGN_Y, 0f);
+	}
+	
+	public HvlLabel text(String textArg){
+		return (HvlLabel)set(TAG_TEXT, textArg);
+	}
+	
+	public String getText(){
+		return get(TAG_TEXT);
+	}
+	
+	public HvlLabel align(float xAlignArg, float yAlignArg){
+		return (HvlLabel)set(TAG_ALIGN_X, xAlignArg)
+				.set(TAG_ALIGN_Y, yAlignArg);
 	}
 
 }

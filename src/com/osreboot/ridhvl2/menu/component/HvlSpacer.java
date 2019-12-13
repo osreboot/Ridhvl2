@@ -7,7 +7,7 @@ import com.osreboot.ridhvl2.menu.HvlTagTransient;
 public class HvlSpacer extends HvlComponent{
 	private static final long serialVersionUID = 8287495163691593368L;
 	
-	public static final HvlSpacer fromDefault(){
+	public static HvlSpacer fromDefault(){
 		return HvlDefault.applyIfExists(HvlSpacer.class, new HvlSpacer());
 	}
 	

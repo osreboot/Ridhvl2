@@ -14,7 +14,7 @@ import com.osreboot.ridhvl2.menu.HvlTagTransient;
 public class HvlButton extends HvlComponent{
 	private static final long serialVersionUID = 6029038729850694290L;
 
-	public static final HvlButton fromDefault(){
+	public static HvlButton fromDefault(){
 		return HvlDefault.applyIfExists(HvlButton.class, new HvlButton());
 	}
 
@@ -25,10 +25,8 @@ public class HvlButton extends HvlComponent{
 	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public static final HvlTagTransient<HvlAction.A3<Float, HvlEnvironment, HvlComponent>>
-	TAG_DRAW_OFF = new HvlTagTransient(HvlAction.A3.class, "draw_off"),
-	TAG_DRAW_HOVER = new HvlTagTransient(HvlAction.A3.class, "draw_hover"),
-	TAG_DRAW_ON = new HvlTagTransient(HvlAction.A3.class, "draw_on");
+	public static final HvlTagTransient<HvlAction.A4<Float, HvlEnvironment, HvlButton, HvlButtonState>>
+	TAG_DRAW_STATE = new HvlTagTransient(HvlAction.A4.class, "draw_state");
 
 	public static final HvlTagTransient<HvlButtonState> TAG_STATE = new HvlTag<>(HvlButtonState.class, "state");
 
@@ -52,11 +50,8 @@ public class HvlButton extends HvlComponent{
 		}else component.set(TAG_STATE, HvlButtonState.OFF);
 	},
 	DEFAULT_DRAW = (delta, environment, component) -> {
-		if(component.get(TAG_STATE) == HvlButtonState.ON)
-			component.get(TAG_DRAW_ON).run(delta, environment, component);
-		else if(component.get(TAG_STATE) == HvlButtonState.HOVER && component.get(TAG_DRAW_HOVER) != null)
-			component.get(TAG_DRAW_HOVER).run(delta, environment, component);
-		else component.get(TAG_DRAW_OFF).run(delta, environment, component);
+		component.get(TAG_DRAW_STATE).run(delta, environment,
+				(HvlButton)component, ((HvlButton)component).getState());
 	};
 
 	public static final HvlAction.A1<HvlButton>
@@ -66,58 +61,36 @@ public class HvlButton extends HvlComponent{
 
 	protected HvlButton(HvlTagTransient<?>... tags){
 		super(accumulate(tags, 
-				TAG_DRAW_OFF,
-				TAG_DRAW_HOVER,
-				TAG_DRAW_ON,
+				TAG_DRAW_STATE,
 				TAG_STATE,
 				TAG_CLICKED));
 		set(TAG_UPDATE, DEFAULT_UPDATE);
 		set(TAG_DRAW, DEFAULT_DRAW);
-		set(TAG_DRAW_OFF, HvlComponent.DEFAULT_DRAW);
-		set(TAG_DRAW_HOVER, null);
-		set(TAG_DRAW_ON, HvlComponent.DEFAULT_DRAW);
+		set(TAG_DRAW_STATE, null);
 		set(TAG_STATE, HvlButtonState.OFF);
 		set(TAG_CLICKED, DEFAULT_CLICKED);
 	}
 
-	public HvlButton(HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawOffArg,
-			HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawHoverArg,
-			HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawOnArg,
+	public HvlButton(HvlAction.A4<Float, HvlEnvironment, HvlButton, HvlButtonState> drawStateArg,
 			HvlAction.A1<HvlButton> clickedArg){
 		this();
 		HvlDefault.applyIfExists(HvlButton.class, this);
-		set(TAG_DRAW_OFF, drawOffArg);
-		set(TAG_DRAW_HOVER, drawHoverArg);
-		set(TAG_DRAW_ON, drawOnArg);
+		set(TAG_DRAW_STATE, drawStateArg);
 		set(TAG_CLICKED, clickedArg);
 	}
 
-	public HvlButton(HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawOffArg,
-			HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawOnArg,
-			HvlAction.A1<HvlButton> clickedArg){
+	public HvlButton(HvlAction.A4<Float, HvlEnvironment, HvlButton, HvlButtonState> drawStateArg){
 		this();
 		HvlDefault.applyIfExists(HvlButton.class, this);
-		set(TAG_DRAW_OFF, drawOffArg);
-		set(TAG_DRAW_ON, drawOnArg);
-		set(TAG_CLICKED, clickedArg);
+		set(TAG_DRAW_STATE, drawStateArg);
 	}
 
-	public HvlButton(HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawOffArg,
-			HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawHoverArg,
-			HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawOnArg){
-		this();
-		HvlDefault.applyIfExists(HvlButton.class, this);
-		set(TAG_DRAW_OFF, drawOffArg);
-		set(TAG_DRAW_HOVER, drawHoverArg);
-		set(TAG_DRAW_ON, drawOnArg);
+	public HvlButtonState getState(){
+		return get(TAG_STATE);
 	}
-
-	public HvlButton(HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawOffArg,
-			HvlAction.A3<Float, HvlEnvironment, HvlComponent> drawOnArg){
-		this();
-		HvlDefault.applyIfExists(HvlButton.class, this);
-		set(TAG_DRAW_OFF, drawOffArg);
-		set(TAG_DRAW_ON, drawOnArg);
+	
+	public HvlButton clicked(HvlAction.A1<HvlButton> clickedArg){
+		return (HvlButton)set(TAG_CLICKED, clickedArg);
 	}
 
 }

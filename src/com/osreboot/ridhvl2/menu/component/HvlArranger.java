@@ -15,7 +15,7 @@ import com.osreboot.ridhvl2.menu.HvlTagTransient;
 public class HvlArranger extends HvlContainer{
 	private static final long serialVersionUID = 3570176741498793473L;
 
-	public static final HvlArranger fromDefault(){
+	public static HvlArranger fromDefault(){
 		return (HvlArranger)HvlDefault.applyIfExists(HvlArranger.class, new HvlArranger())
 				.set(TAG_CHILDREN, new ArrayList<>());
 	}
@@ -90,6 +90,11 @@ public class HvlArranger extends HvlContainer{
 		this();
 		HvlDefault.applyIfExists(HvlArranger.class, this);
 		set(TAG_HORIZONTAL, horizontalArg);
+	}
+	
+	public HvlArranger align(float xAlignArg, float yAlignArg){
+		return (HvlArranger)set(TAG_ALIGN_X, xAlignArg)
+				.set(TAG_ALIGN_Y, yAlignArg);
 	}
 
 }
