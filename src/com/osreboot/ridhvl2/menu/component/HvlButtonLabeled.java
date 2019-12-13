@@ -25,6 +25,8 @@ public class HvlButtonLabeled extends HvlButton{
 	public static final HvlTag<Float> TAG_TEXT_SCALE = new HvlTag<>(Float.class, "text_scale");
 	public static final HvlTag<Float> TAG_TEXT_ALIGN_X = new HvlTag<>(Float.class, "text_align_x");
 	public static final HvlTag<Float> TAG_TEXT_ALIGN_Y = new HvlTag<>(Float.class, "text_align_y");
+	public static final HvlTag<Float> TAG_TEXT_OFFSET_X = new HvlTag<>(Float.class, "text_offset_x");
+	public static final HvlTag<Float> TAG_TEXT_OFFSET_Y = new HvlTag<>(Float.class, "text_offset_y");
 
 	public static final HvlAction.A3<Float, HvlEnvironment, HvlComponent>
 	DEFAULT_TEXT_DRAW = (delta, environment, component) -> {
@@ -32,7 +34,8 @@ public class HvlButtonLabeled extends HvlButton{
 				environment.getX() + environment.getWidth() - component.get(TAG_FONT).getWidth(component.get(TAG_TEXT), component.get(TAG_TEXT_SCALE)));
 		float y = HvlMath.map(component.get(TAG_TEXT_ALIGN_Y), 0f, 1f, environment.getY(),
 				environment.getY() + environment.getHeight() - component.get(TAG_FONT).getHeight(component.get(TAG_TEXT), component.get(TAG_TEXT_SCALE)));
-		component.get(TAG_FONT).draw(component.get(TAG_TEXT), x, y, component.get(TAG_TEXT_COLOR), component.get(TAG_TEXT_SCALE));
+		component.get(TAG_FONT).draw(component.get(TAG_TEXT), x + component.get(TAG_TEXT_OFFSET_X), y + component.get(TAG_TEXT_OFFSET_Y),
+				component.get(TAG_TEXT_COLOR), component.get(TAG_TEXT_SCALE));
 	},
 	DEFAULT_DRAW = (delta, environment, component) -> {
 		HvlButton.DEFAULT_DRAW.run(delta, environment, component);
@@ -47,7 +50,9 @@ public class HvlButtonLabeled extends HvlButton{
 				TAG_TEXT,
 				TAG_TEXT_SCALE,
 				TAG_TEXT_ALIGN_X,
-				TAG_TEXT_ALIGN_Y));
+				TAG_TEXT_ALIGN_Y,
+				TAG_TEXT_OFFSET_X,
+				TAG_TEXT_OFFSET_Y));
 		set(TAG_DRAW, DEFAULT_DRAW);
 	}
 
@@ -64,6 +69,8 @@ public class HvlButtonLabeled extends HvlButton{
 		set(TAG_TEXT_SCALE, scaleArg);
 		set(TAG_TEXT_ALIGN_X, 0f);
 		set(TAG_TEXT_ALIGN_Y, 0f);
+		set(TAG_TEXT_OFFSET_X, 0f);
+		set(TAG_TEXT_OFFSET_Y, 0f);
 	}
 
 	public HvlButtonLabeled(HvlFont fontArg, String textArg, Color colorArg, float scaleArg,
@@ -77,6 +84,8 @@ public class HvlButtonLabeled extends HvlButton{
 		set(TAG_TEXT_SCALE, scaleArg);
 		set(TAG_TEXT_ALIGN_X, 0f);
 		set(TAG_TEXT_ALIGN_Y, 0f);
+		set(TAG_TEXT_OFFSET_X, 0f);
+		set(TAG_TEXT_OFFSET_Y, 0f);
 	}
 
 	public HvlButtonLabeled text(String textArg){
@@ -90,6 +99,19 @@ public class HvlButtonLabeled extends HvlButton{
 	public HvlButtonLabeled align(float xAlignArg, float yAlignArg){
 		return (HvlButtonLabeled)set(TAG_TEXT_ALIGN_X, xAlignArg)
 				.set(TAG_TEXT_ALIGN_Y, yAlignArg);
+	}
+	
+	public HvlButtonLabeled offsetX(float xOffsetArg){
+		return (HvlButtonLabeled)set(TAG_TEXT_OFFSET_X, xOffsetArg);
+	}
+	
+	public HvlButtonLabeled offsetY(float yOffsetArg){
+		return (HvlButtonLabeled)set(TAG_TEXT_OFFSET_Y, yOffsetArg);
+	}
+	
+	public HvlButtonLabeled offset(float xOffsetArg, float yOffsetArg){
+		return (HvlButtonLabeled)set(TAG_TEXT_OFFSET_X, xOffsetArg)
+				.set(TAG_TEXT_OFFSET_Y, yOffsetArg);
 	}
 
 }

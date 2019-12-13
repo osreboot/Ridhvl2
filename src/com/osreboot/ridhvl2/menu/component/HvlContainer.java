@@ -84,9 +84,8 @@ public abstract class HvlContainer extends HvlComponent{
 		}
 		for(HvlComponent child : get(TAG_CHILDREN)){
 			if(child instanceof HvlContainer){
-				HvlComponent searchResult = ((HvlContainer)child).find(nameArg);
-				if(searchResult != null)
-					output.add((T)searchResult);
+				List<T> searchResult = ((HvlContainer)child).findAll(nameArg);
+				output.addAll(searchResult);
 			}
 		}
 		return output;

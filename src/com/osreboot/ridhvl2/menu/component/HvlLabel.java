@@ -25,6 +25,8 @@ public class HvlLabel extends HvlComponent{
 	public static final HvlTag<Float> TAG_SCALE = new HvlTag<>(Float.class, "scale");
 	public static final HvlTag<Float> TAG_ALIGN_X = new HvlTag<>(Float.class, "align_x");
 	public static final HvlTag<Float> TAG_ALIGN_Y = new HvlTag<>(Float.class, "align_y");
+	public static final HvlTag<Float> TAG_OFFSET_X = new HvlTag<>(Float.class, "offset_x");
+	public static final HvlTag<Float> TAG_OFFSET_Y = new HvlTag<>(Float.class, "offset_y");
 
 	public static final HvlAction.A3<Float, HvlEnvironment, HvlComponent> 
 	DEFAULT_DRAW = (delta, environment, component) -> {
@@ -32,7 +34,8 @@ public class HvlLabel extends HvlComponent{
 				environment.getX() + environment.getWidth() - component.get(TAG_FONT).getWidth(component.get(TAG_TEXT), component.get(TAG_SCALE)));
 		float y = HvlMath.map(component.get(TAG_ALIGN_Y), 0f, 1f, environment.getY(),
 				environment.getY() + environment.getHeight() - component.get(TAG_FONT).getHeight(component.get(TAG_TEXT), component.get(TAG_SCALE)));
-		component.get(TAG_FONT).draw(component.get(TAG_TEXT), x, y, component.get(TAG_COLOR), component.get(TAG_SCALE));
+		component.get(TAG_FONT).draw(component.get(TAG_TEXT), x + component.get(TAG_OFFSET_X), y + component.get(TAG_OFFSET_Y),
+				component.get(TAG_COLOR), component.get(TAG_SCALE));
 	};
 
 	protected HvlLabel(HvlTagTransient<?>... tags){
@@ -42,7 +45,9 @@ public class HvlLabel extends HvlComponent{
 				TAG_COLOR,
 				TAG_SCALE,
 				TAG_ALIGN_X,
-				TAG_ALIGN_Y));
+				TAG_ALIGN_Y,
+				TAG_OFFSET_X,
+				TAG_OFFSET_Y));
 		set(TAG_DRAW, DEFAULT_DRAW);
 	}
 
@@ -55,6 +60,8 @@ public class HvlLabel extends HvlComponent{
 		set(TAG_SCALE, scaleArg);
 		set(TAG_ALIGN_X, 0f);
 		set(TAG_ALIGN_Y, 0f);
+		set(TAG_OFFSET_X, 0f);
+		set(TAG_OFFSET_Y, 0f);
 	}
 	
 	public HvlLabel text(String textArg){
@@ -68,6 +75,19 @@ public class HvlLabel extends HvlComponent{
 	public HvlLabel align(float xAlignArg, float yAlignArg){
 		return (HvlLabel)set(TAG_ALIGN_X, xAlignArg)
 				.set(TAG_ALIGN_Y, yAlignArg);
+	}
+	
+	public HvlLabel offsetX(float xOffsetArg){
+		return (HvlLabel)set(TAG_OFFSET_X, xOffsetArg);
+	}
+	
+	public HvlLabel offsetY(float yOffsetArg){
+		return (HvlLabel)set(TAG_OFFSET_Y, yOffsetArg);
+	}
+	
+	public HvlLabel offset(float xOffsetArg, float yOffsetArg){
+		return (HvlLabel)set(TAG_OFFSET_X, xOffsetArg)
+				.set(TAG_OFFSET_Y, yOffsetArg);
 	}
 
 }
