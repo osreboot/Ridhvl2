@@ -10,6 +10,7 @@ import org.lwjgl.opengl.DisplayMode;
 
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
+import com.osreboot.ridhvl2.menu.HvlEnvironment;
 
 /**
  * An instantiable wrapper that serves as a combination of LWJGL's {@linkplain Display} and {@linkplain DisplayMode}
@@ -210,6 +211,8 @@ public abstract class HvlDisplay {
 	public void setResizable(boolean resizableArg){
 		resizable = resizableArg;
 	}
+	
+	public abstract HvlEnvironment getEnvironment();
 
 	/**
 	 * Thrown if an attempt is made to change a HvlDisplay's <code>refreshRate</code> to a value less than 1.

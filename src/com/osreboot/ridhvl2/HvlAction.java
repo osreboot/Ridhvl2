@@ -1,5 +1,6 @@
 package com.osreboot.ridhvl2;
 
+import com.osreboot.ridhvl2.menu.HvlComponent;
 import com.osreboot.ridhvl2.template.HvlChronology;
 
 /**
@@ -22,7 +23,7 @@ import com.osreboot.ridhvl2.template.HvlChronology;
  * 
  * <p>
  * 
- * {@linkplain HvlChronology} and TODO {@linkplain HvlMenu} depend heavily on this framework.
+ * {@linkplain HvlChronology} and {@linkplain HvlComponent} depend heavily on this framework.
  * 
  * @author os_reboot
  *

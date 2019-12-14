@@ -6,6 +6,7 @@ import org.lwjgl.opengl.DisplayMode;
 import org.lwjgl.opengl.GL11;
 
 import com.osreboot.ridhvl2.HvlLogger;
+import com.osreboot.ridhvl2.menu.HvlEnvironment;
 
 /**
  * An implementation of {@linkplain HvlDisplay} that handles a windowed LWJGL 
@@ -97,8 +98,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	}
 
 	@Override
-	protected void preUpdate(float delta){
-	}
+	protected void preUpdate(float delta){}
 
 	@Override
 	protected void postUpdate(float delta){
@@ -132,6 +132,11 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	public void setResizable(boolean resizableArg){
 		super.setResizable(resizableArg);
 		Display.setResizable(resizableArg);
+	}
+	
+	@Override
+	public HvlEnvironment getEnvironment(){
+		return new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight(), false);
 	}
 	
 }

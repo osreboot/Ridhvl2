@@ -7,7 +7,7 @@ import java.util.Set;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
-public class HvlTaggableOpen extends HvlTaggable{
+public abstract class HvlTaggableOpen extends HvlTaggable{
 	private static final long serialVersionUID = 72496113562406391L;
 	
 	@JsonSerialize(using = TagMapSerializer.class)

@@ -1,6 +1,7 @@
 package com.osreboot.ridhvl2;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * A single 2D coordinate represented by an x and y floating point value.
@@ -43,7 +44,7 @@ public final class HvlCoord implements Serializable{
 	}
 	
 	/**
-	 * Assigns a new 'x' and 'y' value.
+	 * Assigns new 'x' and 'y' values.
 	 * 
 	 * @param xArg the new value of 'x'
 	 * @param yArg the new value of 'y'
@@ -53,11 +54,26 @@ public final class HvlCoord implements Serializable{
 		y = yArg;
 	}
 	
+	/**
+	 * Assigns new 'x' and 'y' values inherited from the given HvlCoord instance.
+	 * 
+	 * @param cArg the HvlCoord to inherit values from
+	 */
+	public void set(HvlCoord cArg){
+		x = cArg.x;
+		y = cArg.y;
+	}
+	
 	@Override
 	public boolean equals(Object object){
 		if(object != null && object instanceof HvlCoord){
 			return ((HvlCoord)object).x == x && ((HvlCoord)object).y == y;
 		}else return false;
+	}
+	
+	@Override
+	public int hashCode(){
+		return Objects.hash(x, y);
 	}
 	
 	@Override

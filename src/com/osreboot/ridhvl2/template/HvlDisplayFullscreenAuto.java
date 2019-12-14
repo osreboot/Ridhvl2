@@ -3,6 +3,7 @@ package com.osreboot.ridhvl2.template;
 import org.lwjgl.opengl.Display;
 
 import com.osreboot.ridhvl2.HvlLogger;
+import com.osreboot.ridhvl2.menu.HvlEnvironment;
 
 /**
  * An implementation of {@linkplain HvlDisplay} that automatically selects and applies the best
@@ -59,9 +60,7 @@ public class HvlDisplayFullscreenAuto extends HvlDisplay{
 	}
 
 	@Override
-	protected void preUpdate(float delta){
-
-	}
+	protected void preUpdate(float delta){}
 
 	@Override
 	protected void postUpdate(float delta){
@@ -88,6 +87,11 @@ public class HvlDisplayFullscreenAuto extends HvlDisplay{
 	public void setResizable(boolean resizableArg){
 		super.setResizable(false);
 		HvlLogger.println("Resizability cannot be modified with a fullscreen display!");
+	}
+	
+	@Override
+	public HvlEnvironment getEnvironment(){
+		return autoDisplay.getEnvironment();
 	}
 
 }

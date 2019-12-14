@@ -5,6 +5,7 @@ import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
 
 import com.osreboot.ridhvl2.HvlLogger;
+import com.osreboot.ridhvl2.menu.HvlEnvironment;
 
 /**
  * An implementation of {@linkplain HvlDisplay} that exclusively tracks one (fullscreen) LWJGL
@@ -58,9 +59,7 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 	}
 
 	@Override
-	protected void preUpdate(float delta){
-
-	}
+	protected void preUpdate(float delta){}
 
 	@Override
 	protected void postUpdate(float delta){
@@ -87,6 +86,11 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 	public void setResizable(boolean resizableArg){
 		super.setResizable(false);
 		HvlLogger.println("Resizability cannot be modified with a fullscreen display!");
+	}
+
+	@Override
+	public HvlEnvironment getEnvironment(){
+		return new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight(), false);
 	}
 
 }

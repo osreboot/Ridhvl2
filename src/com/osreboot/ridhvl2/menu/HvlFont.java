@@ -9,7 +9,7 @@ import java.util.Set;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.opengl.Texture;
 
-public class HvlFont extends HvlTaggableOpen{
+public class HvlFont extends HvlTaggable{
 	private static final long serialVersionUID = 7326153102489408036L;
 
 	public static final String FILE_EXTENSION = "hvlft"; 
@@ -24,7 +24,7 @@ public class HvlFont extends HvlTaggableOpen{
 
 	private transient Texture loadedTexture;
 
-	// Constructor for Jackson derialization
+	// Constructor for Jackson deserialization
 	private HvlFont(){}
 	
 	public HvlFont(HashMap<Character, HvlCharacter> charactersArg, Texture loadedTextureArg, String textureArg){
@@ -39,11 +39,11 @@ public class HvlFont extends HvlTaggableOpen{
 	}
 
 	public void draw(String textArg, float xArg, float yArg){
-		draw(textArg, xArg, yArg, Color.white, 1.0f);
+		draw(textArg, xArg, yArg, Color.white, 1f);
 	}
 
 	public void draw(String textArg, float xArg, float yArg, Color colorArg){
-		draw(textArg, xArg, yArg, colorArg, 1.0f);
+		draw(textArg, xArg, yArg, colorArg, 1f);
 	}
 
 	public void draw(String textArg, float xArg, float yArg, float scaleArg){
@@ -61,15 +61,15 @@ public class HvlFont extends HvlTaggableOpen{
 				if(characters.containsKey(c)){
 					HvlCharacter character = characters.get(c);
 
-					float charWidth = (character.getUV1().x - character.getUV0().x) * loadedTexture.getImageWidth() * scaleArg;
-					float charHeight = (character.getUV1().y - character.getUV0().y) * loadedTexture.getImageHeight() * scaleArg;
+					float charWidth = (character.getUV1().x - character.getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
+					float charHeight = (character.getUV1().y - character.getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
 
 					hvlDraw(hvlQuad(currentX, currentY, charWidth, charHeight, 
 							character.getUV0().x, character.getUV0().y, character.getUV1().x, character.getUV1().y),
 							loadedTexture, colorArg);
 
 					currentX += charWidth;
-					currentX += get(TAG_X_SPACING) * scaleArg;
+					currentX += get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
 
 					if(charHeight > maxHeight)
 						maxHeight = charHeight;
@@ -77,7 +77,7 @@ public class HvlFont extends HvlTaggableOpen{
 			}
 
 			currentY += maxHeight;
-			currentY += get(TAG_Y_SPACING) * scaleArg;
+			currentY += get(TAG_Y_SPACING) * get(TAG_SCALE) * scaleArg;
 		}
 	}
 
@@ -88,10 +88,10 @@ public class HvlFont extends HvlTaggableOpen{
 		for(String line : lines){
 			float lineWidth = 0;
 			for(char c : line.toCharArray()){
-				lineWidth += (characters.get(c).getUV1().x - characters.get(c).getUV0().x) * loadedTexture.getImageWidth() * scaleArg;
-				lineWidth += get(TAG_X_SPACING) * scaleArg;
+				lineWidth += (characters.get(c).getUV1().x - characters.get(c).getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
+				lineWidth += get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
 			}
-			lineWidth -= get(TAG_X_SPACING) * scaleArg;
+			lineWidth -= get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
 
 			if(lineWidth > maxWidth)
 				maxWidth = lineWidth;
@@ -107,15 +107,15 @@ public class HvlFont extends HvlTaggableOpen{
 		for(String line : lines){
 			float maxHeight = 0;
 			for(char c : line.toCharArray()){
-				float charHeight = (characters.get(c).getUV1().y - characters.get(c).getUV0().y) * loadedTexture.getImageHeight() * scaleArg;
+				float charHeight = (characters.get(c).getUV1().y - characters.get(c).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
 				if(charHeight > maxHeight)
 					maxHeight = charHeight;
 			}
 
 			totalHeight += maxHeight;
-			totalHeight += get(TAG_Y_SPACING) * scaleArg;
+			totalHeight += get(TAG_Y_SPACING) * get(TAG_SCALE) * scaleArg;
 		}
-		totalHeight -= get(TAG_Y_SPACING) * scaleArg;
+		totalHeight -= get(TAG_Y_SPACING) * get(TAG_SCALE) * scaleArg;
 
 		return totalHeight;
 	}
