@@ -63,31 +63,40 @@ public class HvlLabel extends HvlComponent{
 		set(TAG_OFFSET_X, 0f);
 		set(TAG_OFFSET_Y, 0f);
 	}
-	
+
 	public HvlLabel text(String textArg){
 		return (HvlLabel)set(TAG_TEXT, textArg);
 	}
-	
+
 	public String getText(){
 		return get(TAG_TEXT);
 	}
-	
+
 	public HvlLabel align(float xAlignArg, float yAlignArg){
 		return (HvlLabel)set(TAG_ALIGN_X, xAlignArg)
 				.set(TAG_ALIGN_Y, yAlignArg);
 	}
-	
+
 	public HvlLabel offsetX(float xOffsetArg){
 		return (HvlLabel)set(TAG_OFFSET_X, xOffsetArg);
 	}
-	
+
 	public HvlLabel offsetY(float yOffsetArg){
 		return (HvlLabel)set(TAG_OFFSET_Y, yOffsetArg);
 	}
-	
+
 	public HvlLabel offset(float xOffsetArg, float yOffsetArg){
 		return (HvlLabel)set(TAG_OFFSET_X, xOffsetArg)
 				.set(TAG_OFFSET_Y, yOffsetArg);
+	}
+	
+	public HvlLabel scale(float scaleArg){
+		return (HvlLabel)set(TAG_SCALE, scaleArg);
+	}
+	
+	public HvlLabel autoSize(){
+		return (HvlLabel)overrideWidth(get(TAG_FONT).getWidth(getText(), get(TAG_SCALE)))
+				.overrideHeight(get(TAG_FONT).getHeight(getText(), get(TAG_SCALE)));
 	}
 
 }

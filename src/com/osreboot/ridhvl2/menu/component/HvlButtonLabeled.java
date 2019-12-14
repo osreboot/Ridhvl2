@@ -113,5 +113,14 @@ public class HvlButtonLabeled extends HvlButton{
 		return (HvlButtonLabeled)set(TAG_TEXT_OFFSET_X, xOffsetArg)
 				.set(TAG_TEXT_OFFSET_Y, yOffsetArg);
 	}
+	
+	public HvlButtonLabeled scale(float scaleArg){
+		return (HvlButtonLabeled)set(TAG_TEXT_SCALE, scaleArg);
+	}
+	
+	public HvlButtonLabeled autoSize(){
+		return (HvlButtonLabeled)overrideWidth(get(TAG_FONT).getWidth(getText(), get(TAG_TEXT_SCALE)))
+				.overrideHeight(get(TAG_FONT).getHeight(getText(), get(TAG_TEXT_SCALE)));
+	}
 
 }

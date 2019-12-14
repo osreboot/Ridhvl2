@@ -14,7 +14,7 @@ import com.osreboot.ridhvl2.HvlCoord;
 public class HvlPolygon {
 
 	private HvlCoord[] vertices, uvs;
-	
+
 	/**
 	 * Constructs a HvlPolygon from the given vertices and UVs. Both the vertex array and the UV array must have at
 	 * least three elements, and be equal in size.
@@ -26,24 +26,28 @@ public class HvlPolygon {
 	 */
 	public HvlPolygon(HvlCoord[] vArgs, HvlCoord[] uvArgs){
 		if(vArgs.length < 3 || uvArgs.length < 3 || vArgs.length != uvArgs.length) throw new InvalidVertexCountException();
-		vertices = vArgs;
-		uvs = uvArgs;
+		vertices = new HvlCoord[vArgs.length];
+		uvs = new HvlCoord[uvArgs.length];
+		for(int i = 0; i < vertices.length; i++)
+			vertices[i] = new HvlCoord(vArgs[i]);
+		for(int i = 0; i < vertices.length; i++)
+			uvs[i] = new HvlCoord(uvArgs[i]);
 	}
-	
+
 	/**
 	 * @return the HvlPolygon's vertex array
 	 */
 	public HvlCoord[] getVertices(){
 		return vertices;
 	}
-	
+
 	/**
 	 * @return the HvlPolygon's UV array
 	 */
 	public HvlCoord[] getUVs(){
 		return uvs;
 	}
-	
+
 	/**
 	 * Sets the vertices for the HvlPolygon. <code>vArgs</code> must be equal in size to the HvlPolygon's existing
 	 * vertex array (see {@linkplain #getVertices()}).
@@ -54,9 +58,10 @@ public class HvlPolygon {
 	 */
 	public void setVertices(HvlCoord[] vArgs){
 		if(vArgs.length < 3 || vArgs.length != vertices.length) throw new InvalidVertexCountException();
-		vertices = vArgs;
+		for(int i = 0; i < vertices.length; i++)
+			vertices[i].set(vArgs[i]);
 	}
-	
+
 	/**
 	 * A convenience alternative to {@linkplain #setVertices(HvlCoord[])} that doesn't require the user to combine
 	 * {@linkplain HvlCoord} elements into an array.
@@ -70,13 +75,13 @@ public class HvlPolygon {
 	 */
 	public void setVertices(HvlCoord v0Arg, HvlCoord v1Arg, HvlCoord v2Arg, HvlCoord... vArgs){
 		if(vArgs.length + 3 != vertices.length) throw new InvalidVertexCountException();
-		vertices[0] = v0Arg;
-		vertices[1] = v1Arg;
-		vertices[2] = v2Arg;
+		vertices[0].set(v0Arg);
+		vertices[1].set(v1Arg);
+		vertices[2].set(v2Arg);
 		for(int i = 0; i < vArgs.length; i++)
-			vertices[3 + i] = vArgs[i];
+			vertices[3 + i].set(vArgs[i]);
 	}
-	
+
 	/**
 	 * Sets the UVs for the HvlPolygon. <code>uvArgs</code> must be equal in size to the HvlPolygon's existing UV 
 	 * array (see {@linkplain #getUVs()}).
@@ -87,9 +92,10 @@ public class HvlPolygon {
 	 */
 	public void setUVs(HvlCoord[] uvArgs){
 		if(uvArgs.length < 3 || uvArgs.length != uvs.length) throw new InvalidVertexCountException();
-		uvs = uvArgs;
+		for(int i = 0; i < uvs.length; i++)
+			uvs[i].set(uvArgs[i]);
 	}
-	
+
 	/**
 	 * A convenience alternative to {@linkplain #setUVs(HvlCoord[])} that doesn't require the user to combine
 	 * {@linkplain HvlCoord} elements into an array.
@@ -103,13 +109,13 @@ public class HvlPolygon {
 	 */
 	public void setUVs(HvlCoord uv0Arg, HvlCoord uv1Arg, HvlCoord uv2Arg, HvlCoord... uvArgs){
 		if(uvArgs.length + 3 != uvs.length) throw new InvalidVertexCountException();
-		uvs[0] = uv0Arg;
-		uvs[1] = uv1Arg;
-		uvs[2] = uv2Arg;
+		uvs[0].set(uv0Arg);
+		uvs[1].set(uv1Arg);
+		uvs[2].set(uv2Arg);
 		for(int i = 0; i < uvArgs.length; i++)
-			uvs[3 + i] = uvArgs[i];
+			uvs[3 + i].set(uvArgs[i]);
 	}
-	
+
 	/**
 	 * Thrown if an attempt is made to supply fewer than three {@linkplain HvlCoord} arguments to any HvlPolygon
 	 * set operation. Also thrown if an attempt is made to alter the vertex or UV coordinate count of an existing 
@@ -121,5 +127,5 @@ public class HvlPolygon {
 	public static class InvalidVertexCountException extends RuntimeException{
 		private static final long serialVersionUID = 5873291550044448526L;
 	}
-	
+
 }

@@ -44,7 +44,7 @@ public final class HvlCoord implements Serializable{
 	}
 	
 	/**
-	 * Assigns a new 'x' and 'y' value.
+	 * Assigns new 'x' and 'y' values.
 	 * 
 	 * @param xArg the new value of 'x'
 	 * @param yArg the new value of 'y'
@@ -52,6 +52,16 @@ public final class HvlCoord implements Serializable{
 	public void set(float xArg, float yArg){
 		x = xArg;
 		y = yArg;
+	}
+	
+	/**
+	 * Assigns new 'x' and 'y' values inherited from the given HvlCoord instance.
+	 * 
+	 * @param cArg the HvlCoord to inherit values from
+	 */
+	public void set(HvlCoord cArg){
+		x = cArg.x;
+		y = cArg.y;
 	}
 	
 	@Override
