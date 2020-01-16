@@ -72,6 +72,7 @@ public class HvlArranger extends HvlContainer{
 
 	protected HvlArranger(HvlTagTransient<?>... tags){
 		super(accumulate(tags, TAG_HORIZONTAL, TAG_ALIGN_X, TAG_ALIGN_Y));
+		set(TAG_CHILDREN, new ArrayList<>());
 		set(TAG_UPDATE, DEFAULT_UPDATE);
 		set(TAG_HORIZONTAL, false);
 		set(TAG_ALIGN_X, 0f);
@@ -81,6 +82,7 @@ public class HvlArranger extends HvlContainer{
 	public HvlArranger(boolean horizontalArg, float xAlignArg, float yAlignArg){
 		this();
 		HvlDefault.applyIfExists(HvlArranger.class, this);
+		set(TAG_CHILDREN, new ArrayList<>());
 		set(TAG_HORIZONTAL, horizontalArg);
 		set(TAG_ALIGN_X, xAlignArg);
 		set(TAG_ALIGN_Y, yAlignArg);
@@ -89,6 +91,7 @@ public class HvlArranger extends HvlContainer{
 	public HvlArranger(boolean horizontalArg){
 		this();
 		HvlDefault.applyIfExists(HvlArranger.class, this);
+		set(TAG_CHILDREN, new ArrayList<>());
 		set(TAG_HORIZONTAL, horizontalArg);
 	}
 	
