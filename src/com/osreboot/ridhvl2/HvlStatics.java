@@ -7,6 +7,7 @@ import org.newdawn.slick.opengl.Texture;
 import com.osreboot.ridhvl2.loader.HvlLoader;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlEnvironmentVolatile;
+import com.osreboot.ridhvl2.menu.HvlFont;
 import com.osreboot.ridhvl2.painter.HvlPaint;
 import com.osreboot.ridhvl2.painter.HvlPainter;
 import com.osreboot.ridhvl2.painter.HvlPolygon;
@@ -430,6 +431,30 @@ public final class HvlStatics {
 		for(HvlLoader<?> l : HvlLoader.getLoaders()){
 			if(l.getTypeLabel().equalsIgnoreCase(HvlLoader.TYPELABEL_SOUND)){
 				return ((HvlLoader<Audio>)l).get(indexArg);//TODO resolve this warning
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Fetches an {@linkplain HvlFont} instance stored in an {@linkplain HvlLoader}.
+	 * This resource must have been loaded previously. See {@linkplain #hvlLoad(String)} for more information on
+	 * loading resources. Additionally, (and similarly to {@linkplain #hvlLoad(String)}) an HvlLoader instance
+	 * with the specific <code>TYPELABEL</code> must be available for use and have said HvlFont loaded into it.
+	 * 
+	 * <p>
+	 * 
+	 * HvlFont instances are referenced by the order in which they were loaded (relative to other HvlFont instances). 
+	 * Again see {@linkplain #hvlLoad(String)} for more specifics.
+	 * 
+	 * @param indexArg the index specifying the HvlFont instance to be fetched
+	 * @return the fetched HvlFont instance, if it exists
+	 */
+	@SuppressWarnings("unchecked")
+	public static HvlFont hvlFont(int indexArg){
+		for(HvlLoader<?> l : HvlLoader.getLoaders()){
+			if(l.getTypeLabel().equalsIgnoreCase(HvlLoader.TYPELABEL_FONT)){
+				return ((HvlLoader<HvlFont>)l).get(indexArg);//TODO resolve this warning
 			}
 		}
 		return null;

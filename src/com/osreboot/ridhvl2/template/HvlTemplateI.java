@@ -1,6 +1,7 @@
 package com.osreboot.ridhvl2.template;
 
 import com.osreboot.ridhvl2.loader.HvlLoader;
+import com.osreboot.ridhvl2.loader.HvlLoaderFont;
 import com.osreboot.ridhvl2.loader.HvlLoaderSound;
 import com.osreboot.ridhvl2.loader.HvlLoaderTexture;
 
@@ -52,6 +53,7 @@ public abstract class HvlTemplateI extends HvlTemplate{
 		//Add HvlLoader instances so the user can load resources
 		HvlLoader.addLoader(new HvlLoaderTexture());
 		HvlLoader.addLoader(new HvlLoaderSound());
+		HvlLoader.addLoader(new HvlLoaderFont());
 
 		//Start the timer loop
 		start();
