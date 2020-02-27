@@ -107,14 +107,15 @@ public abstract class HvlLoader<T> {
 	 */
 	public static void clearLoaders(){
 		HvlLogger.println(debug, "Clearing loader references!");
+		loaders.forEach(l -> l.cleanup());
 		loaders.clear();
 	}
 
 	protected ArrayList<T> resources;
-	protected String defaultPath;
+	protected final String defaultPath;
 
-	protected String typeLabel;
-	protected String[] typeExtensions;
+	protected final String typeLabel;
+	protected final String[] typeExtensions;
 
 	/**
 	 * Constructs an instance of HvlLoader with the specified <code>defaultPath</code>, <code>typeLabel</code> and
@@ -191,6 +192,11 @@ public abstract class HvlLoader<T> {
 	public T get(int indexArg){
 		return resources.get(indexArg);
 	}
+	
+	/**
+	 * Called at the end of a loader's lifecycle to release any resources and terminate the loader cleanly.
+	 */
+	public void cleanup(){}
 
 	/**
 	 * @return all resources previously loaded by the HvlLoader

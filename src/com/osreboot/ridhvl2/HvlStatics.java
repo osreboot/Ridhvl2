@@ -1,6 +1,7 @@
 package com.osreboot.ridhvl2;
 
 import org.newdawn.slick.Color;
+import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.opengl.Texture;
 
 import com.osreboot.ridhvl2.loader.HvlLoader;
@@ -387,25 +388,48 @@ public final class HvlStatics {
 	}
 
 	/**
-	 * Fetches a {@linkplain org.newdawn.slick.opengl.Texture Texture} stored in an {@linkplain HvlLoader}.
+	 * Fetches a {@linkplain org.newdawn.slick.opengl.Texture Texture} instance stored in an {@linkplain HvlLoader}.
 	 * This resource must have been loaded previously. See {@linkplain #hvlLoad(String)} for more information on
 	 * loading resources. Additionally, (and similarly to {@linkplain #hvlLoad(String)}) an HvlLoader instance
-	 * with the specific <code>TYPELABEL</code> must be available for use and have said Texture previously
-	 * loaded into it.
+	 * with the specific <code>TYPELABEL</code> must be available for use and have said Texture loaded into it.
 	 * 
 	 * <p>
 	 * 
-	 * Texture instances are referenced by the order in which they were loaded (relative to other textures). 
+	 * Texture instances are referenced by the order in which they were loaded (relative to other Texture instances). 
 	 * Again see {@linkplain #hvlLoad(String)} for more specifics.
 	 * 
-	 * @param indexArg the index specifying the Texture to be fetched
-	 * @return the fetched Texture, if it exists
+	 * @param indexArg the index specifying the Texture instance to be fetched
+	 * @return the fetched Texture instance, if it exists
 	 */
 	@SuppressWarnings("unchecked")
 	public static Texture hvlTexture(int indexArg){
 		for(HvlLoader<?> l : HvlLoader.getLoaders()){
 			if(l.getTypeLabel().equalsIgnoreCase(HvlLoader.TYPELABEL_TEXTURE)){
 				return ((HvlLoader<Texture>)l).get(indexArg);//TODO resolve this warning
+			}
+		}
+		return null;
+	}
+	
+	/**
+	 * Fetches an {@linkplain org.newdawn.slick.openal.Audio Audio} instance stored in an {@linkplain HvlLoader}.
+	 * This resource must have been loaded previously. See {@linkplain #hvlLoad(String)} for more information on
+	 * loading resources. Additionally, (and similarly to {@linkplain #hvlLoad(String)}) an HvlLoader instance
+	 * with the specific <code>TYPELABEL</code> must be available for use and have said Audio loaded into it.
+	 * 
+	 * <p>
+	 * 
+	 * Audio instances are referenced by the order in which they were loaded (relative to other Audio instances). 
+	 * Again see {@linkplain #hvlLoad(String)} for more specifics.
+	 * 
+	 * @param indexArg the index specifying the Audio instance to be fetched
+	 * @return the fetched Audio instance, if it exists
+	 */
+	@SuppressWarnings("unchecked")
+	public static Audio hvlSound(int indexArg){
+		for(HvlLoader<?> l : HvlLoader.getLoaders()){
+			if(l.getTypeLabel().equalsIgnoreCase(HvlLoader.TYPELABEL_SOUND)){
+				return ((HvlLoader<Audio>)l).get(indexArg);//TODO resolve this warning
 			}
 		}
 		return null;
