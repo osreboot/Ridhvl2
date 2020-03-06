@@ -69,11 +69,23 @@ public final class HvlMenu {
 
 	public static List<HvlComponent> get(){
 		if(active){
+			return components;
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
+	}
+	
+	public static List<HvlComponent> getNext(){
+		if(active){
 			return componentsQueued == null ? components : componentsQueued;
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
 
 	public static HvlComponent top(){
+		if(active){
+			return components.get(components.size() - 1);
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
+	}
+	
+	public static HvlComponent topNext(){
 		if(active){
 			return componentsQueued == null ? components.get(components.size() - 1) :
 				componentsQueued.get(componentsQueued.size() - 1);
