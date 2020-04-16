@@ -3,7 +3,8 @@ package com.osreboot.ridhvl2;
 /**
  * 
  * A collection of logic operations that are commonly used in game design, but don't appear in Java's standard 
- * libraries.
+ * libraries. Also contains a small collection of the <code>float</code> mappings of common {@linkplain Math}
+ * operations, for the sake of efficiency.
  * 
  * @author os_reboot
  *
@@ -12,6 +13,11 @@ public final class HvlMath {
 	
 	private HvlMath(){}
 
+	/**
+	 * The <code>float</code> equivalent of {@linkplain Math#PI}.
+	 */
+	public static final float PI = (float)Math.PI;
+	
 	/**
 	 * Returns <code>xArg</code> progressed towards <code>goalArg</code> by <code>modifierArg</code> amount.
 	 * The sign of <code>modifierArg</code> doesn't matter. Returns <code>goalArg</code> if <code>xArg</code> 
@@ -103,6 +109,52 @@ public final class HvlMath {
 		}else if(bound1Arg < bound2Arg){
 			return Math.max(Math.min(xArg, bound2Arg), bound1Arg);
 		}else return bound1Arg;
+	}
+	
+	/**
+	 * Returns the angle (in degrees) from <code>(x1Arg, y1Arg)</code> to <code>(x2Arg, y2Arg)</code>.
+	 * The output of this method is constrained by <code>-180f</code> and <code>180f</code>.
+	 * 
+	 * @param x1Arg "from" x-coordinate for the angle calculation
+	 * @param y1Arg "from" y-coordinate for the angle calculation
+	 * @param x2Arg "to" x-coordinate for the angle calculation
+	 * @param y2Arg "to" y-coordinate for the angle calculation
+	 * @return the angle (in degrees) between the two coordinates
+	 */
+	public static float angle(float x1Arg, float y1Arg, float x2Arg, float y2Arg){
+		return toDegrees((float)Math.atan2(y2Arg - y1Arg, x2Arg - x1Arg));
+	}
+	
+	/**
+	 * Returns the angle (in degrees) from <code>c1Arg</code> to <code>c2Arg</code>. The output of this
+	 * method is constrained by <code>-180f</code> and <code>180f</code>.
+	 * 
+	 * @param c1Arg "from" coordinate for the angle calculation
+	 * @param c2Arg "to" coordinate for the angle calculation
+	 * @return the angle (in degrees) between the two coordinates
+	 */
+	public static float angle(HvlCoord c1Arg, HvlCoord c2Arg){
+		return angle(c1Arg.x, c1Arg.y, c2Arg.x, c2Arg.y);
+	}
+	
+	/**
+	 * The <code>float</code> equivalent of {@linkplain Math#toDegrees(double)}.
+	 * 
+	 * @param radiansArg the value to be converted to degrees
+	 * @return the equivalent of <code>radiansArg</code> in degrees
+	 */
+	public static float toDegrees(float radiansArg){
+		return radiansArg * 180f / PI;
+	}
+	
+	/**
+	 * The <code>float</code> equivalent of {@linkplain Math#toRadians(double)}.
+	 * 
+	 * @param degreesArg the value to be converted to radians
+	 * @return the equivalent of <code>degreesArg</code> in radians
+	 */
+	public static float toRadians(float degreesArg){
+		return degreesArg * PI / 180f;
 	}
 	
 }

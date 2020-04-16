@@ -152,6 +152,79 @@ public final class HvlStatics {
 		}
 		return globalQuad;
 	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} as a representation of
+	 * the line between <code>(x1, y1)</code> and <code>(x2, y2)</code> with the width <code>width</code>. This
+	 * method simulates line endpoint caps, so the real width of the (rotation-independent) HvlQuad will be
+	 * <code>abs(x2 - x1) + width</code>. See {@linkplain #hvlQuad(float, float, float, float)} for other HvlQuad
+	 * options.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlQuad instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param x1 the x-coordinate of the start coordinate of the line
+	 * @param y1 the y-coordinate of the start coordinate of the line
+	 * @param x2 the x-coordinate of the end coordinate of the line
+	 * @param y2 the y-coordinate of the end coordinate of the line
+	 * @param width the width of the line
+	 * @return an instance of HvlQuad with coordinates set to a representation of the line produced from the specified values
+	 */
+	public static HvlQuad hvlLine(float x1, float y1, float x2, float y2, float width){
+		float angleRadians = HvlMath.toRadians(HvlMath.angle(x1, y1, x2, y2));
+		float cosHalfWidth = width * 0.5f * (float)Math.cos(angleRadians);
+		float sinHalfWidth = width * 0.5f * (float)Math.sin(angleRadians);
+		if(globalQuad == null){
+			globalQuad = new HvlQuad(
+					new HvlCoord(-cosHalfWidth + sinHalfWidth + x1, -sinHalfWidth - cosHalfWidth + y1),
+					new HvlCoord(cosHalfWidth + sinHalfWidth + x2, sinHalfWidth - cosHalfWidth + y2), 
+					new HvlCoord(cosHalfWidth - sinHalfWidth + x2, sinHalfWidth + cosHalfWidth + y2),
+					new HvlCoord(-cosHalfWidth - sinHalfWidth + x1, -sinHalfWidth + cosHalfWidth + y1)
+					);
+		}else{
+			globalQuad.getVertices()[0].set(-cosHalfWidth + sinHalfWidth + x1, -sinHalfWidth - cosHalfWidth + y1);
+			globalQuad.getVertices()[1].set(cosHalfWidth + sinHalfWidth + x2, sinHalfWidth - cosHalfWidth + y2);
+			globalQuad.getVertices()[2].set(cosHalfWidth - sinHalfWidth + x2, sinHalfWidth + cosHalfWidth + y2);
+			globalQuad.getVertices()[3].set(-cosHalfWidth - sinHalfWidth + x1, -sinHalfWidth + cosHalfWidth + y1);
+			globalQuad.setUVs(HvlQuad.COORDS_DEFAULT_UVS[0], HvlQuad.COORDS_DEFAULT_UVS[1], 
+					HvlQuad.COORDS_DEFAULT_UVS[2], HvlQuad.COORDS_DEFAULT_UVS[3]);
+		}
+		return globalQuad;
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} as a representation of
+	 * the line between <code>c1</code> and <code>c2</code> with the width <code>width</code>. This method simulates
+	 * line endpoint caps, so the real width of the (rotation-independent) HvlQuad will be
+	 * <code>abs(x2 - x1) + width</code>. See {@linkplain #hvlQuad(float, float, float, float)} for other HvlQuad options.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlQuad instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param c1 the start coordinate of the line
+	 * @param c2 the end coordinate of the line
+	 * @param width the width of the line
+	 * @return an instance of HvlQuad with coordinates set to a representation of the line produced from the specified values
+	 */
+	public static HvlQuad hvlLine(HvlCoord c1, HvlCoord c2, float width){
+		return hvlLine(c1.x, c1.y, c2.x, c2.y, width);
+	}
 
 	//========================/\/\/\    END POLYGON STATICS    /\/\/\========================//
 
