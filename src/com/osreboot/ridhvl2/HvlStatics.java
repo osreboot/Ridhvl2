@@ -1,5 +1,7 @@
 package com.osreboot.ridhvl2;
 
+import java.util.HashMap;
+
 import org.newdawn.slick.Color;
 import org.newdawn.slick.openal.Audio;
 import org.newdawn.slick.opengl.Texture;
@@ -8,6 +10,7 @@ import com.osreboot.ridhvl2.loader.HvlLoader;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlEnvironmentVolatile;
 import com.osreboot.ridhvl2.menu.HvlFont;
+import com.osreboot.ridhvl2.painter.HvlCircle;
 import com.osreboot.ridhvl2.painter.HvlPaint;
 import com.osreboot.ridhvl2.painter.HvlPainter;
 import com.osreboot.ridhvl2.painter.HvlPolygon;
@@ -28,6 +31,7 @@ public final class HvlStatics {
 	//========================\/\/\/   BEGIN POLYGON STATICS   \/\/\/========================//
 
 	private static HvlQuad globalQuad;
+	private static HashMap<Integer, HvlCircle> globalCircles;
 
 	/**
 	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
@@ -110,7 +114,7 @@ public final class HvlStatics {
 	/**
 	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
 	 * quad (specified by <code>x</code> and <code>y</code>) being the upper-left corner of the quad. See 
-	 * {@linkplain #hvlQuadc(float, float, float, float)} for other HvlQuad options.
+	 * {@linkplain #hvlQuad(float, float, float, float)} for other HvlQuad options.
 	 * 
 	 * <p>
 	 * 
@@ -153,6 +157,163 @@ public final class HvlStatics {
 		return globalQuad;
 	}
 	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
+	 * of the circle (specified by <code>x</code> and <code>y</code>) being the upper-left corner of the circle.
+	 * This method uses the default HvlCircle vertex density, as specified by
+	 * {@linkplain HvlCircle#DEFAULT_VERTEX_RESOLUTION}. See {@linkplain #hvlCirclec(float, float, float)} for
+	 * other HvlCircle options.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method is <b>slow</b>! For better performance, use {@linkplain #hvlQuad(float, float, float, float)}
+	 * combined with a {@linkplain HvlPaint} that has a circular alpha channel.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlCircle instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param x the x-origin of the circle
+	 * @param y the y-origin of the circle
+	 * @param radius the radius of the circle
+	 * @return an instance of HvlCircle with coordinates set to the specified values
+	 */
+	public static HvlCircle hvlCircle(float x, float y, float radius){
+		int vertexCount = Math.max((int)(2f * HvlMath.PI * radius * HvlCircle.DEFAULT_VERTEX_RESOLUTION), 3);
+		if(globalCircles == null) globalCircles = new HashMap<>();
+		if(!globalCircles.containsKey(vertexCount)){
+			globalCircles.put(vertexCount, new HvlCircle(x + radius, y + radius, radius, vertexCount));
+		}else{
+			globalCircles.get(vertexCount).setVertices(x + radius, y + radius, radius);
+			globalCircles.get(vertexCount).setUVs(0f, 0f, 1f, 1f);
+		}
+		return globalCircles.get(vertexCount);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
+	 * of the circle (specified by <code>x</code> and <code>y</code>) being the center of the circle. This method
+	 * uses the default HvlCircle vertex density, as specified by {@linkplain HvlCircle#DEFAULT_VERTEX_RESOLUTION}.
+	 * See {@linkplain #hvlCircle(float, float, float)} for other HvlCircle options.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method is <b>slow</b>! For better performance, use {@linkplain #hvlQuad(float, float, float, float)}
+	 * combined with a {@linkplain HvlPaint} that has a circular alpha channel.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlCircle instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param x the x-origin of the circle
+	 * @param y the y-origin of the circle
+	 * @param radius the radius of the circle
+	 * @return an instance of HvlCircle with coordinates set to the specified values
+	 */
+	public static HvlCircle hvlCirclec(float x, float y, float radius){
+		int vertexCount = Math.max((int)(2f * HvlMath.PI * radius * HvlCircle.DEFAULT_VERTEX_RESOLUTION), 3);
+		if(globalCircles == null) globalCircles = new HashMap<>();
+		if(!globalCircles.containsKey(vertexCount)){
+			globalCircles.put(vertexCount, new HvlCircle(x, y, radius, vertexCount));
+		}else{
+			globalCircles.get(vertexCount).setVertices(x, y, radius * 2f, radius * 2f);
+			globalCircles.get(vertexCount).setUVs(0f, 0f, 1f, 1f);
+		}
+		return globalCircles.get(vertexCount);
+	}
+
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
+	 * of the circle (specified by <code>x</code> and <code>y</code>) being the upper-left corner of the circle.
+	 * The circle instance will have the number of vertices specified by <code>vertexCount</code>. See
+	 * {@linkplain #hvlCircle(float, float, float)} for other HvlCircle options.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method is <b>slow</b>! For better performance, use {@linkplain #hvlQuad(float, float, float, float)}
+	 * combined with a {@linkplain HvlPaint} that has a circular alpha channel.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlCircle instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param x the x-origin of the circle
+	 * @param y the y-origin of the circle
+	 * @param radius the radius of the circle
+	 * @param vertexCount the number of vertices to comprise the circle
+	 * @return an instance of HvlCircle with coordinates set to the specified values
+	 */
+	public static HvlCircle hvlCircle(float x, float y, float radius, int vertexCount){
+		if(globalCircles == null) globalCircles = new HashMap<>();
+		if(!globalCircles.containsKey(vertexCount)){
+			globalCircles.put(vertexCount, new HvlCircle(x + radius, y + radius, radius, vertexCount));
+		}else{
+			globalCircles.get(vertexCount).setVertices(x + radius, y + radius, radius);
+			globalCircles.get(vertexCount).setUVs(0f, 0f, 1f, 1f);
+		}
+		return globalCircles.get(vertexCount);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
+	 * of the circle (specified by <code>x</code> and <code>y</code>) being the center of the circle. The
+	 * circle instance will have the number of vertices specified by <code>vertexCount</code>. See 
+	 * {@linkplain #hvlCircle(float, float, float)} for other HvlCircle options.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method is <b>slow</b>! For better performance, use {@linkplain #hvlQuad(float, float, float, float)}
+	 * combined with a {@linkplain HvlPaint} that has a circular alpha channel.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlCircle instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param x the x-origin of the circle
+	 * @param y the y-origin of the circle
+	 * @param radius the radius of the circle
+	 * @param vertexCount the number of vertices to comprise the circle
+	 * @return an instance of HvlCircle with coordinates set to the specified values
+	 */
+	public static HvlCircle hvlCirclec(float x, float y, float radius, int vertexCount){
+		if(globalCircles == null) globalCircles = new HashMap<>();
+		if(!globalCircles.containsKey(vertexCount)){
+			globalCircles.put(vertexCount, new HvlCircle(x, y, radius, vertexCount));
+		}else{
+			globalCircles.get(vertexCount).setVertices(x, y, radius * 2f, radius * 2f);
+			globalCircles.get(vertexCount).setUVs(0f, 0f, 1f, 1f);
+		}
+		return globalCircles.get(vertexCount);
+	}
+
 	/**
 	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} as a representation of
 	 * the line between <code>(x1, y1)</code> and <code>(x2, y2)</code> with the width <code>width</code>. This
@@ -484,7 +645,7 @@ public final class HvlStatics {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Fetches an {@linkplain org.newdawn.slick.openal.Audio Audio} instance stored in an {@linkplain HvlLoader}.
 	 * This resource must have been loaded previously. See {@linkplain #hvlLoad(String)} for more information on
@@ -508,7 +669,7 @@ public final class HvlStatics {
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Fetches an {@linkplain HvlFont} instance stored in an {@linkplain HvlLoader}.
 	 * This resource must have been loaded previously. See {@linkplain #hvlLoad(String)} for more information on
@@ -546,7 +707,7 @@ public final class HvlStatics {
 		else globalEnvironment.setAndRefresh(xArg, yArg, widthArg, heightArg, false);
 		return globalEnvironment;
 	}
-	
+
 	@SuppressWarnings("deprecation")
 	public static HvlEnvironment hvlEnvironment(float xArg, float yArg, float widthArg, float heightArg, boolean blockedArg){
 		if(globalEnvironment == null)

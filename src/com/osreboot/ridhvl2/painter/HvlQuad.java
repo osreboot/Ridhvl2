@@ -60,14 +60,6 @@ public final class HvlQuad extends HvlPolygon{
 		super(quadArg.getVertices(), quadArg.getUVs());
 	}
 	
-	public HvlCoord[] getVertices(){
-		return super.getVertices();
-	}
-	
-	public HvlCoord[] getUVs(){
-		return super.getUVs();
-	}
-	
 	/**
 	 * Sets the vertices of the HvlQuad.
 	 * 
