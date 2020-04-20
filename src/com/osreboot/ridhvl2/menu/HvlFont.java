@@ -14,11 +14,14 @@ public class HvlFont extends HvlTaggable{
 
 	public static final String FILE_EXTENSION = "hvlft"; 
 
-	public static final HvlTag<String> TAG_TEXTURE = 		new HvlTag<>(String.class, "texture");
-	public static final HvlTag<String> TAG_REGEX_NEWLINE = 	new HvlTag<>(String.class, "regex_newline");
-	public static final HvlTag<Float> TAG_SCALE = 			new HvlTag<>(Float.class, "scale");
-	public static final HvlTag<Float> TAG_X_SPACING = 		new HvlTag<>(Float.class, "x_spacing");
-	public static final HvlTag<Float> TAG_Y_SPACING = 		new HvlTag<>(Float.class, "y_spacing");
+	public static final HvlTag<String> TAG_TEXTURE = 					new HvlTag<>(String.class, "texture");
+	public static final HvlTag<String> TAG_REGEX_NEWLINE =			 	new HvlTag<>(String.class, "regex_newline");
+	public static final HvlTag<Float> TAG_SCALE = 						new HvlTag<>(Float.class, "scale");
+	public static final HvlTag<Float> TAG_X_SPACING = 					new HvlTag<>(Float.class, "x_spacing");
+	public static final HvlTag<Float> TAG_Y_SPACING = 					new HvlTag<>(Float.class, "y_spacing");
+	public static final HvlTag<Float> TAG_X_OFFSET = 					new HvlTag<>(Float.class, "x_offset");
+	public static final HvlTag<Float> TAG_Y_OFFSET = 					new HvlTag<>(Float.class, "y_offset");
+	public static final HvlTag<HvlCharacter> TAG_CHARACTER_MISSING = 	new HvlTag<>(HvlCharacter.class, "character_missing");
 
 	private HashMap<Character, HvlCharacter> characters;
 
@@ -26,9 +29,16 @@ public class HvlFont extends HvlTaggable{
 
 	// Constructor for Jackson deserialization
 	private HvlFont(){}
-	
+
 	public HvlFont(HashMap<Character, HvlCharacter> charactersArg, Texture loadedTextureArg, String textureArg){
-		super(TAG_TEXTURE, TAG_REGEX_NEWLINE, TAG_SCALE, TAG_X_SPACING, TAG_Y_SPACING);
+		super(TAG_TEXTURE,
+				TAG_REGEX_NEWLINE,
+				TAG_SCALE,
+				TAG_X_SPACING,
+				TAG_Y_SPACING,
+				TAG_X_OFFSET,
+				TAG_Y_OFFSET,
+				TAG_CHARACTER_MISSING);
 		characters = charactersArg;
 		loadedTexture = loadedTextureArg;
 		set(TAG_TEXTURE, textureArg);
@@ -36,6 +46,8 @@ public class HvlFont extends HvlTaggable{
 		set(TAG_SCALE, 1.0f);
 		set(TAG_X_SPACING, 0f);
 		set(TAG_Y_SPACING, 0f);
+		set(TAG_X_OFFSET, 0f);
+		set(TAG_Y_OFFSET, 0f);
 	}
 
 	public void draw(String textArg, float xArg, float yArg){
@@ -53,9 +65,9 @@ public class HvlFont extends HvlTaggable{
 	public void draw(String textArg, float xArg, float yArg, Color colorArg, float scaleArg){
 		String[] lines = textArg.split(get(TAG_REGEX_NEWLINE));
 
-		float currentY = yArg;
+		float currentY = yArg + get(TAG_Y_OFFSET);
 		for(String line : lines){
-			float currentX = xArg;
+			float currentX = xArg + get(TAG_X_OFFSET);
 			float maxHeight = 0;
 			for(char c : line.toCharArray()){
 				if(characters.containsKey(c)){
@@ -73,12 +85,42 @@ public class HvlFont extends HvlTaggable{
 
 					if(charHeight > maxHeight)
 						maxHeight = charHeight;
+				}else if(get(TAG_CHARACTER_MISSING) != null){
+					float charWidth = (get(TAG_CHARACTER_MISSING).getUV1().x - get(TAG_CHARACTER_MISSING).getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
+					float charHeight = (get(TAG_CHARACTER_MISSING).getUV1().y - get(TAG_CHARACTER_MISSING).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
+
+					hvlDraw(hvlQuad(currentX, currentY, charWidth, charHeight, 
+							get(TAG_CHARACTER_MISSING).getUV0().x, get(TAG_CHARACTER_MISSING).getUV0().y,
+							get(TAG_CHARACTER_MISSING).getUV1().x, get(TAG_CHARACTER_MISSING).getUV1().y),
+							loadedTexture, colorArg);
+
+					currentX += charWidth;
+					currentX += get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
+
+					if(charHeight > maxHeight)
+						maxHeight = charHeight;
 				}//TODO else throw exception
 			}
 
 			currentY += maxHeight;
 			currentY += get(TAG_Y_SPACING) * get(TAG_SCALE) * scaleArg;
 		}
+	}
+
+	public void drawc(String textArg, float xArg, float yArg){
+		draw(textArg, xArg - (getWidth(textArg, 1f) / 2f), yArg - (getHeight(textArg, 1f) / 2f), Color.white, 1f);
+	}
+
+	public void drawc(String textArg, float xArg, float yArg, Color colorArg){
+		draw(textArg, xArg - (getWidth(textArg, 1f) / 2f), yArg - (getHeight(textArg, 1f) / 2f), colorArg, 1f);
+	}
+
+	public void drawc(String textArg, float xArg, float yArg, float scaleArg){
+		draw(textArg, xArg - (getWidth(textArg, scaleArg) / 2f), yArg - (getHeight(textArg, scaleArg) / 2f), Color.white, scaleArg);
+	}
+
+	public void drawc(String textArg, float xArg, float yArg, Color colorArg, float scaleArg){
+		draw(textArg, xArg - (getWidth(textArg, scaleArg) / 2f), yArg - (getHeight(textArg, scaleArg) / 2f), colorArg, scaleArg);
 	}
 
 	public float getWidth(String textArg, float scaleArg){
@@ -88,8 +130,13 @@ public class HvlFont extends HvlTaggable{
 		for(String line : lines){
 			float lineWidth = 0;
 			for(char c : line.toCharArray()){
-				lineWidth += (characters.get(c).getUV1().x - characters.get(c).getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
-				lineWidth += get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
+				if(characters.containsKey(c)){
+					lineWidth += (characters.get(c).getUV1().x - characters.get(c).getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
+					lineWidth += get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
+				}else if(get(TAG_CHARACTER_MISSING) != null){
+					lineWidth += (get(TAG_CHARACTER_MISSING).getUV1().x - get(TAG_CHARACTER_MISSING).getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
+					lineWidth += get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
+				}//TODO else throw exception
 			}
 			lineWidth -= get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
 
@@ -107,11 +154,16 @@ public class HvlFont extends HvlTaggable{
 		for(String line : lines){
 			float maxHeight = 0;
 			for(char c : line.toCharArray()){
-				float charHeight = (characters.get(c).getUV1().y - characters.get(c).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
-				if(charHeight > maxHeight)
-					maxHeight = charHeight;
+				if(characters.containsKey(c)){
+					float charHeight = (characters.get(c).getUV1().y - characters.get(c).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
+					if(charHeight > maxHeight)
+						maxHeight = charHeight;
+				}else if(get(TAG_CHARACTER_MISSING) != null){
+					float charHeight = (get(TAG_CHARACTER_MISSING).getUV1().y - get(TAG_CHARACTER_MISSING).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
+					if(charHeight > maxHeight)
+						maxHeight = charHeight;
+				}//TODO else throw exception
 			}
-
 			totalHeight += maxHeight;
 			totalHeight += get(TAG_Y_SPACING) * get(TAG_SCALE) * scaleArg;
 		}

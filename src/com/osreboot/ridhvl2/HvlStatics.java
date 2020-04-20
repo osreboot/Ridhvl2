@@ -97,8 +97,8 @@ public final class HvlStatics {
 	public static HvlQuad hvlQuadc(float x, float y, float xl, float yl){
 		if(globalQuad == null){
 			globalQuad = new HvlQuad(
-					new HvlCoord(x, y), new HvlCoord(x + xl, y), 
-					new HvlCoord(x + xl, y + yl), new HvlCoord(x, y + yl)
+					new HvlCoord(x - (xl/2), y - (yl/2)), new HvlCoord(x + (xl/2), y - (yl/2)), 
+					new HvlCoord(x + (xl/2), y + (yl/2)), new HvlCoord(x - (xl/2), y + (yl/2))
 					);
 		}else{
 			globalQuad.getVertices()[0].set(x - (xl/2), y - (yl/2));
