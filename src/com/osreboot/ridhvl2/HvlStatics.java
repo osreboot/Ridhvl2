@@ -539,8 +539,8 @@ public final class HvlStatics {
 
 	/**
 	 * Applies a translation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
-	 * <code>yArg</code> being the offset of the translation. Uses the same translation procedure from 
-	 * {@linkplain com.osreboot.ridhvl2.painter.HvlPainter HvlPainter}.
+	 * <code>yArg</code> being the offset of the translation. Uses the same translation procedure from
+	 * {@linkplain HvlPainter}.
 	 * 
 	 * @param xArg the x-offset of the translation
 	 * @param yArg the y-offset of the translation
@@ -553,8 +553,7 @@ public final class HvlStatics {
 	/**
 	 * Applies a rotation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
 	 * <code>yArg</code> being the origin of the rotation, and <code>degreesArg</code> being the magnitude of
-	 * the rotation, in degrees. Uses the same rotation procedure from 
-	 * {@linkplain com.osreboot.ridhvl2.painter.HvlPainter HvlPainter}.
+	 * the rotation, in degrees. Uses the same rotation procedure from {@linkplain HvlPainter}.
 	 * 
 	 * @param xArg the x-origin of the rotation
 	 * @param yArg the y-origin of the rotation
@@ -563,6 +562,20 @@ public final class HvlStatics {
 	 */
 	public static void hvlRotate(float xArg, float yArg, float degreesArg, HvlAction.A0 actionArg){
 		HvlPainter.rotate(xArg, yArg, degreesArg, actionArg);
+	}
+	
+	/**
+	 * Applies a scaling transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
+	 * <code>yArg</code> being the origin of the scale, and <code>scaleArg</code> being the magnitude of
+	 * the scale. Uses the same scaling procedure from {@linkplain HvlPainter}.
+	 * 
+	 * @param xArg the x-origin of the scale
+	 * @param yArg the y-origin of the scale
+	 * @param scaleArg the magnitude of the scale
+	 * @param actionArg the context that the scale is applied to
+	 */
+	public static void hvlScale(float xArg, float yArg, float scaleArg, HvlAction.A0 actionArg){
+		HvlPainter.scale(xArg, yArg, scaleArg, actionArg);
 	}
 
 	//========================/\/\/\    END PAINTER STATICS    /\/\/\========================//
@@ -713,6 +726,22 @@ public final class HvlStatics {
 		if(globalEnvironment == null)
 			globalEnvironment = new HvlEnvironmentVolatile(xArg, yArg, widthArg, heightArg, blockedArg);
 		else globalEnvironment.setAndRefresh(xArg, yArg, widthArg, heightArg, blockedArg);
+		return globalEnvironment;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static HvlEnvironment hvlEnvironmentc(float xArg, float yArg, float widthArg, float heightArg){
+		if(globalEnvironment == null)
+			globalEnvironment = new HvlEnvironmentVolatile(xArg - (widthArg/2), yArg - (heightArg/2), widthArg, heightArg, false);
+		else globalEnvironment.setAndRefresh(xArg - (widthArg/2), yArg - (heightArg/2), widthArg, heightArg, false);
+		return globalEnvironment;
+	}
+	
+	@SuppressWarnings("deprecation")
+	public static HvlEnvironment hvlEnvironmentc(float xArg, float yArg, float widthArg, float heightArg, boolean blockedArg){
+		if(globalEnvironment == null)
+			globalEnvironment = new HvlEnvironmentVolatile(xArg - (widthArg/2), yArg - (heightArg/2), widthArg, heightArg, blockedArg);
+		else globalEnvironment.setAndRefresh(xArg - (widthArg/2), yArg - (heightArg/2), widthArg, heightArg, blockedArg);
 		return globalEnvironment;
 	}
 

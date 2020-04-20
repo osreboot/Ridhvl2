@@ -5,6 +5,7 @@ import org.lwjgl.opengl.GL11;
 import org.newdawn.slick.Color;
 
 import com.osreboot.ridhvl2.HvlAction;
+import com.osreboot.ridhvl2.HvlStatics;
 import com.osreboot.ridhvl2.painter.HvlPaint.HvlPaintMode;
 import com.osreboot.ridhvl2.template.HvlChronology;
 import com.osreboot.ridhvl2.template.HvlChronologyExit;
@@ -139,7 +140,7 @@ public final class HvlPainter{
 	 * <p>
 	 * 
 	 * NOTE: this method should only be used by internal Ridhvl2 processes! If trying to draw inside a template,
-	 * use the methods in {@linkplain com.osreboot.ridhvl2.statics.HvlStaticPainter HvlStaticPainter}.
+	 * use the methods in {@linkplain HvlStatics}.
 	 * 
 	 * @param xArg the x-offset of the translation
 	 * @param yArg the y-offset of the translation
@@ -152,7 +153,6 @@ public final class HvlPainter{
 			GL11.glPushMatrix();
 			GL11.glTranslatef(xArg, yArg, 0);
 			actionArg.run();
-			GL11.glTranslatef(-xArg, -yArg, 0);
 			GL11.glPopMatrix();
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
@@ -165,7 +165,7 @@ public final class HvlPainter{
 	 * <p>
 	 * 
 	 * NOTE: this method should only be used by internal Ridhvl2 processes! If trying to draw inside a template,
-	 * use the methods in {@linkplain com.osreboot.ridhvl2.statics.HvlStaticPainter HvlStaticPainter}.
+	 * use the methods in {@linkplain HvlStatics}.
 	 * 
 	 * @param xArg the x-origin of the rotation
 	 * @param yArg the y-origin of the rotation
@@ -179,6 +179,34 @@ public final class HvlPainter{
 			GL11.glPushMatrix();
 			GL11.glTranslatef(xArg, yArg, 0);
 			GL11.glRotatef(degreesArg, 0, 0, 1);
+			GL11.glTranslatef(-xArg, -yArg, 0);
+			actionArg.run();
+			GL11.glPopMatrix();
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
+	}
+	
+	/**
+	 * Applies a scaling transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
+	 * <code>yArg</code> being the origin of the scale, and <code>scaleArg</code> being the magnitude of
+	 * the scale.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method should only be used by internal Ridhvl2 processes! If trying to draw inside a template,
+	 * use the methods in {@linkplain HvlStatics}.
+	 * 
+	 * @param xArg the x-origin of the scale
+	 * @param yArg the y-origin of the scale
+	 * @param scaleArg the magnitude of the scale
+	 * @param actionArg the context that the scale is applied to
+	 * @throws HvlChronology.InactiveException if HvlPainter is not enabled by {@linkplain HvlChronology}'s launch 
+	 * code
+	 */
+	public static void scale(float xArg, float yArg, float scaleArg, HvlAction.A0 actionArg){
+		if(active){
+			GL11.glPushMatrix();
+			GL11.glTranslatef(xArg, yArg, 0);
+			GL11.glScalef(scaleArg, scaleArg, 1f);
 			GL11.glTranslatef(-xArg, -yArg, 0);
 			actionArg.run();
 			GL11.glPopMatrix();
