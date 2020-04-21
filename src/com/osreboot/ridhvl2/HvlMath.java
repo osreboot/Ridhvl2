@@ -10,14 +10,14 @@ package com.osreboot.ridhvl2;
  *
  */
 public final class HvlMath {
-	
+
 	private HvlMath(){}
 
 	/**
 	 * The <code>float</code> equivalent of {@linkplain Math#PI}.
 	 */
 	public static final float PI = (float)Math.PI;
-	
+
 	/**
 	 * Returns <code>xArg</code> progressed towards <code>goalArg</code> by <code>modifierArg</code> amount.
 	 * The sign of <code>modifierArg</code> doesn't matter. Returns <code>goalArg</code> if <code>xArg</code> 
@@ -51,7 +51,7 @@ public final class HvlMath {
 			if(xArg - Math.abs(modifierArg) > goalArg) return xArg - Math.abs(modifierArg); else return goalArg;
 		}
 	}
-	
+
 	/**
 	 * A clone of Arduino's <code>map</code> function. This operation performs a 1D linear interpolation
 	 * on <code>xArg</code> given a set of boundaries. The boundary arguments are non-restrictive, for
@@ -91,7 +91,7 @@ public final class HvlMath {
 	public static float map(float xArg, float inLowArg, float inHighArg, float outLowArg, float outHighArg){
 		return (xArg - inLowArg) * (outHighArg - outLowArg) / (inHighArg - inLowArg) + outLowArg;
 	}
-	
+
 	/**
 	 * Returns <code>xArg</code> constrained by the two boundary arguments <code>bound1Arg</code> and 
 	 * <code>bound2Arg</code>. The order of the boundary arguments doesn't matter, the returned value will always 
@@ -110,7 +110,7 @@ public final class HvlMath {
 			return Math.max(Math.min(xArg, bound2Arg), bound1Arg);
 		}else return bound1Arg;
 	}
-	
+
 	/**
 	 * Returns the angle (in degrees) from <code>(x1Arg, y1Arg)</code> to <code>(x2Arg, y2Arg)</code>.
 	 * The output of this method is constrained by <code>-180f</code> and <code>180f</code>.
@@ -124,7 +124,7 @@ public final class HvlMath {
 	public static float angle(float x1Arg, float y1Arg, float x2Arg, float y2Arg){
 		return toDegrees((float)Math.atan2(y2Arg - y1Arg, x2Arg - x1Arg));
 	}
-	
+
 	/**
 	 * Returns the angle (in degrees) from <code>c1Arg</code> to <code>c2Arg</code>. The output of this
 	 * method is constrained by <code>-180f</code> and <code>180f</code>.
@@ -136,7 +136,55 @@ public final class HvlMath {
 	public static float angle(HvlCoord c1Arg, HvlCoord c2Arg){
 		return angle(c1Arg.x, c1Arg.y, c2Arg.x, c2Arg.y);
 	}
-	
+
+	/**
+	 * Returns the intersection of the two line segments represented by <code>(l1x1Arg, l1y1Arg)</code> to <code>(l1x2Arg, l1y2Arg)</code>
+	 * and <code>(l2x1Arg, l2y1Arg)</code> to <code>(l2x2Arg, l2y2Arg)</code>, if an intersection exists. If no intersection between the two
+	 * segments exists, this method will return <code>null</code>. This method will also return an intersection if the intersection occurs at the
+	 * endpoint of one or more segments. In the event that the intersection represents an entire line segment (the start and end coordinates
+	 * of the segment are the same) or the intersection can be represented by multiple points, this method will return <code>null</code>.
+	 * 
+	 * @param l1x1Arg the x-coordinate of the start point for the first line segment
+	 * @param l1y1Arg the y-coordinate of the start point for the first line segment
+	 * @param l1x2Arg the x-coordinate of the end point for the first line segment
+	 * @param l1y2Arg the y-coordinate of the end point for the first line segment
+	 * @param l2x1Arg the x-coordinate of the start point for the second line segment
+	 * @param l2y1Arg the y-coordinate of the start point for the second line segment
+	 * @param l2x2Arg the x-coordinate of the end point for the second line segment
+	 * @param l2y2Arg the y-coordinate of the end point for the second line segment
+	 * @return the intersection between the two line segments, if it exists
+	 */
+	public static HvlCoord intersection(float l1x1Arg, float l1y1Arg, float l1x2Arg, float l1y2Arg, float l2x1Arg, float l2y1Arg, float l2x2Arg, float l2y2Arg){
+		float d1x = l1x2Arg - l1x1Arg;
+		float d1y = l1y2Arg - l1y1Arg;
+		float d2x = l2x2Arg - l2x1Arg;
+		float d2y = l2y2Arg - l2y1Arg;
+		
+		float i1 = (-d1y * (l1x1Arg - l2x1Arg) + d1x * (l1y1Arg - l2y1Arg)) / (-d2x * d1y + d1x * d2y);
+		float i2 = (d2x * (l1y1Arg - l2y1Arg) - d2y * (l1x1Arg - l2x1Arg)) / (-d2x * d1y + d1x * d2y);
+		
+		if(i1 >= 0 && i1 <= 1 && i2 >= 0 && i2 <= 1){
+			return new HvlCoord(l1x1Arg + (i2  * d1x), l1y1Arg + (i2  * d1y));
+		}else return null;
+	}
+
+	/**
+	 * Returns the intersection of the two line segments represented by <code>l1StartArg</code> to <code>l1EndArg</code>
+	 * and <code>l2StartArg</code> to <code>l2EndArg</code>, if an intersection exists. If no intersection between the two
+	 * segments exists, this method will return <code>null</code>. This method will also return an intersection if the intersection occurs at the
+	 * endpoint of one or more segments. In the event that the intersection represents an entire line segment (the start and end coordinates
+	 * of the segment are the same) or the intersection can be represented by multiple points, this method will return <code>null</code>.
+	 * 
+	 * @param l1StartArg the start point for the first line segment
+	 * @param l1EndArg the end point for the first line segment
+	 * @param l2StartArg the start point for the second line segment
+	 * @param l2EndArg the end point for the second line segment
+	 * @return the intersection between the two line segments, if it exists
+	 */
+	public static HvlCoord intersection(HvlCoord l1StartArg, HvlCoord l1EndArg, HvlCoord l2StartArg, HvlCoord l2EndArg){
+		return intersection(l1StartArg.x, l1StartArg.y, l1EndArg.x, l1EndArg.y, l2StartArg.x, l2StartArg.y, l2EndArg.x, l2EndArg.y);
+	}
+
 	/**
 	 * The <code>float</code> equivalent of {@linkplain Math#toDegrees(double)}.
 	 * 
@@ -146,7 +194,7 @@ public final class HvlMath {
 	public static float toDegrees(float radiansArg){
 		return radiansArg * 180f / PI;
 	}
-	
+
 	/**
 	 * The <code>float</code> equivalent of {@linkplain Math#toRadians(double)}.
 	 * 
@@ -156,5 +204,5 @@ public final class HvlMath {
 	public static float toRadians(float degreesArg){
 		return degreesArg * PI / 180f;
 	}
-	
+
 }
