@@ -92,6 +92,33 @@ public final class HvlCoord implements Serializable{
 	}
 	
 	/**
+	 * Subtracts <code>xArg</code> and <code>yArg</code> from the HvlCoord's existing <code>x</code>
+	 * and <code>y</code> values.
+	 * 
+	 * @param xArg the value to subtract from <code>x</code>
+	 * @param yArg the value to subtract from <code>y</code>
+	 * @return a reference to the HvlCoord for method chaining
+	 */
+	public HvlCoord subtract(float xArg, float yArg){
+		x -= xArg;
+		y -= yArg;
+		return this;
+	}
+	
+	/**
+	 * Subtracts <code>cArg</code>'s <code>x</code> and <code>y</code> values from the HvlCoord's existing
+	 * <code>x</code> and <code>y</code> values.
+	 * 
+	 * @param cArg the coordinate values to subtract from <code>x</code> and <code>y</code>
+	 * @return a reference to the HvlCoord for method chaining
+	 */
+	public HvlCoord subtract(HvlCoord cArg){
+		x -= cArg.x;
+		y -= cArg.y;
+		return this;
+	}
+	
+	/**
 	 * Multiplies the HvlCoord's existing <code>x</code> and <code>y</code> values by
 	 * <code>xArg</code> and <code>yArg</code>.
 	 * 
@@ -107,6 +134,19 @@ public final class HvlCoord implements Serializable{
 	
 	/**
 	 * Multiplies the HvlCoord's existing <code>x</code> and <code>y</code> values by
+	 * <code>arg</code>.
+	 * 
+	 * @param arg the value to multiply <code>x</code> and <code>y</code> by
+	 * @return a reference to the HvlCoord for method chaining
+	 */
+	public HvlCoord multiply(float arg){
+		x *= arg;
+		y *= arg;
+		return this;
+	}
+	
+	/**
+	 * Multiplies the HvlCoord's existing <code>x</code> and <code>y</code> values by
 	 * <code>cArg</code>'s <code>x</code> and <code>y</code>.
 	 * 
 	 * @param cArg the coordinate values to multiply <code>x</code> and <code>y</code> by
@@ -115,6 +155,46 @@ public final class HvlCoord implements Serializable{
 	public HvlCoord multiply(HvlCoord cArg){
 		x *= cArg.x;
 		y *= cArg.y;
+		return this;
+	}
+	
+	/**
+	 * Divides the HvlCoord's existing <code>x</code> and <code>y</code> values by
+	 * <code>xArg</code> and <code>yArg</code>.
+	 * 
+	 * @param xArg the value to divide <code>x</code> by
+	 * @param yArg the value to divide <code>y</code> by
+	 * @return a reference to the HvlCoord for method chaining
+	 */
+	public HvlCoord divide(float xArg, float yArg){
+		x /= xArg;
+		y /= yArg;
+		return this;
+	}
+	
+	/**
+	 * Divides the HvlCoord's existing <code>x</code> and <code>y</code> values by
+	 * <code>arg</code>.
+	 * 
+	 * @param arg the value to divide <code>x</code> and <code>y</code> by
+	 * @return a reference to the HvlCoord for method chaining
+	 */
+	public HvlCoord divide(float arg){
+		x /= arg;
+		y /= arg;
+		return this;
+	}
+	
+	/**
+	 * Divides the HvlCoord's existing <code>x</code> and <code>y</code> values by
+	 * <code>cArg</code>'s <code>x</code> and <code>y</code>.
+	 * 
+	 * @param cArg the coordinate values to divide <code>x</code> and <code>y</code> by
+	 * @return a reference to the HvlCoord for method chaining
+	 */
+	public HvlCoord divide(HvlCoord cArg){
+		x /= cArg.x;
+		y /= cArg.y;
 		return this;
 	}
 	

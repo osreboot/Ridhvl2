@@ -110,6 +110,31 @@ public final class HvlMath {
 			return Math.max(Math.min(xArg, bound2Arg), bound1Arg);
 		}else return bound1Arg;
 	}
+	
+	/**
+	 * Returns the Euclidean distance between the points specified by <code>(x1Arg, y1Arg)</code> and
+	 * <code>(x2Arg, y2Arg)</code>.
+	 * 
+	 * @param x1Arg the x-coordinate of the first point for the distance calculation
+	 * @param y1Arg the y-coordinate of the first point for the distance calculation
+	 * @param x2Arg the x-coordinate of the second point for the distance calculation
+	 * @param y2Arg the y-coordinate of the second point for the distance calculation
+	 * @return the Euclidean distance between the two points
+	 */
+	public static float distance(float x1Arg, float y1Arg, float x2Arg, float y2Arg){
+		return (float)Math.sqrt(Math.pow(x1Arg - x2Arg, 2) + Math.pow(y1Arg - y2Arg, 2));
+	}
+	
+	/**
+	 * Returns the Euclidean distance between the points specified by <code>c1Arg</code> and <code>c2Arg</code>.
+	 * 
+	 * @param c1Arg the first point for the distance calculation
+	 * @param c2Arg the second point for the distance calculation
+	 * @return the Euclidean distance between the two points
+	 */
+	public static float distance(HvlCoord c1Arg, HvlCoord c2Arg){
+		return distance(c1Arg.x, c1Arg.y, c2Arg.x, c2Arg.y);
+	}
 
 	/**
 	 * Returns the angle (in degrees) from <code>(x1Arg, y1Arg)</code> to <code>(x2Arg, y2Arg)</code>.
