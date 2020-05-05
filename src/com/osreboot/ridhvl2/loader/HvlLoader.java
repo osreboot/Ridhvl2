@@ -7,8 +7,6 @@ import java.util.List;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.template.HvlChronology;
-import com.osreboot.ridhvl2.template.HvlChronologyExit;
-import com.osreboot.ridhvl2.template.HvlChronologyInitialize;
 
 /**
  * Manages the loading and storing of resources. {@linkplain HvlLoader} itself is capable of storing a list of
@@ -41,12 +39,10 @@ public abstract class HvlLoader<T> {
 
 	public static boolean debug = false;
 
-	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
 		HvlLoader.debug = debug;
 	};
 
-	@HvlChronologyExit(label = LABEL, chronology = CHRONO_EXIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
 		clearLoaders();
 	};

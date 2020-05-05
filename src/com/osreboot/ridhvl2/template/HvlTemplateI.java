@@ -1,9 +1,6 @@
 package com.osreboot.ridhvl2.template;
 
 import com.osreboot.ridhvl2.loader.HvlLoader;
-import com.osreboot.ridhvl2.loader.HvlLoaderFont;
-import com.osreboot.ridhvl2.loader.HvlLoaderSound;
-import com.osreboot.ridhvl2.loader.HvlLoaderTexture;
 
 /**
  * A complete implementation of Ridhvl2's core functionality. This template handles managing 
@@ -51,9 +48,10 @@ public abstract class HvlTemplateI extends HvlTemplate{
 		HvlChronology.initialize();
 
 		//Add HvlLoader instances so the user can load resources
-		HvlLoader.addLoader(new HvlLoaderTexture());
-		HvlLoader.addLoader(new HvlLoaderSound());
-		HvlLoader.addLoader(new HvlLoaderFont());
+		// TODO
+//		HvlLoader.addLoader(new HvlLoaderTexture());
+//		HvlLoader.addLoader(new HvlLoaderSound());
+//		HvlLoader.addLoader(new HvlLoaderFont());
 
 		//Start the timer loop
 		start();

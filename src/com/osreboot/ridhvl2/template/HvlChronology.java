@@ -1,6 +1,5 @@
 package com.osreboot.ridhvl2.template;
 
-import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,7 +52,7 @@ import com.osreboot.ridhvl2.HvlLogger;
  *
  */
 public final class HvlChronology {
-	
+
 	public static final int 
 	LAUNCH_CODE = 0, //functionally does nothing, exists for structure purposes
 	LAUNCH_CODE_RAW = 1,//2^0 //functionally does nothing, exists for structure purposes
@@ -61,7 +60,7 @@ public final class HvlChronology {
 	DEBUG_LAUNCH_CODE_RAW = 1;
 
 	private HvlChronology(){}
-	
+
 	/**
 	 * Standard values that represent possible sequence indexes for events. Each event occupies one index on this
 	 * scale, and that index cannot be occupied by another active event, with no exceptions. Each event type has
@@ -133,50 +132,55 @@ public final class HvlChronology {
 	}
 
 	/**
-	 * Searches a class for fields with {@linkplain HvlChronologyInitialize}, {@linkplain HvlChronologyUpdate} and
-	 * {@linkplain HvlChronologyExit} annotations. If a field is found, that field's value is then cast to its
-	 * respective HvlChronology subclass, where it waits to be activated and loaded into the active event list.
-	 * This method can throw a large number of exceptions, primarily relating to reflection-based circumstances
-	 * where a field is of an improper type (to be cast) or is inaccessible.
+	 * TODO
 	 * 
-	 * <p>
-	 * 
-	 * For more on properly formatting these fields, see {@linkplain HvlChronology}'s class comment or
-	 * {@linkplain com.osreboot.ridhvl2.test.TestChronology TestChronology}. {@linkplain HvlDisplay} also contains
-	 * a great example of HvlChronology event field declaration.
-	 * 
-	 * @param cArg the class to search for HvlChronology event fields
+	 * @param actionArg
+	 * @param labelArg
+	 * @param launchCodeArg
+	 * @param chronologyArg
 	 */
-	@SuppressWarnings("unchecked")
-	public static void registerChronology(Class<?> cArg){
+	public static void registerChronologyInitialize(HvlAction.A1<Boolean> actionArg, String labelArg, int launchCodeArg, int chronologyArg){
 		try{
-			for(Field f : cArg.getFields()){
-				if(f.isAnnotationPresent(HvlChronologyInitialize.class)){
-					if(f.getType() == HvlAction.A1.class){
-						//TODO sort out this warning with a proper check
-						new Initialize((HvlAction.A1<Boolean>)f.get(null), f.getAnnotation(HvlChronologyInitialize.class));
-					}else{
-						HvlLogger.println("Invalid field type for registered initialize event in " + cArg.getSimpleName() + "!");
-					}
-				}else if(f.isAnnotationPresent(HvlChronologyUpdate.class)){
-					if(f.getType() == HvlAction.A2.class){
-						//TODO sort out this warning with a proper check
-						new Update((HvlAction.A2<Boolean, Float>)f.get(null), f.getAnnotation(HvlChronologyUpdate.class));
-					}else{
-						HvlLogger.println("Invalid field type for registered update event in " + cArg.getSimpleName() + "!");
-					}
-				}else if(f.isAnnotationPresent(HvlChronologyExit.class)){
-					if(f.getType() == HvlAction.A1.class){
-						//TODO sort out this warning with a proper check
-						new Exit((HvlAction.A1<Boolean>)f.get(null), f.getAnnotation(HvlChronologyExit.class));
-					}else{
-						HvlLogger.println("Invalid field type for registered exit event in " + cArg.getSimpleName() + "!");
-					}
-				}
-			}
+			new Initialize(actionArg, labelArg, launchCodeArg, chronologyArg);
 		}catch(Exception e){
 			//TODO allow this exception to pass and stop the program as intended
-			HvlLogger.println("Exception thrown trying to register event from " + cArg.getSimpleName() + "!");
+			HvlLogger.println("Exception thrown trying to register event from " + labelArg + "!");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @param actionArg
+	 * @param labelArg
+	 * @param launchCodeArg
+	 * @param chronologyArg
+	 */
+	public static void registerChronologyUpdate(HvlAction.A2<Boolean, Float> actionArg, String labelArg, int launchCodeArg, int chronologyArg){
+		try{
+			new Update(actionArg, labelArg, launchCodeArg, chronologyArg);
+		}catch(Exception e){
+			//TODO allow this exception to pass and stop the program as intended
+			HvlLogger.println("Exception thrown trying to register event from " + labelArg + "!");
+			e.printStackTrace();
+		}
+	}
+
+	/**
+	 * TODO
+	 * 
+	 * @param actionArg
+	 * @param labelArg
+	 * @param launchCodeArg
+	 * @param chronologyArg
+	 */
+	public static void registerChronologyExit(HvlAction.A1<Boolean> actionArg, String labelArg, int launchCodeArg, int chronologyArg){
+		try{
+			new Exit(actionArg, labelArg, launchCodeArg, chronologyArg);
+		}catch(Exception e){
+			//TODO allow this exception to pass and stop the program as intended
+			HvlLogger.println("Exception thrown trying to register event from " + labelArg + "!");
 			e.printStackTrace();
 		}
 	}
@@ -247,67 +251,67 @@ public final class HvlChronology {
 		//load initialize events
 		HashMap<Integer, Initialize> preInits = new HashMap<>();
 		for(Initialize chrono : Initialize.queue){
-			if(verifyLaunchCode(chrono.annotation.launchCode())){
-				if(!preInits.containsKey(chrono.annotation.chronology())){
-					preInits.put(chrono.annotation.chronology(), chrono);
+			if(verifyLaunchCode(chrono.getAnnotationLaunchCode())){
+				if(!preInits.containsKey(chrono.getAnnotationChronology())){
+					preInits.put(chrono.getAnnotationChronology(), chrono);
 				}else{
-					HvlLogger.println("Error when trying to load initialize event " + chrono.annotation.label() + " to occupied slot " + chrono.annotation.chronology() + "!");
+					HvlLogger.println("Error when trying to load initialize event " + chrono.getAnnotationLabel() + " to occupied slot " + chrono.getAnnotationChronology() + "!");
 					throw new PredefinedChronologyException();
 				}
-			}else HvlLogger.println(getDebugOutput(), "Launch code disabled initialize event from " + chrono.annotation.label() + ".");
+			}else HvlLogger.println(getDebugOutput(), "Launch code disabled initialize event from " + chrono.getAnnotationLabel() + ".");
 		}
 		for(int i = CHRONOLOGY_INIT_EARLIEST; i <= CHRONOLOGY_INIT_LATEST; i++){
 			if(preInits.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading initialize event from " + preInits.get(i).annotation.label() + " to slot " + i + 
-						(verifyDebugLaunchCode(preInits.get(i).annotation.launchCode()) ? " (debug)." : "."));
-				loadedInitialize.put(preInits.get(i).action, verifyDebugLaunchCode(preInits.get(i).annotation.launchCode()));
+				HvlLogger.println(getDebugOutput(), "Loading initialize event from " + preInits.get(i).getAnnotationLabel() + " to slot " + i + 
+						(verifyDebugLaunchCode(preInits.get(i).getAnnotationLaunchCode()) ? " (debug)." : "."));
+				loadedInitialize.put(preInits.get(i).action, verifyDebugLaunchCode(preInits.get(i).getAnnotationLaunchCode()));
 			}
 		}
 
 		//load update events
 		HashMap<Integer, Update> preUpdates = new HashMap<>();
 		for(Update chrono : Update.queue){
-			if(verifyLaunchCode(chrono.annotation.launchCode())){
-				if(!preUpdates.containsKey(chrono.annotation.chronology())){
-					preUpdates.put(chrono.annotation.chronology(), chrono);
+			if(verifyLaunchCode(chrono.getAnnotationLaunchCode())){
+				if(!preUpdates.containsKey(chrono.getAnnotationChronology())){
+					preUpdates.put(chrono.getAnnotationChronology(), chrono);
 				}else{
-					HvlLogger.println("Error when trying to load update event " + chrono.annotation.label() + " to occupied slot " + chrono.annotation.chronology() + "!");
+					HvlLogger.println("Error when trying to load update event " + chrono.getAnnotationLabel() + " to occupied slot " + chrono.getAnnotationChronology() + "!");
 					throw new PredefinedChronologyException();
 				}
-			}else HvlLogger.println(getDebugOutput(), "Launch code disabled update event from " + chrono.annotation.label() + ".");
+			}else HvlLogger.println(getDebugOutput(), "Launch code disabled update event from " + chrono.getAnnotationLabel() + ".");
 		}
 		for(int i = CHRONOLOGY_UPDATE_PRE_EARLIEST; i <= CHRONOLOGY_UPDATE_PRE_LATEST; i++){
 			if(preUpdates.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading pre-update event from " + preUpdates.get(i).annotation.label() + " to slot " + i + 
-						(verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()) ? " (debug)." : "."));
-				loadedPreUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
+				HvlLogger.println(getDebugOutput(), "Loading pre-update event from " + preUpdates.get(i).getAnnotationLabel() + " to slot " + i + 
+						(verifyDebugLaunchCode(preUpdates.get(i).getAnnotationLaunchCode()) ? " (debug)." : "."));
+				loadedPreUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).getAnnotationLaunchCode()));
 			}
 		}
 		for(int i = CHRONOLOGY_UPDATE_POST_EARLIEST; i <= CHRONOLOGY_UPDATE_POST_LATEST; i++){
 			if(preUpdates.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading post-update event from " + preUpdates.get(i).annotation.label() + " to slot " + i + 
-						(verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()) ? " (debug)." : "."));
-				loadedPostUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).annotation.launchCode()));
+				HvlLogger.println(getDebugOutput(), "Loading post-update event from " + preUpdates.get(i).getAnnotationLabel() + " to slot " + i + 
+						(verifyDebugLaunchCode(preUpdates.get(i).getAnnotationLaunchCode()) ? " (debug)." : "."));
+				loadedPostUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).getAnnotationLaunchCode()));
 			}
 		}
 
 		//load exit events
 		HashMap<Integer, Exit> preExits = new HashMap<>();
 		for(Exit chrono : Exit.queue){
-			if(verifyLaunchCode(chrono.annotation.launchCode())){
-				if(!preExits.containsKey(chrono.annotation.chronology())){
-					preExits.put(chrono.annotation.chronology(), chrono);
+			if(verifyLaunchCode(chrono.getAnnotationLaunchCode())){
+				if(!preExits.containsKey(chrono.getAnnotationChronology())){
+					preExits.put(chrono.getAnnotationChronology(), chrono);
 				}else{
-					HvlLogger.println("Error when trying to load exit event " + chrono.annotation.label() + " to occupied slot " + chrono.annotation.chronology() + "!");
+					HvlLogger.println("Error when trying to load exit event " + chrono.getAnnotationLabel() + " to occupied slot " + chrono.getAnnotationChronology() + "!");
 					throw new PredefinedChronologyException();
 				}
-			}else HvlLogger.println(getDebugOutput(), "Launch code disabled exit event from " + chrono.annotation.label() + ".");
+			}else HvlLogger.println(getDebugOutput(), "Launch code disabled exit event from " + chrono.getAnnotationLabel() + ".");
 		}
 		for(int i = CHRONOLOGY_EXIT_EARLIEST; i <= CHRONOLOGY_EXIT_LATEST; i++){
 			if(preExits.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading exit event from " + preExits.get(i).annotation.label() + " to slot " + i + 
-						(verifyDebugLaunchCode(preExits.get(i).annotation.launchCode()) ? " (debug)." : "."));
-				loadedExit.put(preExits.get(i).action, verifyDebugLaunchCode(preExits.get(i).annotation.launchCode()));
+				HvlLogger.println(getDebugOutput(), "Loading exit event from " + preExits.get(i).getAnnotationLabel() + " to slot " + i + 
+						(verifyDebugLaunchCode(preExits.get(i).getAnnotationLaunchCode()) ? " (debug)." : "."));
+				loadedExit.put(preExits.get(i).action, verifyDebugLaunchCode(preExits.get(i).getAnnotationLaunchCode()));
 			}
 		}
 	}
@@ -343,14 +347,17 @@ public final class HvlChronology {
 		private static ArrayList<Initialize> queue = new ArrayList<>();
 
 		private HvlAction.A1<Boolean> action;
-		private HvlChronologyInitialize annotation;
+		private String label;
+		private int launchCode, chronology;
 
-		private Initialize(HvlAction.A1<Boolean> actionArg, HvlChronologyInitialize annotationArg){
-			if(annotationArg.launchCode() < 1) throw new InvalidLaunchCodeException();
-			if(annotationArg.chronology() < CHRONOLOGY_INIT_EARLIEST || annotationArg.chronology() > CHRONOLOGY_INIT_LATEST)
+		private Initialize(HvlAction.A1<Boolean> actionArg, String labelArg, int launchCodeArg, int chronologyArg){
+			if(launchCodeArg < 1) throw new InvalidLaunchCodeException();
+			if(chronologyArg < CHRONOLOGY_INIT_EARLIEST || chronologyArg > CHRONOLOGY_INIT_LATEST)
 				throw new InvalidChronologyException();
 			action = actionArg;
-			annotation = annotationArg;
+			label = labelArg;
+			launchCode = launchCodeArg;
+			chronology = chronologyArg;
 			queue.add(this);
 		}
 
@@ -358,21 +365,21 @@ public final class HvlChronology {
 		 * @return the event's label
 		 */
 		public String getAnnotationLabel(){
-			return annotation.label();
+			return label;
 		}
 
 		/**
 		 * @return the event's launch code
 		 */
 		public int getAnnotationLaunchCode(){
-			return annotation.launchCode();
+			return launchCode;
 		}
 
 		/**
 		 * @return the event's chronology
 		 */
 		public int getAnnotationChronology(){
-			return annotation.chronology();
+			return chronology;
 		}
 
 	}
@@ -397,14 +404,17 @@ public final class HvlChronology {
 		private static ArrayList<Update> queue = new ArrayList<>();
 
 		private HvlAction.A2<Boolean, Float> action;
-		private HvlChronologyUpdate annotation;
+		private String label;
+		private int launchCode, chronology;
 
-		private Update(HvlAction.A2<Boolean, Float> actionArg, HvlChronologyUpdate annotationArg){
-			if(annotationArg.launchCode() < 1) throw new InvalidLaunchCodeException();
-			if(annotationArg.chronology() < CHRONOLOGY_UPDATE_PRE_EARLIEST || annotationArg.chronology() > CHRONOLOGY_UPDATE_POST_LATEST)
+		private Update(HvlAction.A2<Boolean, Float> actionArg, String labelArg, int launchCodeArg, int chronologyArg){
+			if(launchCodeArg < 1) throw new InvalidLaunchCodeException();
+			if(chronologyArg < CHRONOLOGY_UPDATE_PRE_EARLIEST || chronologyArg > CHRONOLOGY_UPDATE_POST_LATEST)
 				throw new InvalidChronologyException();
 			action = actionArg;
-			annotation = annotationArg;
+			label = labelArg;
+			launchCode = launchCodeArg;
+			chronology = chronologyArg;
 			queue.add(this);
 		}
 
@@ -412,21 +422,21 @@ public final class HvlChronology {
 		 * @return the event's label
 		 */
 		public String getAnnotationLabel(){
-			return annotation.label();
+			return label;
 		}
 
 		/**
 		 * @return the event's launch code
 		 */
 		public int getAnnotationLaunchCode(){
-			return annotation.launchCode();
+			return launchCode;
 		}
 
 		/**
 		 * @return the event's chronology
 		 */
 		public int getAnnotationChronology(){
-			return annotation.chronology();
+			return chronology;
 		}
 
 	}
@@ -450,14 +460,17 @@ public final class HvlChronology {
 		private static ArrayList<Exit> queue = new ArrayList<>();
 
 		private HvlAction.A1<Boolean> action;
-		private HvlChronologyExit annotation;
+		private String label;
+		private int launchCode, chronology;
 
-		private Exit(HvlAction.A1<Boolean> actionArg, HvlChronologyExit annotationArg){
-			if(annotationArg.launchCode() < 1) throw new InvalidLaunchCodeException();
-			if(annotationArg.chronology() < CHRONOLOGY_EXIT_EARLIEST || annotationArg.chronology() > CHRONOLOGY_EXIT_LATEST)
+		private Exit(HvlAction.A1<Boolean> actionArg, String labelArg, int launchCodeArg, int chronologyArg){
+			if(launchCodeArg < 1) throw new InvalidLaunchCodeException();
+			if(chronologyArg < CHRONOLOGY_EXIT_EARLIEST || chronologyArg > CHRONOLOGY_EXIT_LATEST)
 				throw new InvalidChronologyException();
 			action = actionArg;
-			annotation = annotationArg;
+			label = labelArg;
+			launchCode = launchCodeArg;
+			chronology = chronologyArg;
 			queue.add(this);
 		}
 
@@ -465,21 +478,21 @@ public final class HvlChronology {
 		 * @return the event's label
 		 */
 		public String getAnnotationLabel(){
-			return annotation.label();
+			return label;
 		}
 
 		/**
 		 * @return the event's launch code
 		 */
 		public int getAnnotationLaunchCode(){
-			return annotation.launchCode();
+			return launchCode;
 		}
 
 		/**
 		 * @return the event's chronology
 		 */
 		public int getAnnotationChronology(){
-			return annotation.chronology();
+			return chronology;
 		}
 
 	}
@@ -495,7 +508,7 @@ public final class HvlChronology {
 	private static LinkedHashMap<HvlAction.A2<Boolean, Float>, Boolean> loadedPreUpdate = new LinkedHashMap<>();
 	private static LinkedHashMap<HvlAction.A2<Boolean, Float>, Boolean> loadedPostUpdate = new LinkedHashMap<>();
 	private static LinkedHashMap<HvlAction.A1<Boolean>, Boolean> loadedExit = new LinkedHashMap<>();
-	
+
 	/**
 	 * Runs all active initialize events in the relative sequence specified by their respective 
 	 * <code>chronology</code> values. For information on registering events see 
@@ -552,7 +565,7 @@ public final class HvlChronology {
 			}
 		}
 	}
-	
+
 	/**
 	 * Runs all active exit events in the relative sequence specified by their respective <code>chronology</code> 
 	 * values. For information on registering events see {@linkplain #registerChronology(Class)} and for information
@@ -580,7 +593,7 @@ public final class HvlChronology {
 	public static class AlreadyLoadedException extends RuntimeException{
 		private static final long serialVersionUID = 8909278026333909960L;
 	}
-	
+
 	/**
 	 * Thrown if an attempt is made to register an HvlChronology event with a <code>chronology</code> value outside 
 	 * of its appropriate boundaries. See:

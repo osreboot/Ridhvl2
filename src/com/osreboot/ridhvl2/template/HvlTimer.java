@@ -1,6 +1,6 @@
 package com.osreboot.ridhvl2.template;
 
-import org.lwjgl.Sys;
+import com.google.gwt.core.client.Duration;
 
 /**
  * 
@@ -17,8 +17,8 @@ public abstract class HvlTimer {
 	 * Common values used to represent the maximum possible delta (in case the program briefly becomes 
 	 * unresponsive).
 	 */
-	public static final long 
-	MAXDELTA_UNLIMITED = Long.MAX_VALUE,
+	public static final double 
+	MAXDELTA_UNLIMITED = Double.MAX_VALUE,
 	MAXDELTA_SECOND = 1000,
 	MAXDELTA_DECISECOND = 100,
 	MAXDELTA_HALF_DECISECOND = 50,
@@ -27,7 +27,7 @@ public abstract class HvlTimer {
 
 	private float dilation = 1f, totalTimeS = 0f;
 	//totalTimeMS <- not affected by dilation
-	private long deltaMS, totalTimeMS, lastUpdateTimeMS, maxDeltaMS = MAXDELTA_UNLIMITED;
+	private double deltaMS, totalTimeMS, lastUpdateTimeMS, maxDeltaMS = MAXDELTA_UNLIMITED;
 	private boolean running = false;
 
 	public HvlTimer(){}
@@ -38,7 +38,7 @@ public abstract class HvlTimer {
 	public final void start(){
 		running = true;
 		while(running){
-			totalTimeMS = (Sys.getTime() * 1000) / Sys.getTimerResolution();
+			totalTimeMS = Duration.currentTimeMillis();
 			deltaMS = Math.min(totalTimeMS - lastUpdateTimeMS, maxDeltaMS);
 			lastUpdateTimeMS = totalTimeMS;
 			if(deltaMS > 0 && deltaMS < totalTimeMS){
@@ -107,7 +107,7 @@ public abstract class HvlTimer {
 	/**
 	 * @return the maximum value (in milliseconds) that <code>delta</code> is restricted to
 	 */
-	public long getMaxDeltaMS(){
+	public double getMaxDeltaMS(){
 		return maxDeltaMS;
 	}
 
@@ -116,7 +116,7 @@ public abstract class HvlTimer {
 	 * 
 	 * @param maxDeltaArg the new maximum <code>delta</code> restriction
 	 */
-	public void setMaxDelta(long maxDeltaArg){
+	public void setMaxDelta(double maxDeltaArg){
 		maxDeltaMS = maxDeltaArg;
 	}
 

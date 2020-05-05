@@ -1,15 +1,9 @@
 package com.osreboot.ridhvl2.template;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.awt.DisplayMode;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
-
+import com.google.gwt.dom.client.Style.Display;
 import com.osreboot.ridhvl2.HvlAction;
-import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 
 /**
@@ -36,47 +30,31 @@ public abstract class HvlDisplay {
 	LAUNCH_CODE = 1,
 	LAUNCH_CODE_RAW = 2;//2^1
 	
-	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
-		try{
-			DisplayMode[] displays = Display.getAvailableDisplayModes();
-			for(DisplayMode mode : displays)
-				addFullscreenDisplay(new HvlDisplayFullscreen(mode, false));
-			HvlLogger.println(debug, "Found " + getFullscreenDisplays().size() + " supported fullscreen display modes.");
-		}catch(LWJGLException e){
-			e.printStackTrace();
-		}
-
 		if(getDisplay() != null){
 			getDisplay().apply();
 			displayInitialized = true;
 		}else throw new NullDisplayException();
 	};
 
-	@HvlChronologyUpdate(label = LABEL, chronology = CHRONO_PRE_UPDATE, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A2<Boolean, Float> ACTION_PRE_UPDATE = (debug, delta) -> {
 		getDisplay().preUpdate(delta);
 	};
 
-	@HvlChronologyUpdate(label = LABEL, chronology = CHRONO_POST_UPDATE, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A2<Boolean, Float> ACTION_POST_UPDATE = (debug, delta) -> {
 		getDisplay().postUpdate(delta);
 	};
 	
-	@HvlChronologyExit(label = LABEL, chronology = CHRONO_EXIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
 		if(getDisplay() != null && isDisplayInitialized()){
 			getDisplay().unapply();
 			display = null;
 		}
-		clearFullscreenDisplays();
 		displayInitialized = false;
 	};
 
 	private static HvlDisplay display;
 	private static boolean displayInitialized = false;
-
-	private static ArrayList<HvlDisplayFullscreen> fullscreenDisplays = new ArrayList<>();
 
 	/**
 	 * @return the active HvlDisplay instance
@@ -104,24 +82,6 @@ public abstract class HvlDisplay {
 	
 	private static boolean isDisplayInitialized(){
 		return displayInitialized;
-	}
-
-	private static void addFullscreenDisplay(HvlDisplayFullscreen displayArg){
-		fullscreenDisplays.add(displayArg);
-	}
-
-	/**
-	 * After HvlDisplay's {@linkplain HvlChronology} initialize event, this method returns an unmodifiable list of
-	 * all fullscreen HvlDisplay instances supported by the current system.
-	 * 
-	 * @return all fullscreen HvlDisplay instances supported by the current system
-	 */
-	public static List<HvlDisplayFullscreen> getFullscreenDisplays(){
-		return Collections.unmodifiableList(fullscreenDisplays);
-	}
-	
-	private static void clearFullscreenDisplays(){
-		fullscreenDisplays.clear();
 	}
 
 	private int refreshRate;

@@ -6,18 +6,23 @@
 		<exclude name='loader/HvlLoaderSound.java'/>
 		<exclude name='loader/HvlLoaderTexture.java'/>
 		
-		<exclude name='menu/**'/>
+		<exclude name='menu/component/**'/>
+		<exclude name='menu/HvlCharacter.java'/>
+		<exclude name='menu/HvlComponent.java'/>
+		<exclude name='menu/HvlDefault.java'/>
+		<exclude name='menu/HvlFont.java'/>
+		<exclude name='menu/HvlMenu.java'/>
+		<exclude name='menu/HvlTag.java'/>
+		<exclude name='menu/HvlTaggable.java'/>
+		<exclude name='menu/HvlTaggableOpen.java'/>
+		<exclude name='menu/HvlTagTransient.java'/>
 		
 		<exclude name='painter/HvlPaint.java'/>
 		<exclude name='painter/HvlPainter.java'/>
 		
-		<exclude name='template/HvlDisplay.java'/>
 		<exclude name='template/HvlDisplayWindowed.java'/>
-		<exclude name='template/HvlTemplateI.java'/>
-		<exclude name='template/HvlTimer.java'/>
 		
 		<exclude name='HvlConfig.java'/>
-		<exclude name='HvlLogger.java'/>
 		<exclude name='HvlStatics.java'/>
 	</source>
 	

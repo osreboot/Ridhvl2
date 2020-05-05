@@ -1,11 +1,6 @@
 package com.osreboot.ridhvl2.template;
 
 import com.osreboot.ridhvl2.loader.HvlLoader;
-import com.osreboot.ridhvl2.menu.HvlDefault;
-import com.osreboot.ridhvl2.menu.HvlEnvironment;
-import com.osreboot.ridhvl2.menu.HvlMenu;
-import com.osreboot.ridhvl2.menu.HvlType;
-import com.osreboot.ridhvl2.painter.HvlPainter;
 
 /**
  * Class that exists solely to provide a means of registering {@linkplain HvlChronology} events in all Ridhvl2 
@@ -18,36 +13,21 @@ public final class HvlChronologyRegistry {
 
 	private HvlChronologyRegistry(){}
 	
-	/**
-	 * Registers the {@linkplain HvlChronology} events in all Ridhvl2 event-containing classes. This includes, but is
-	 * not limited to, the events in:
-	 * 
-	 * <p>
-	 * 
-	 * {@linkplain HvlDisplay}
-	 * <br>
-	 * {@linkplain HvlPainter}
-	 * <br>
-	 * {@linkplain HvlLoader}
-	 * <br>
-	 * {@linkplain HvlType}
-	 * <br>
-	 * {@linkplain HvlDefault}
-	 * <br>
-	 * {@linkplain HvlMenu}
-	 * 
-	 * <p>
-	 * 
-	 * For more information on registering events in general, see HvlChronology's class comment.
-	 */
 	public static final void registerRidhvlChronologies(){
-		HvlChronology.registerChronology(HvlDisplay.class);
-		HvlChronology.registerChronology(HvlPainter.class);
-		HvlChronology.registerChronology(HvlLoader.class);
-		HvlChronology.registerChronology(HvlType.class);
-		HvlChronology.registerChronology(HvlEnvironment.class);
-		HvlChronology.registerChronology(HvlDefault.class);
-		HvlChronology.registerChronology(HvlMenu.class);
+		HvlChronology.registerChronologyInitialize(HvlDisplay.ACTION_INIT, HvlDisplay.LABEL, HvlDisplay.LAUNCH_CODE, HvlDisplay.CHRONO_INIT);
+		HvlChronology.registerChronologyUpdate(HvlDisplay.ACTION_PRE_UPDATE, HvlDisplay.LABEL, HvlDisplay.LAUNCH_CODE, HvlDisplay.CHRONO_PRE_UPDATE);
+		HvlChronology.registerChronologyUpdate(HvlDisplay.ACTION_POST_UPDATE, HvlDisplay.LABEL, HvlDisplay.LAUNCH_CODE, HvlDisplay.CHRONO_POST_UPDATE);
+		HvlChronology.registerChronologyExit(HvlDisplay.ACTION_EXIT, HvlDisplay.LABEL, HvlDisplay.LAUNCH_CODE, HvlDisplay.CHRONO_EXIT);
+		
+//		HvlChronology.registerChronology(HvlPainter.class);
+
+		HvlChronology.registerChronologyInitialize(HvlLoader.ACTION_INIT, HvlLoader.LABEL, HvlLoader.LAUNCH_CODE, HvlLoader.CHRONO_INIT);
+		HvlChronology.registerChronologyExit(HvlLoader.ACTION_EXIT, HvlLoader.LABEL, HvlLoader.LAUNCH_CODE, HvlLoader.CHRONO_EXIT);
+		
+//		HvlChronology.registerChronology(HvlType.class);
+//		HvlChronology.registerChronology(HvlEnvironment.class);
+//		HvlChronology.registerChronology(HvlDefault.class);
+//		HvlChronology.registerChronology(HvlMenu.class);
 	}
 	
 }
