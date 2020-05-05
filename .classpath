@@ -3,19 +3,10 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="lib/jackson-annotations-2.10.0.jar" sourcepath="lib/source/jackson-annotations-2.10.0-sources.jar">
+	<classpathentry kind="con" path="com.gwtplugins.gwt.eclipse.core.GWT_CONTAINER"/>
+	<classpathentry kind="lib" path="lib/gwtgl-0.9.1.jar" sourcepath="lib/gwtgl-0.9.1-sources.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Ridhvl2/lib/source/jackson-annotations-2.10.0-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jackson-core-2.10.0.jar" sourcepath="lib/source/jackson-core-2.10.0-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Ridhvl2/lib/source/jackson-core-2.10.0-javadoc.jar!/"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="lib/jackson-databind-2.10.0.jar" sourcepath="lib/source/jackson-databind-2.10.0-sources.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/Ridhvl2/lib/source/jackson-databind-2.10.0-javadoc.jar!/"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/Ridhvl2/lib/gwtgl-0.9.1-javadoc.jar!/"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="output" path="bin"/>
