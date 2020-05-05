@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module>
+	
+	<source path='ridhvl2'>
+		<exclude name='loader/HvlLoaderFont.java'/>
+		<exclude name='loader/HvlLoaderSound.java'/>
+		<exclude name='loader/HvlLoaderTexture.java'/>
+		
+		<exclude name='menu/**'/>
+		
+		<exclude name='painter/HvlPaint.java'/>
+		<exclude name='painter/HvlPainter.java'/>
+		
+		<exclude name='template/HvlDisplay.java'/>
+		<exclude name='template/HvlDisplayWindowed.java'/>
+		<exclude name='template/HvlTemplateI.java'/>
+		<exclude name='template/HvlTimer.java'/>
+		
+		<exclude name='HvlConfig.java'/>
+		<exclude name='HvlLogger.java'/>
+		<exclude name='HvlStatics.java'/>
+	</source>
+	
+</module>
