@@ -3,15 +3,12 @@ package com.osreboot.ridhvl2.template;
 import com.google.gwt.core.client.Duration;
 
 /**
- * 
- * A managed single-thread loop that repeatedly calls <code>tick(float delta)</code>. Can handle time
- * dilation, tracks total time elapsed, and calculates the time between <code>tick</code> calls (in 
- * seconds)(<code>delta</code>).
+ * TODO
  * 
  * @author os_reboot
  *
  */
-public abstract class HvlTimer {
+public class HvlTimerUnlooped {
 
 	/**
 	 * Common values used to represent the maximum possible delta (in case the program briefly becomes 
@@ -25,58 +22,36 @@ public abstract class HvlTimer {
 	MAXDELTA_CENTISECOND = 10,
 	MAXDELTA_MILLISECOND = 1;
 
-	private float dilation = 1f, totalTimeS = 0f;
+	private float dilation = 1f, totalTimeS = 0f, lastDeltaS;
 	//totalTimeMS <- not affected by dilation
 	private double deltaMS, totalTimeMS, lastUpdateTimeMS, maxDeltaMS = MAXDELTA_UNLIMITED;
-	private boolean running = false;
 
-	public HvlTimer(){}
+	public HvlTimerUnlooped(){}
 
-	/**
-	 * Starts the loop. This method will not exit until <code>setRunning(false)</code> is called.
-	 */
-	public final void start(){
-		running = true;
-		while(running){
-			totalTimeMS = Duration.currentTimeMillis();
-			deltaMS = Math.min(totalTimeMS - lastUpdateTimeMS, maxDeltaMS);
-			lastUpdateTimeMS = totalTimeMS;
-			if(deltaMS > 0 && deltaMS < totalTimeMS){
-				totalTimeS += ((float)deltaMS / 1000) * dilation;
-				tick(((float)deltaMS / 1000) * dilation);
-			}
+	public void tick(){
+		totalTimeMS = Duration.currentTimeMillis();
+		deltaMS = Math.min(totalTimeMS - lastUpdateTimeMS, maxDeltaMS);
+		lastUpdateTimeMS = totalTimeMS;
+		if(deltaMS > 0 && deltaMS < totalTimeMS){
+			totalTimeS += ((float)deltaMS / 1000) * dilation;
+			lastDeltaS = (float)(deltaMS / 1000) * dilation;
 		}
 	}
-
+	
 	/**
-	 * Called once per loop.
+	 * TODO
 	 * 
-	 * @param delta the time (in seconds) since the last <code>tick</code> call
+	 * @return
 	 */
-	public abstract void tick(float delta);
+	public float getLastDelta(){
+		return lastDeltaS;
+	}
 
 	/**
 	 * @return the number of <code>tick</code> calls per second (predicted based on the last <code>delta</code> value)
 	 */
 	public float getTickRate(){
 		return 1f/((float)deltaMS / 1000);
-	}
-
-	/**
-	 * @return whether or not the loop is running
-	 */
-	public boolean isRunning(){
-		return running;
-	}
-
-	/**
-	 * Sets the loop's <code>running</code> value. The loop will not cycle again if this is set 
-	 * to false.
-	 * 
-	 * @param runningArg the new <code>running</code> value
-	 */
-	public void setRunning(boolean runningArg){
-		running = runningArg;
 	}
 
 	/**

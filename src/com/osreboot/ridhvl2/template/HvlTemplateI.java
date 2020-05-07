@@ -5,7 +5,7 @@ import com.osreboot.ridhvl2.loader.HvlLoader;
 /**
  * A complete implementation of Ridhvl2's core functionality. This template handles managing 
  * {@linkplain HvlChronology} states, assigning {@linkplain HvlDisplay} instances, creating 
- * {@linkplain HvlLoader} instances and running an {@linkplain HvlTimer} loop. Programs intended to make the most
+ * {@linkplain HvlLoader} instances and running an {@linkplain HvlTimerUnlooped} loop. Programs intended to make the most
  * of Ridhvl2 should extend this class.
  * 
  * @author os_reboot
@@ -32,10 +32,10 @@ public abstract class HvlTemplateI extends HvlTemplate{
 	 * @param debugLaunchCodeArg the {@linkplain HvlChronology} debug launch code to use
 	 */
 	public HvlTemplateI(HvlDisplay displayArg, long launchCodeArg, long debugLaunchCodeArg){
-		super(0);
+		super(0, displayArg.getRefreshRate());
 
 		//Set the timer's max delta to something reasonable for games
-		getTimer().setMaxDelta(HvlTimer.MAXDELTA_DECISECOND);
+		getTimer().setMaxDelta(HvlTimerUnlooped.MAXDELTA_DECISECOND);
 
 		//Set the HvlDisplay specified by the user
 		HvlDisplay.setDisplay(displayArg);

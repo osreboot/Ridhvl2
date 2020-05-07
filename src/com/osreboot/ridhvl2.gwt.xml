@@ -20,8 +20,6 @@
 		<exclude name='painter/HvlPaint.java'/>
 		<exclude name='painter/HvlPainter.java'/>
 		
-		<exclude name='template/HvlDisplayWindowed.java'/>
-		
 		<exclude name='HvlConfig.java'/>
 		<exclude name='HvlStatics.java'/>
 	</source>

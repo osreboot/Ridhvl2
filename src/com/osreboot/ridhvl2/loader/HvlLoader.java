@@ -86,7 +86,7 @@ public abstract class HvlLoader<T> {
 				}
 			}
 		}
-		HvlLogger.println(debug, "Adding a loader with type label " + loaderArg.getTypeLabel() + ".");
+		HvlLogger.println(debug, HvlLoader.class, "Adding a loader with type label " + loaderArg.getTypeLabel() + ".");
 		loaders.add(loaderArg);
 	}
 
@@ -102,7 +102,7 @@ public abstract class HvlLoader<T> {
 	 * longer needed.
 	 */
 	public static void clearLoaders(){
-		HvlLogger.println(debug, "Clearing loader references!");
+		HvlLogger.println(debug, HvlLoader.class, "Clearing loader references!");
 		loaders.forEach(l -> l.cleanup());
 		loaders.clear();
 	}

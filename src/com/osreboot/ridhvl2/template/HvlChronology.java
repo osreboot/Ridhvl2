@@ -144,7 +144,7 @@ public final class HvlChronology {
 			new Initialize(actionArg, labelArg, launchCodeArg, chronologyArg);
 		}catch(Exception e){
 			//TODO allow this exception to pass and stop the program as intended
-			HvlLogger.println("Exception thrown trying to register event from " + labelArg + "!");
+			HvlLogger.println(HvlChronology.class, "Exception thrown trying to register event from " + labelArg + "!");
 			e.printStackTrace();
 		}
 	}
@@ -162,7 +162,7 @@ public final class HvlChronology {
 			new Update(actionArg, labelArg, launchCodeArg, chronologyArg);
 		}catch(Exception e){
 			//TODO allow this exception to pass and stop the program as intended
-			HvlLogger.println("Exception thrown trying to register event from " + labelArg + "!");
+			HvlLogger.println(HvlChronology.class, "Exception thrown trying to register event from " + labelArg + "!");
 			e.printStackTrace();
 		}
 	}
@@ -180,7 +180,7 @@ public final class HvlChronology {
 			new Exit(actionArg, labelArg, launchCodeArg, chronologyArg);
 		}catch(Exception e){
 			//TODO allow this exception to pass and stop the program as intended
-			HvlLogger.println("Exception thrown trying to register event from " + labelArg + "!");
+			HvlLogger.println(HvlChronology.class, "Exception thrown trying to register event from " + labelArg + "!");
 			e.printStackTrace();
 		}
 	}
@@ -255,14 +255,14 @@ public final class HvlChronology {
 				if(!preInits.containsKey(chrono.getAnnotationChronology())){
 					preInits.put(chrono.getAnnotationChronology(), chrono);
 				}else{
-					HvlLogger.println("Error when trying to load initialize event " + chrono.getAnnotationLabel() + " to occupied slot " + chrono.getAnnotationChronology() + "!");
+					HvlLogger.println(HvlChronology.class, "Error when trying to load initialize event " + chrono.getAnnotationLabel() + " to occupied slot " + chrono.getAnnotationChronology() + "!");
 					throw new PredefinedChronologyException();
 				}
-			}else HvlLogger.println(getDebugOutput(), "Launch code disabled initialize event from " + chrono.getAnnotationLabel() + ".");
+			}else HvlLogger.println(getDebugOutput(), HvlChronology.class, "Launch code disabled initialize event from " + chrono.getAnnotationLabel() + ".");
 		}
 		for(int i = CHRONOLOGY_INIT_EARLIEST; i <= CHRONOLOGY_INIT_LATEST; i++){
 			if(preInits.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading initialize event from " + preInits.get(i).getAnnotationLabel() + " to slot " + i + 
+				HvlLogger.println(getDebugOutput(), HvlChronology.class, "Loading initialize event from " + preInits.get(i).getAnnotationLabel() + " to slot " + i + 
 						(verifyDebugLaunchCode(preInits.get(i).getAnnotationLaunchCode()) ? " (debug)." : "."));
 				loadedInitialize.put(preInits.get(i).action, verifyDebugLaunchCode(preInits.get(i).getAnnotationLaunchCode()));
 			}
@@ -275,21 +275,21 @@ public final class HvlChronology {
 				if(!preUpdates.containsKey(chrono.getAnnotationChronology())){
 					preUpdates.put(chrono.getAnnotationChronology(), chrono);
 				}else{
-					HvlLogger.println("Error when trying to load update event " + chrono.getAnnotationLabel() + " to occupied slot " + chrono.getAnnotationChronology() + "!");
+					HvlLogger.println(HvlChronology.class, "Error when trying to load update event " + chrono.getAnnotationLabel() + " to occupied slot " + chrono.getAnnotationChronology() + "!");
 					throw new PredefinedChronologyException();
 				}
-			}else HvlLogger.println(getDebugOutput(), "Launch code disabled update event from " + chrono.getAnnotationLabel() + ".");
+			}else HvlLogger.println(getDebugOutput(), HvlChronology.class, "Launch code disabled update event from " + chrono.getAnnotationLabel() + ".");
 		}
 		for(int i = CHRONOLOGY_UPDATE_PRE_EARLIEST; i <= CHRONOLOGY_UPDATE_PRE_LATEST; i++){
 			if(preUpdates.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading pre-update event from " + preUpdates.get(i).getAnnotationLabel() + " to slot " + i + 
+				HvlLogger.println(getDebugOutput(), HvlChronology.class, "Loading pre-update event from " + preUpdates.get(i).getAnnotationLabel() + " to slot " + i + 
 						(verifyDebugLaunchCode(preUpdates.get(i).getAnnotationLaunchCode()) ? " (debug)." : "."));
 				loadedPreUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).getAnnotationLaunchCode()));
 			}
 		}
 		for(int i = CHRONOLOGY_UPDATE_POST_EARLIEST; i <= CHRONOLOGY_UPDATE_POST_LATEST; i++){
 			if(preUpdates.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading post-update event from " + preUpdates.get(i).getAnnotationLabel() + " to slot " + i + 
+				HvlLogger.println(getDebugOutput(), HvlChronology.class, "Loading post-update event from " + preUpdates.get(i).getAnnotationLabel() + " to slot " + i + 
 						(verifyDebugLaunchCode(preUpdates.get(i).getAnnotationLaunchCode()) ? " (debug)." : "."));
 				loadedPostUpdate.put(preUpdates.get(i).action, verifyDebugLaunchCode(preUpdates.get(i).getAnnotationLaunchCode()));
 			}
@@ -302,14 +302,14 @@ public final class HvlChronology {
 				if(!preExits.containsKey(chrono.getAnnotationChronology())){
 					preExits.put(chrono.getAnnotationChronology(), chrono);
 				}else{
-					HvlLogger.println("Error when trying to load exit event " + chrono.getAnnotationLabel() + " to occupied slot " + chrono.getAnnotationChronology() + "!");
+					HvlLogger.println(HvlChronology.class, "Error when trying to load exit event " + chrono.getAnnotationLabel() + " to occupied slot " + chrono.getAnnotationChronology() + "!");
 					throw new PredefinedChronologyException();
 				}
-			}else HvlLogger.println(getDebugOutput(), "Launch code disabled exit event from " + chrono.getAnnotationLabel() + ".");
+			}else HvlLogger.println(getDebugOutput(), HvlChronology.class, "Launch code disabled exit event from " + chrono.getAnnotationLabel() + ".");
 		}
 		for(int i = CHRONOLOGY_EXIT_EARLIEST; i <= CHRONOLOGY_EXIT_LATEST; i++){
 			if(preExits.containsKey(i)){
-				HvlLogger.println(getDebugOutput(), "Loading exit event from " + preExits.get(i).getAnnotationLabel() + " to slot " + i + 
+				HvlLogger.println(getDebugOutput(), HvlChronology.class, "Loading exit event from " + preExits.get(i).getAnnotationLabel() + " to slot " + i + 
 						(verifyDebugLaunchCode(preExits.get(i).getAnnotationLaunchCode()) ? " (debug)." : "."));
 				loadedExit.put(preExits.get(i).action, verifyDebugLaunchCode(preExits.get(i).getAnnotationLaunchCode()));
 			}
@@ -323,7 +323,7 @@ public final class HvlChronology {
 	 * may be called for the second time in a single Java program instance if this method is called first.
 	 */
 	public static void unloadEvents(){
-		HvlLogger.println(getDebugOutput(), "Unloading all events.");
+		HvlLogger.println(getDebugOutput(), HvlChronology.class, "Unloading all events.");
 		launchCode = -1;
 		debugLaunchCode = -1;
 		loadedInitialize.clear();
@@ -520,7 +520,7 @@ public final class HvlChronology {
 			try{
 				a.run(loadedInitialize.get(a));
 			}catch(Exception e){
-				HvlLogger.println("Exception thrown by an initialize event!");
+				HvlLogger.println(HvlChronology.class, "Exception thrown by an initialize event!");
 				e.printStackTrace();
 			}
 		}
@@ -540,7 +540,7 @@ public final class HvlChronology {
 			try{
 				a.run(loadedPreUpdate.get(a), delta);
 			}catch(Exception e){
-				HvlLogger.println("Exception thrown by a pre-update event!");
+				HvlLogger.println(HvlChronology.class, "Exception thrown by a pre-update event!");
 				e.printStackTrace();
 			}
 		}
@@ -560,7 +560,7 @@ public final class HvlChronology {
 			try{
 				a.run(loadedPostUpdate.get(a), delta);
 			}catch(Exception e){
-				HvlLogger.println("Exception thrown by a post-update event!");
+				HvlLogger.println(HvlChronology.class, "Exception thrown by a post-update event!");
 				e.printStackTrace();
 			}
 		}
@@ -576,7 +576,7 @@ public final class HvlChronology {
 			try{
 				a.run(loadedExit.get(a));
 			}catch(Exception e){
-				HvlLogger.println("Exception thrown by an exit event!");
+				HvlLogger.println(HvlChronology.class, "Exception thrown by an exit event!");
 				e.printStackTrace();
 			}
 		}

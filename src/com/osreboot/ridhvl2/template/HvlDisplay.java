@@ -3,6 +3,7 @@ package com.osreboot.ridhvl2.template;
 import java.awt.DisplayMode;
 
 import com.google.gwt.dom.client.Style.Display;
+import com.googlecode.gwtgl.binding.WebGLRenderingContext;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 
@@ -173,6 +174,8 @@ public abstract class HvlDisplay {
 	}
 	
 	public abstract HvlEnvironment getEnvironment();
+	
+	public abstract WebGLRenderingContext getGLContext();
 
 	/**
 	 * Thrown if an attempt is made to change a HvlDisplay's <code>refreshRate</code> to a value less than 1.

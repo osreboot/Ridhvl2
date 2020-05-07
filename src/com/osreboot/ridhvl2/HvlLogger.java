@@ -1,5 +1,6 @@
 package com.osreboot.ridhvl2;
 
+import com.google.gwt.core.client.GWT;
 
 /**
  * 
@@ -33,7 +34,7 @@ public final class HvlLogger {
 	 */
 	public static void println(boolean debugArg, Class<?> cArg, String sArg){
 		if(debugArg){
-			System.out.println("[" + cArg.getSimpleName() + "]: " + sArg);
+			GWT.log("[" + cArg.getSimpleName() + "]: " + sArg);
 		}
 	}
 
@@ -45,7 +46,7 @@ public final class HvlLogger {
 	 * @param sArg the message to print
 	 */
 	public static void println(Class<?> cArg, String sArg){
-		System.out.println("[" + cArg.getSimpleName() + "]: " + sArg);
+		GWT.log("[" + cArg.getSimpleName() + "]: " + sArg);
 	}
 
 	/**
@@ -68,7 +69,7 @@ public final class HvlLogger {
 	 */
 	public static void printlnExtension(boolean debugArg, Class<?> cArg, String sArg){
 		if(debugArg){
-			System.out.println("[" + PREFIX_EXTENSION + cArg.getSimpleName() + "]: " + sArg);
+			GWT.log("[" + PREFIX_EXTENSION + cArg.getSimpleName() + "]: " + sArg);
 		}
 	}
 
@@ -85,7 +86,7 @@ public final class HvlLogger {
 	 * @param sArg the message to print
 	 */
 	public static void printlnExtension(Class<?> cArg, String sArg){
-		System.out.println("[" + PREFIX_EXTENSION + cArg.getSimpleName() + "]: " + sArg);
+		GWT.log("[" + PREFIX_EXTENSION + cArg.getSimpleName() + "]: " + sArg);
 	}
 
 }
