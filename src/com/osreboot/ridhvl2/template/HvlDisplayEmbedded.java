@@ -11,7 +11,7 @@ public class HvlDisplayEmbedded extends HvlDisplay{
 
 	// TODO override methods to indicate inflexibility
 
-	private final int width, height;
+	public final int width, height;
 	
 	private final String rootElement;
 	

@@ -84,6 +84,16 @@ public abstract class HvlDisplay {
 	private static boolean isDisplayInitialized(){
 		return displayInitialized;
 	}
+	
+	// TODO hacked gwtgl shortcut methods
+	
+	public static float getWidth(){
+		return ((HvlDisplayEmbedded)display).width;
+	}
+	
+	public static float getHeight(){
+		return ((HvlDisplayEmbedded)display).height;
+	}
 
 	private int refreshRate;
 	private boolean vsyncEnabled, resizable;
@@ -176,7 +186,7 @@ public abstract class HvlDisplay {
 	public abstract HvlEnvironment getEnvironment();
 	
 	public abstract WebGLRenderingContext getGLContext();
-
+	
 	/**
 	 * Thrown if an attempt is made to change a HvlDisplay's <code>refreshRate</code> to a value less than 1.
 	 * 

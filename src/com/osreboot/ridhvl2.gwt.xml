@@ -17,9 +17,6 @@
 		<exclude name='menu/HvlTaggableOpen.java'/>
 		<exclude name='menu/HvlTagTransient.java'/>
 		
-		<exclude name='painter/HvlPaint.java'/>
-		<exclude name='painter/HvlPainter.java'/>
-		
 		<exclude name='HvlConfig.java'/>
 		<exclude name='HvlStatics.java'/>
 	</source>
