@@ -135,6 +135,26 @@ public final class HvlMath {
 	public static float distance(HvlCoord c1Arg, HvlCoord c2Arg){
 		return distance(c1Arg.x, c1Arg.y, c2Arg.x, c2Arg.y);
 	}
+	
+	/**
+	 * Returns the Euclidean distance between the point specified by <code>cArg</code> and the infinite line formed by
+	 * <code>lStartArg</code> and <code>lEndArg</code>. This method effectively projects the line to infinity on both
+	 * ends, and consequently is not restricted to the two endpoints supplied as arguments.
+	 * 
+	 * <p>
+	 * 
+	 * Algorithm source: <a href="http://paulbourke.net/geometry/pointlineplane/">http://paulbourke.net/geometry/pointlineplane/</a>
+	 * 
+	 * @param c1Arg the point for the distance calculation
+	 * @param lStartArg the first reference point for the infinite line
+	 * @param lEndArg the second reference point for the infinite line
+	 * @return the Euclidean distance between the point and the infinite line
+	 */
+	public static float distance(HvlCoord cArg, HvlCoord lStartArg, HvlCoord lEndArg){
+		HvlCoord delta = new HvlCoord(lEndArg).subtract(lStartArg);
+		float i = ((cArg.x - lStartArg.x) * delta.x + (cArg.y - lStartArg.y) * delta.y) / (delta.x * delta.x + delta.y * delta.y);
+		return distance(cArg.x, cArg.y, lStartArg.x + (i * delta.x), lStartArg.y + (i * delta.y));
+	}
 
 	/**
 	 * Returns the angle (in degrees) from <code>(x1Arg, y1Arg)</code> to <code>(x2Arg, y2Arg)</code>.
