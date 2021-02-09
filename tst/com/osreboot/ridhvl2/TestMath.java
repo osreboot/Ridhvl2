@@ -39,4 +39,14 @@ public final class TestMath {
 		assertEquals(10, HvlMath.limit(10, 10, 10), 0);
 	}
 	
+	@Test
+	public void testRandomInt() {
+		assertEquals(1, HvlMath.randomInt(1, 1),0);
+		int testAccumulator = 0;
+		for(int i=0; i<1000; i++) {
+			testAccumulator += HvlMath.randomInt(0, 10);
+		}
+		assertEquals(5, testAccumulator/1000, 1);
+	}
+	
 }

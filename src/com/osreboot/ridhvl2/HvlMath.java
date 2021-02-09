@@ -23,25 +23,22 @@ public final class HvlMath {
 	/**
 	 * A {@linkplain Random} object used for random number generation.
 	 */
-	private static Random seed = new Random();
+	private static Random random = new Random();
 
 	/**
-	 * Returns a random <code>int</code> falling between <code>minArg</code> and
-	 * <code>maxArg</code>, inclusive.
+	 * Returns a random <code>int</code> constrained by the two boundary arguments <code>bound1Arg</code> and 
+	 * <code>bound2Arg</code>. The order of the boundary arguments doesn't matter, the returned value will always 
+	 * be equal to a boundary or between the two.
 	 * 
-	 * @param minArg the smallest possible <code>int</code> value that can be returned
-	 * @param maxArg the largest possible <code>int</code> value that can be returned
-	 * @return A random <code>int</code> between these two points
+	 * @param bound1Arg The first boundary in the constrain operation
+	 * @param bound2Arg The second boundary in the constrain operation
+	 * @return A random <code>int</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>, inclusive.
 	 */
-	public static int randomIntBetween(int minArg, int maxArg) {
-		maxArg++;
-		if(maxArg > minArg) {
-			return minArg + seed.nextInt(maxArg - minArg);
-		}
-		if(maxArg < minArg) {
-			return maxArg + seed.nextInt(minArg - maxArg);
-		}
-		return minArg;
+	public static int randomInt(int bound1Arg, int bound2Arg) {
+		int max = Math.max(bound1Arg, bound2Arg);
+		int min = Math.min(bound1Arg, bound2Arg);
+		max++;
+		return min + random.nextInt(max - min);
 	}
 
 	/**
