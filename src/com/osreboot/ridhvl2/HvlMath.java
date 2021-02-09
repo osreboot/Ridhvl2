@@ -1,5 +1,7 @@
 package com.osreboot.ridhvl2;
 
+import java.util.Random;
+
 /**
  * 
  * A collection of logic operations that are commonly used in game design, but don't appear in Java's standard 
@@ -17,6 +19,30 @@ public final class HvlMath {
 	 * The <code>float</code> equivalent of {@linkplain Math#PI}.
 	 */
 	public static final float PI = (float)Math.PI;
+
+	/**
+	 * A {@linkplain Random} object used for random number generation.
+	 */
+	private static Random seed = new Random();
+
+	/**
+	 * Returns a random <code>int</code> falling between <code>minArg</code> and
+	 * <code>maxArg</code>, inclusive.
+	 * 
+	 * @param minArg the smallest possible <code>int</code> value that can be returned
+	 * @param maxArg the largest possible <code>int</code> value that can be returned
+	 * @return A random <code>int</code> between these two points
+	 */
+	public static int randomIntBetween(int minArg, int maxArg) {
+		maxArg++;
+		if(maxArg > minArg) {
+			return minArg + seed.nextInt(maxArg - minArg);
+		}
+		if(maxArg < minArg) {
+			return maxArg + seed.nextInt(minArg - maxArg);
+		}
+		return minArg;
+	}
 
 	/**
 	 * Returns <code>xArg</code> progressed towards <code>goalArg</code> by <code>modifierArg</code> amount.
@@ -110,7 +136,7 @@ public final class HvlMath {
 			return Math.max(Math.min(xArg, bound2Arg), bound1Arg);
 		}else return bound1Arg;
 	}
-	
+
 	/**
 	 * Returns the Euclidean distance between the points specified by <code>(x1Arg, y1Arg)</code> and
 	 * <code>(x2Arg, y2Arg)</code>.
@@ -124,7 +150,7 @@ public final class HvlMath {
 	public static float distance(float x1Arg, float y1Arg, float x2Arg, float y2Arg){
 		return (float)Math.sqrt(Math.pow(x1Arg - x2Arg, 2) + Math.pow(y1Arg - y2Arg, 2));
 	}
-	
+
 	/**
 	 * Returns the Euclidean distance between the points specified by <code>c1Arg</code> and <code>c2Arg</code>.
 	 * 
@@ -135,7 +161,7 @@ public final class HvlMath {
 	public static float distance(HvlCoord c1Arg, HvlCoord c2Arg){
 		return distance(c1Arg.x, c1Arg.y, c2Arg.x, c2Arg.y);
 	}
-	
+
 	/**
 	 * Returns the Euclidean distance between the point specified by <code>cArg</code> and the infinite line formed by
 	 * <code>lStartArg</code> and <code>lEndArg</code>. This method effectively projects the line to infinity on both
@@ -204,10 +230,10 @@ public final class HvlMath {
 		float d1y = l1y2Arg - l1y1Arg;
 		float d2x = l2x2Arg - l2x1Arg;
 		float d2y = l2y2Arg - l2y1Arg;
-		
+
 		float i1 = (-d1y * (l1x1Arg - l2x1Arg) + d1x * (l1y1Arg - l2y1Arg)) / (-d2x * d1y + d1x * d2y);
 		float i2 = (d2x * (l1y1Arg - l2y1Arg) - d2y * (l1x1Arg - l2x1Arg)) / (-d2x * d1y + d1x * d2y);
-		
+
 		if(i1 >= 0 && i1 <= 1 && i2 >= 0 && i2 <= 1){
 			return new HvlCoord(l1x1Arg + (i2  * d1x), l1y1Arg + (i2  * d1y));
 		}else return null;
