@@ -1,6 +1,9 @@
 package com.osreboot.ridhvl2;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
+import java.util.HashSet;
 
 import org.junit.Test;
 
@@ -42,11 +45,22 @@ public final class TestMath {
 	@Test
 	public void testRandomInt() {
 		assertEquals(1, HvlMath.randomInt(1, 1),0);
-		int testAccumulator = 0;
-		for(int i=0; i<1000; i++) {
-			testAccumulator += HvlMath.randomInt(0, 10);
+		
+		HashSet<Integer> testAccumulator = new HashSet<Integer>();
+		for(int i=0; i<10000; i++) {
+			testAccumulator.add(HvlMath.randomInt(2, 5));
 		}
-		assertEquals(5, testAccumulator/1000, 1);
+		for(int i = 2; i <= 5; i++) {
+			assertTrue(testAccumulator.contains(i));	
+		}	
+		
+		testAccumulator.clear();
+		
+		for(int i=0; i<10000; i++) {
+			testAccumulator.add(HvlMath.randomInt(5, 2));
+		}
+		for(int i = 2; i <= 5; i++) {
+			assertTrue(testAccumulator.contains(i));	
+		}
 	}
-	
 }

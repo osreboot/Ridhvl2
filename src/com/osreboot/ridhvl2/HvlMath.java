@@ -30,8 +30,8 @@ public final class HvlMath {
 	 * <code>bound2Arg</code>. The order of the boundary arguments doesn't matter, the returned value will always 
 	 * be equal to a boundary or between the two.
 	 * 
-	 * @param bound1Arg The first boundary in the constrain operation
-	 * @param bound2Arg The second boundary in the constrain operation
+	 * @param bound1Arg The first boundary the returned <code>int</code> is constrained by
+	 * @param bound2Arg The second boundary the returned <code>int</code> is constrained by
 	 * @return A random <code>int</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>, inclusive.
 	 */
 	public static int randomInt(int bound1Arg, int bound2Arg) {
