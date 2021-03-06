@@ -1,9 +1,12 @@
 package com.osreboot.ridhvl2;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -62,5 +65,36 @@ public final class TestMath {
 		for(int i = 2; i <= 5; i++) {
 			assertTrue(testAccumulator.contains(i));	
 		}
+	}
+	
+	@Test
+	public void testRandomFloat() {
+		assertEquals(1, HvlMath.randomFloat(1, 1),0);
+		
+		ArrayList<Float> testAccumulator = new ArrayList<Float>();
+		float highestPoint = 2;
+		float lowestPoint = 5;
+		
+		for(int i=0; i<10000; i++) {
+			testAccumulator.add(HvlMath.randomFloat(2, 5));
+		}
+		
+		for(int i=0; i<testAccumulator.size(); i++) {
+
+			if(testAccumulator.get(i) > highestPoint) {
+				highestPoint = testAccumulator.get(i);
+			}
+			
+			if(testAccumulator.get(i) < lowestPoint) {
+				lowestPoint = testAccumulator.get(i);
+			}	
+		}
+	
+		assertTrue(lowestPoint > 2);
+		assertTrue(highestPoint < 5);
+		assertTrue(lowestPoint < 2.2);
+		assertTrue(highestPoint > 4.8);
+		
+		testAccumulator.clear();
 	}
 }

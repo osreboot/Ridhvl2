@@ -26,6 +26,21 @@ public final class HvlMath {
 	private static Random random = new Random();
 
 	/**
+	 * Returns a random <code>float</code> constrained by the two boundary arguments <code>bound1Arg</code> and 
+	 * <code>bound2Arg</code>. The order of the boundary arguments doesn't matter, the returned value will always 
+	 * be equal to a boundary or between the two.
+	 * 
+	 * @param bound1Arg The first boundary the returned <code>float</code> is constrained by
+	 * @param bound2Arg The second boundary the returned <code>float</code> is constrained by
+	 * @return A random <code>float</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>, inclusive.
+	 */
+	public static float randomFloat(float bound1Arg, float bound2Arg) {
+		float max = Math.max(bound1Arg, bound2Arg);
+		float min = Math.min(bound1Arg, bound2Arg);
+		return min + ((float) Math.random() * (max - min));
+	}
+	
+	/**
 	 * Returns a random <code>int</code> constrained by the two boundary arguments <code>bound1Arg</code> and 
 	 * <code>bound2Arg</code>. The order of the boundary arguments doesn't matter, the returned value will always 
 	 * be equal to a boundary or between the two.
