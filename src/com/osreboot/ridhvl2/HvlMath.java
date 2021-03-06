@@ -34,10 +34,10 @@ public final class HvlMath {
 	 * @param bound2Arg The second boundary the returned <code>float</code> is constrained by
 	 * @return A random <code>float</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>, inclusive.
 	 */
-	public static float randomFloat(float bound1Arg, float bound2Arg) {
+	public static float randomFloat(float bound1Arg, float bound2Arg){
 		float max = Math.max(bound1Arg, bound2Arg);
 		float min = Math.min(bound1Arg, bound2Arg);
-		return min + ((float) Math.random() * (max - min));
+		return min + ((float)Math.random() * (max - min));
 	}
 	
 	/**
@@ -49,7 +49,7 @@ public final class HvlMath {
 	 * @param bound2Arg The second boundary the returned <code>int</code> is constrained by
 	 * @return A random <code>int</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>, inclusive.
 	 */
-	public static int randomInt(int bound1Arg, int bound2Arg) {
+	public static int randomInt(int bound1Arg, int bound2Arg){
 		int max = Math.max(bound1Arg, bound2Arg);
 		int min = Math.min(bound1Arg, bound2Arg);
 		max++;

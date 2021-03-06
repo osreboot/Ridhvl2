@@ -72,15 +72,14 @@ public final class TestMath {
 		assertEquals(1, HvlMath.randomFloat(1, 1),0);
 		
 		ArrayList<Float> testAccumulator = new ArrayList<Float>();
-		float highestPoint = 2;
-		float lowestPoint = 5;
+		float highestPoint = Float.MIN_VALUE;
+		float lowestPoint = Float.MAX_VALUE;
 		
 		for(int i=0; i<10000; i++) {
 			testAccumulator.add(HvlMath.randomFloat(2, 5));
 		}
 		
 		for(int i=0; i<testAccumulator.size(); i++) {
-
 			if(testAccumulator.get(i) > highestPoint) {
 				highestPoint = testAccumulator.get(i);
 			}
@@ -90,11 +89,9 @@ public final class TestMath {
 			}	
 		}
 	
-		assertTrue(lowestPoint > 2);
-		assertTrue(highestPoint < 5);
+		assertTrue(lowestPoint >= 2);
+		assertTrue(highestPoint <= 5);
 		assertTrue(lowestPoint < 2.2);
 		assertTrue(highestPoint > 4.8);
-		
-		testAccumulator.clear();
 	}
 }
