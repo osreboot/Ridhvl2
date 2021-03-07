@@ -30,9 +30,9 @@ public final class HvlMath {
 	 * <code>bound2Arg</code>. The order of the boundary arguments doesn't matter, the returned value will always 
 	 * be equal to a boundary or between the two.
 	 * 
-	 * @param bound1Arg The first boundary the returned <code>float</code> is constrained by
-	 * @param bound2Arg The second boundary the returned <code>float</code> is constrained by
-	 * @return A random <code>float</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>, inclusive.
+	 * @param bound1Arg the first boundary the returned <code>float</code> is constrained by
+	 * @param bound2Arg the second boundary the returned <code>float</code> is constrained by
+	 * @return a random <code>float</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>, inclusive.
 	 */
 	public static float randomFloat(float bound1Arg, float bound2Arg){
 		float max = Math.max(bound1Arg, bound2Arg);
@@ -45,15 +45,29 @@ public final class HvlMath {
 	 * <code>bound2Arg</code>. The order of the boundary arguments doesn't matter, the returned value will always 
 	 * be equal to a boundary or between the two.
 	 * 
-	 * @param bound1Arg The first boundary the returned <code>int</code> is constrained by
-	 * @param bound2Arg The second boundary the returned <code>int</code> is constrained by
-	 * @return A random <code>int</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>, inclusive.
+	 * @param bound1Arg the first boundary the returned <code>int</code> is constrained by
+	 * @param bound2Arg the second boundary the returned <code>int</code> is constrained by
+	 * @return a random <code>int</code> constrained to the boundary set <code>bound1Arg</code> and <code>bound2Arg</code>, inclusive.
 	 */
 	public static int randomInt(int bound1Arg, int bound2Arg){
 		int max = Math.max(bound1Arg, bound2Arg);
 		int min = Math.min(bound1Arg, bound2Arg);
 		max++;
 		return min + random.nextInt(max - min);
+	}
+	
+	/**
+	 * Returns the value linearly interpolated between boundaries <code>bound1Arg</code> and <code>bound2Arg</code>
+	 * at increment <code>alphaArg</code>. The boundaries are non-restrictive.
+	 * 
+	 * @param bound1Arg the first boundary of the linear interpolation
+	 * @param bound2Arg the second boundary of the linear interpolation
+	 * @param alphaArg the amount to interpolate between the two boundaries
+	 * @return the value linearly interpolated between boundaries <code>bound1Arg</code> and <code>bound2Arg</code> (non-restrictive)
+	 * at increment <code>alphaArg</code>
+	 */
+	public static float lerp(float bound1Arg, float bound2Arg, float alphaArg){
+		return bound1Arg + alphaArg * (bound2Arg - bound1Arg);
 	}
 
 	/**

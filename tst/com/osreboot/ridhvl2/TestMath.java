@@ -92,4 +92,18 @@ public final class TestMath {
 		assertTrue(lowestPoint < 2.2);
 		assertTrue(highestPoint > 4.8);
 	}
+	
+	@Test
+	public void testLerp() {
+		assertEquals(0, HvlMath.lerp(0f, 10f, 0f),0);
+		assertEquals(10, HvlMath.lerp(0f, 10f, 1f),0);
+		assertEquals(3, HvlMath.lerp(0f, 10f, .3f),0);
+		assertEquals(7, HvlMath.lerp(10f, 0f, .3f),0);
+		assertEquals(15, HvlMath.lerp(0f, 10f, 1.5f),0);
+		assertEquals(-5, HvlMath.lerp(10f, 0f, 1.5f),0);
+		assertEquals(-5, HvlMath.lerp(0f, 10f, -0.5f),0);
+		assertEquals(15, HvlMath.lerp(10f, 0f, -0.5f),0);
+		assertEquals(4, HvlMath.lerp(-2f, 10f, .5f),0);
+		assertEquals(4, HvlMath.lerp(10f, -2f, .5f),0);
+	}
 }
