@@ -26,6 +26,9 @@ public class HvlFont extends HvlTaggable{
 	private HashMap<Character, HvlCharacter> characters;
 
 	private transient Texture loadedTexture;
+	
+	// TODO remove this after verifying that it doesn't break font rendering
+	private transient boolean texelNudge;
 
 	// Constructor for Jackson deserialization
 	private HvlFont(){}
@@ -65,6 +68,8 @@ public class HvlFont extends HvlTaggable{
 	public void draw(String textArg, float xArg, float yArg, Color colorArg, float scaleArg){
 		String[] lines = textArg.split(get(TAG_REGEX_NEWLINE));
 
+		float nudge = texelNudge ? (0.5f / (float)loadedTexture.getImageWidth()) : 0f;
+		
 		float currentY = yArg + get(TAG_Y_OFFSET);
 		for(String line : lines){
 			float currentX = xArg + get(TAG_X_OFFSET);
@@ -77,7 +82,7 @@ public class HvlFont extends HvlTaggable{
 					float charHeight = (character.getUV1().y - character.getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
 
 					hvlDraw(hvlQuad(currentX, currentY, charWidth, charHeight, 
-							character.getUV0().x, character.getUV0().y, character.getUV1().x, character.getUV1().y),
+							character.getUV0().x + nudge, character.getUV0().y + nudge, character.getUV1().x + nudge, character.getUV1().y + nudge),
 							loadedTexture, colorArg);
 
 					currentX += charWidth;
@@ -90,8 +95,8 @@ public class HvlFont extends HvlTaggable{
 					float charHeight = (get(TAG_CHARACTER_MISSING).getUV1().y - get(TAG_CHARACTER_MISSING).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
 
 					hvlDraw(hvlQuad(currentX, currentY, charWidth, charHeight, 
-							get(TAG_CHARACTER_MISSING).getUV0().x, get(TAG_CHARACTER_MISSING).getUV0().y,
-							get(TAG_CHARACTER_MISSING).getUV1().x, get(TAG_CHARACTER_MISSING).getUV1().y),
+							get(TAG_CHARACTER_MISSING).getUV0().x + nudge, get(TAG_CHARACTER_MISSING).getUV0().y + nudge,
+							get(TAG_CHARACTER_MISSING).getUV1().x + nudge, get(TAG_CHARACTER_MISSING).getUV1().y + nudge),
 							loadedTexture, colorArg);
 
 					currentX += charWidth;
@@ -182,6 +187,14 @@ public class HvlFont extends HvlTaggable{
 
 	public boolean isTextureLoaded(){
 		return loadedTexture != null;
+	}
+	
+	public void setTexelNudge(boolean texelNudgeArg){
+		texelNudge = texelNudgeArg;
+	}
+	
+	public boolean getTexelNudge(){
+		return texelNudge;
 	}
 
 }

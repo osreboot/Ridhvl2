@@ -44,6 +44,7 @@ public class HvlLoaderFont extends HvlLoader<HvlFont>{
 				String textureExtension = font.get(HvlFont.TAG_TEXTURE).substring(font.get(HvlFont.TAG_TEXTURE).lastIndexOf('.') + 1);
 				Texture texture = TextureLoader.getTexture(textureExtension, new FileInputStream(basePathArg + File.separator + font.get(HvlFont.TAG_TEXTURE)));
 				font.setLoadedTexture(texture);
+				font.setTexelNudge(true);
 				resources.add(font);
 				return true;
 			}else return false;
