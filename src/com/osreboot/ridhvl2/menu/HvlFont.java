@@ -67,8 +67,6 @@ public class HvlFont extends HvlTaggable{
 
 	public void draw(String textArg, float xArg, float yArg, Color colorArg, float scaleArg){
 		String[] lines = textArg.split(get(TAG_REGEX_NEWLINE));
-
-		float nudge = texelNudge ? (0.5f / (float)loadedTexture.getImageWidth()) : 0f;
 		
 		float currentY = yArg + get(TAG_Y_OFFSET);
 		for(String line : lines){
@@ -81,8 +79,8 @@ public class HvlFont extends HvlTaggable{
 					float charWidth = (character.getUV1().x - character.getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
 					float charHeight = (character.getUV1().y - character.getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
 
-					hvlDraw(hvlQuad(currentX, currentY, charWidth, charHeight, 
-							character.getUV0().x + nudge, character.getUV0().y + nudge, character.getUV1().x + nudge, character.getUV1().y + nudge),
+					hvlDraw(hvlQuad(texelNudge ? (int)currentX : currentX, texelNudge ? (int)currentY : currentY, charWidth, charHeight, 
+							character.getUV0().x, character.getUV0().y, character.getUV1().x, character.getUV1().y),
 							loadedTexture, colorArg);
 
 					currentX += charWidth;
@@ -94,9 +92,9 @@ public class HvlFont extends HvlTaggable{
 					float charWidth = (get(TAG_CHARACTER_MISSING).getUV1().x - get(TAG_CHARACTER_MISSING).getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
 					float charHeight = (get(TAG_CHARACTER_MISSING).getUV1().y - get(TAG_CHARACTER_MISSING).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
 
-					hvlDraw(hvlQuad(currentX, currentY, charWidth, charHeight, 
-							get(TAG_CHARACTER_MISSING).getUV0().x + nudge, get(TAG_CHARACTER_MISSING).getUV0().y + nudge,
-							get(TAG_CHARACTER_MISSING).getUV1().x + nudge, get(TAG_CHARACTER_MISSING).getUV1().y + nudge),
+					hvlDraw(hvlQuad(texelNudge ? (int)currentX : currentX, texelNudge ? (int)currentY : currentY, charWidth, charHeight, 
+							get(TAG_CHARACTER_MISSING).getUV0().x, get(TAG_CHARACTER_MISSING).getUV0().y,
+							get(TAG_CHARACTER_MISSING).getUV1().x, get(TAG_CHARACTER_MISSING).getUV1().y),
 							loadedTexture, colorArg);
 
 					currentX += charWidth;
