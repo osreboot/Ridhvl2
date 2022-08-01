@@ -62,7 +62,7 @@ public class HvlArranger extends HvlContainer{
 			for(HvlComponent child : component.get(TAG_CHILDREN)){
 				float interpolatedX = child.get(TAG_OVERRIDE_WIDTH) == null ? environment.getX() : 
 					HvlMath.map(component.get(TAG_ALIGN_X), 0, 1f,
-						environment.getX(), environment.getX() + environment.getWidth() - child.get(TAG_OVERRIDE_WIDTH)); //TODO replace with HvlMath.lerp
+							environment.getX(), environment.getX() + environment.getWidth() - child.get(TAG_OVERRIDE_WIDTH)); //TODO replace with HvlMath.lerp
 				child.update(delta, hvlEnvironment(interpolatedX, currentY, 
 						environment.getWidth(), child.get(TAG_OVERRIDE_HEIGHT) == null ? lockedSize : 0, environment.isBlocked()));
 				currentY += child.getLastEnvironment().getHeight();
@@ -94,10 +94,14 @@ public class HvlArranger extends HvlContainer{
 		set(TAG_CHILDREN, new ArrayList<>());
 		set(TAG_HORIZONTAL, horizontalArg);
 	}
-	
+
 	public HvlArranger align(float xAlignArg, float yAlignArg){
 		return (HvlArranger)set(TAG_ALIGN_X, xAlignArg)
 				.set(TAG_ALIGN_Y, yAlignArg);
+	}
+
+	public HvlArranger horizontal(boolean horizontalArg){
+		return (HvlArranger)set(TAG_HORIZONTAL, horizontalArg);
 	}
 
 }
