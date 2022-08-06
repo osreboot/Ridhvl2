@@ -85,8 +85,10 @@ public final class HvlDefault{
 				for(HvlTagTransient tag : taggableArg.validTags())
 					taggableArg.set(tag, defaultTaggable.get(tag));
 
-				for(HvlTagTransient tag : taggableArg.validTagsOpen())
+				for(HvlTagTransient tag : defaultTaggable.validTagsOpen()){
+					if(!taggableArg.validTagsOpen().contains(tag)) taggableArg.addOpen(tag);
 					taggableArg.setOpen(tag, defaultTaggable.getOpen(tag));
+				}
 
 				HvlLogger.println(debug, "Applied default of type \"" + typeArg + "\".");
 				return taggableArg;
