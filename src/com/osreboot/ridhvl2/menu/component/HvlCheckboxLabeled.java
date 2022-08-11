@@ -1,7 +1,5 @@
 package com.osreboot.ridhvl2.menu.component;
 
-import org.newdawn.slick.Color;
-
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlMath;
 import com.osreboot.ridhvl2.menu.HvlComponent;
@@ -11,6 +9,7 @@ import com.osreboot.ridhvl2.menu.HvlFont;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
 import com.osreboot.ridhvl2.menu.component.HvlButton.HvlButtonState;
+import com.osreboot.ridhvl2.migration.Color;
 
 public class HvlCheckboxLabeled extends HvlCheckbox{
 	private static final long serialVersionUID = -220791134661836894L;

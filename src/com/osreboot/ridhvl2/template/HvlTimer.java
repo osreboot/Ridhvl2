@@ -1,6 +1,6 @@
 package com.osreboot.ridhvl2.template;
 
-import org.lwjgl.Sys;
+import org.lwjgl.glfw.GLFW;
 
 /**
  * 
@@ -38,7 +38,7 @@ public abstract class HvlTimer {
 	public final void start(){
 		running = true;
 		while(running){
-			totalTimeMS = (Sys.getTime() * 1000) / Sys.getTimerResolution();
+			totalTimeMS = (long)(GLFW.glfwGetTime() * 1000.0);
 			deltaMS = Math.min(totalTimeMS - lastUpdateTimeMS, maxDeltaMS);
 			lastUpdateTimeMS = totalTimeMS;
 			if(deltaMS > 0 && deltaMS < totalTimeMS){

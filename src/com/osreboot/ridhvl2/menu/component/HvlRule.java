@@ -3,8 +3,6 @@ package com.osreboot.ridhvl2.menu.component;
 import static com.osreboot.ridhvl2.HvlStatics.hvlDraw;
 import static com.osreboot.ridhvl2.HvlStatics.hvlQuadc;
 
-import org.newdawn.slick.Color;
-
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlMath;
 import com.osreboot.ridhvl2.menu.HvlComponent;
@@ -12,6 +10,7 @@ import com.osreboot.ridhvl2.menu.HvlDefault;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
+import com.osreboot.ridhvl2.migration.Color;
 
 public class HvlRule extends HvlComponent{
 	private static final long serialVersionUID = -6293558927367622718L;

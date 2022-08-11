@@ -2,14 +2,12 @@ package com.osreboot.ridhvl2;
 
 import java.util.HashMap;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.openal.Audio;
-import org.newdawn.slick.opengl.Texture;
-
 import com.osreboot.ridhvl2.loader.HvlLoader;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlEnvironmentVolatile;
 import com.osreboot.ridhvl2.menu.HvlFont;
+import com.osreboot.ridhvl2.migration.Color;
+import com.osreboot.ridhvl2.migration.HvlTexture;
 import com.osreboot.ridhvl2.painter.HvlCircle;
 import com.osreboot.ridhvl2.painter.HvlPaint;
 import com.osreboot.ridhvl2.painter.HvlPainter;
@@ -516,7 +514,7 @@ public final class HvlStatics {
 	 * @param polygonArg the polygon to draw
 	 * @param textureArg the paint to use for <code>polygonArg</code>
 	 */
-	public static void hvlDraw(HvlPolygon polygonArg, Texture textureArg){
+	public static void hvlDraw(HvlPolygon polygonArg, HvlTexture textureArg){
 		if(globalPaint == null) globalPaint = new HvlPaint(textureArg);
 		else globalPaint.setValue(textureArg);
 		HvlPainter.draw(polygonArg, globalPaint);
@@ -531,7 +529,7 @@ public final class HvlStatics {
 	 * @param textureArg the texture of the paint to use for <code>polygonArg</code>
 	 * @param colorArg the color of the paint to use for <code>polygonArg</code>
 	 */
-	public static void hvlDraw(HvlPolygon polygonArg, Texture textureArg, Color colorArg){
+	public static void hvlDraw(HvlPolygon polygonArg, HvlTexture textureArg, Color colorArg){
 		if(globalPaint == null) globalPaint = new HvlPaint(colorArg, textureArg);
 		else globalPaint.setValue(colorArg, textureArg);
 		HvlPainter.draw(polygonArg, globalPaint);
@@ -650,34 +648,10 @@ public final class HvlStatics {
 	 * @return the fetched Texture instance, if it exists
 	 */
 	@SuppressWarnings("unchecked")
-	public static Texture hvlTexture(int indexArg){
+	public static HvlTexture hvlTexture(int indexArg){
 		for(HvlLoader<?> l : HvlLoader.getLoaders()){
 			if(l.getTypeLabel().equalsIgnoreCase(HvlLoader.TYPELABEL_TEXTURE)){
-				return ((HvlLoader<Texture>)l).get(indexArg);//TODO resolve this warning
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Fetches an {@linkplain org.newdawn.slick.openal.Audio Audio} instance stored in an {@linkplain HvlLoader}.
-	 * This resource must have been loaded previously. See {@linkplain #hvlLoad(String)} for more information on
-	 * loading resources. Additionally, (and similarly to {@linkplain #hvlLoad(String)}) an HvlLoader instance
-	 * with the specific <code>TYPELABEL</code> must be available for use and have said Audio loaded into it.
-	 * 
-	 * <p>
-	 * 
-	 * Audio instances are referenced by the order in which they were loaded (relative to other Audio instances). 
-	 * Again see {@linkplain #hvlLoad(String)} for more specifics.
-	 * 
-	 * @param indexArg the index specifying the Audio instance to be fetched
-	 * @return the fetched Audio instance, if it exists
-	 */
-	@SuppressWarnings("unchecked")
-	public static Audio hvlSound(int indexArg){
-		for(HvlLoader<?> l : HvlLoader.getLoaders()){
-			if(l.getTypeLabel().equalsIgnoreCase(HvlLoader.TYPELABEL_SOUND)){
-				return ((HvlLoader<Audio>)l).get(indexArg);//TODO resolve this warning
+				return ((HvlLoader<HvlTexture>)l).get(indexArg);//TODO resolve this warning
 			}
 		}
 		return null;

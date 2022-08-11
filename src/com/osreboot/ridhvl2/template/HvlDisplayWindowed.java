@@ -1,12 +1,15 @@
 package com.osreboot.ridhvl2.template;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.glfw.GLFWVidMode;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.MemoryUtil;
 
 import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
+import com.osreboot.ridhvl2.migration.Display;
 
 /**
  * An implementation of {@linkplain HvlDisplay} that handles a windowed LWJGL 
@@ -26,9 +29,10 @@ import com.osreboot.ridhvl2.menu.HvlEnvironment;
  */
 public class HvlDisplayWindowed extends HvlDisplay{
 
-	private DisplayMode initialMode;
 	private String initialTitle;
-	private boolean initialUndecorated;
+	private int initialWidth, initialHeight;
+	public boolean initialResizable;
+	private long id;
 	
 	/**
 	 * Constructor that defaults to a decorated window. Use 
@@ -46,9 +50,9 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	 */
 	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg){
 		super(refreshRateArg, false, resizableArg);
-		initialMode = new DisplayMode(widthArg, heightArg);
+		initialWidth = widthArg;
+		initialHeight = heightArg;
 		initialTitle = titleArg;
-		initialUndecorated = false;
 	}
 	
 	/**
@@ -68,51 +72,58 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	 */
 	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg, boolean undecoratedArg){
 		super(refreshRateArg, false, resizableArg);
-		initialMode = new DisplayMode(widthArg, heightArg);
+		initialWidth = widthArg;
+		initialHeight = heightArg;
 		initialTitle = titleArg;
-		initialUndecorated = undecoratedArg;
 	}
 
 	@Override
 	protected void apply(){
-		try{
-			Display.setDisplayMode(initialMode);
-			Display.setVSyncEnabled(false);
-			Display.setResizable(isResizable());
-			Display.setTitle(initialTitle);
-			Display.setFullscreen(false);
-			
-			if(initialUndecorated) System.setProperty("org.lwjgl.opengl.Window.undecorated", "true");
-			else System.setProperty("org.lwjgl.opengl.Window.undecorated", "false");
-			//TODO more complete support for this setting
-			
-			Display.create();
-		}catch(LWJGLException e){
-			e.printStackTrace();
-		}
+		GLFW.glfwInit();
+		GLFWErrorCallback.createPrint(System.err).set();
+		GLFW.glfwDefaultWindowHints();
+		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, isResizable() ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
+		
+		id = GLFW.glfwCreateWindow(initialWidth, initialHeight, initialTitle, MemoryUtil.NULL, MemoryUtil.NULL);
+		
+		GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+        GLFW.glfwSetWindowPos(id,
+                         (vidmode.width() - initialWidth) / 2,
+                         (vidmode.height() - initialHeight) / 2
+        );
+		
+        GLFW.glfwMakeContextCurrent(id);
+        GLFW.glfwSwapInterval(isVsyncEnabled() ? 1 : 0);
+        GLFW.glfwShowWindow(id);
 	}
 	
 	@Override
 	protected void unapply(){
-		Display.destroy();
+		GLFW.glfwDestroyWindow(id);
+		GLFW.glfwTerminate();
+		GLFW.glfwSetErrorCallback(null).free();
 	}
 
 	@Override
-	protected void preUpdate(float delta){}
+	protected void preUpdate(float delta){
+		GL.createCapabilities();
+		GLFW.glfwSwapBuffers(id);
+		GLFW.glfwPollEvents();
+	}
 
 	@Override
 	protected void postUpdate(float delta){
-		Display.update();
+		//Display.update();
 		
-		if(Display.wasResized()){
+		//if(Display.wasResized()){
 			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
 			GL11.glLoadIdentity();
 			GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
-		}
+		//}
 		
-		Display.sync(getRefreshRate());
+		// TODO Display.sync(getRefreshRate());
 		
-		if(Display.isCloseRequested() && !HvlTemplate.newest().isExiting()){
+		if(GLFW.glfwWindowShouldClose(id)){
 			HvlTemplate.newest().setExiting();
 		}
 	}
@@ -131,12 +142,17 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	@Override
 	public void setResizable(boolean resizableArg){
 		super.setResizable(resizableArg);
-		Display.setResizable(resizableArg);
+		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, resizableArg ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
 	}
 	
 	@Override
 	public HvlEnvironment getEnvironment(){
 		return new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight(), false);
+	}
+
+	@Override
+	public long getId(){
+		return id;
 	}
 	
 }

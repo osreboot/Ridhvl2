@@ -6,8 +6,8 @@ import static com.osreboot.ridhvl2.HvlStatics.hvlQuad;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.opengl.Texture;
+import com.osreboot.ridhvl2.migration.Color;
+import com.osreboot.ridhvl2.migration.HvlTexture;
 
 public class HvlFont extends HvlTaggable{
 	private static final long serialVersionUID = 7326153102489408036L;
@@ -25,7 +25,7 @@ public class HvlFont extends HvlTaggable{
 
 	private HashMap<Character, HvlCharacter> characters;
 
-	private transient Texture loadedTexture;
+	private transient HvlTexture loadedTexture;
 	
 	// TODO remove this after verifying that it doesn't break font rendering
 	private transient boolean texelNudge;
@@ -33,7 +33,7 @@ public class HvlFont extends HvlTaggable{
 	// Constructor for Jackson deserialization
 	private HvlFont(){}
 
-	public HvlFont(HashMap<Character, HvlCharacter> charactersArg, Texture loadedTextureArg, String textureArg){
+	public HvlFont(HashMap<Character, HvlCharacter> charactersArg, HvlTexture loadedTextureArg, String textureArg){
 		super(TAG_TEXTURE,
 				TAG_REGEX_NEWLINE,
 				TAG_SCALE,
@@ -179,7 +179,7 @@ public class HvlFont extends HvlTaggable{
 		return characters.keySet();
 	}
 
-	public void setLoadedTexture(Texture textureArg){
+	public void setLoadedTexture(HvlTexture textureArg){
 		loadedTexture = textureArg;
 	}
 

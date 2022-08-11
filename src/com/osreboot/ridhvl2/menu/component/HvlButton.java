@@ -1,8 +1,5 @@
 package com.osreboot.ridhvl2.menu.component;
 
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.menu.HvlComponent;
@@ -10,6 +7,8 @@ import com.osreboot.ridhvl2.menu.HvlDefault;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
+import com.osreboot.ridhvl2.migration.Display;
+import com.osreboot.ridhvl2.migration.Mouse;
 
 public class HvlButton extends HvlComponent{
 	private static final long serialVersionUID = 6029038729850694290L;

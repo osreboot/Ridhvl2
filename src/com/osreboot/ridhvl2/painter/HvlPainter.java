@@ -1,11 +1,12 @@
 package com.osreboot.ridhvl2.painter;
 
-import org.lwjgl.opengl.Display;
+import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
-import org.newdawn.slick.Color;
 
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlStatics;
+import com.osreboot.ridhvl2.migration.Color;
+import com.osreboot.ridhvl2.migration.Display;
 import com.osreboot.ridhvl2.painter.HvlPaint.HvlPaintMode;
 import com.osreboot.ridhvl2.template.HvlChronology;
 import com.osreboot.ridhvl2.template.HvlChronologyExit;
@@ -34,6 +35,7 @@ public final class HvlPainter{
 
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
+		GL.createCapabilities();
 		GL11.glEnable(GL11.GL_TEXTURE_2D);
 		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
 		GL11.glClearColor(0f, 0f, 0f, 0f);
@@ -93,7 +95,7 @@ public final class HvlPainter{
 				// Prepare for textured polygon rendering with solid white texture alpha
 				GL11.glEnable(GL11.GL_TEXTURE_2D);
 				Color.white.bind();
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, paintArg.getValueTexture().getTextureID());
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, paintArg.getValueTexture().id);
 				
 			}else if(paintArg.getMode() == HvlPaintMode.TEXTURE_COLORIZED){
 				
@@ -101,7 +103,7 @@ public final class HvlPainter{
 				GL11.glEnable(GL11.GL_TEXTURE_2D);
 				GL11.glColor4f(paintArg.getValueColor().r, paintArg.getValueColor().g, paintArg.getValueColor().b, 
 						paintArg.getValueColor().a);
-				GL11.glBindTexture(GL11.GL_TEXTURE_2D, paintArg.getValueTexture().getTextureID());
+				GL11.glBindTexture(GL11.GL_TEXTURE_2D, paintArg.getValueTexture().id);
 				
 			}else if(paintArg.getMode() == HvlPaintMode.RENDERFRAME){
 				
@@ -117,8 +119,8 @@ public final class HvlPainter{
 				if(paintArg.getMode() != HvlPaintMode.COLOR){
 					//TODO test non-square texture drawing again when UV support is added
 					if(paintArg.getMode() == HvlPaintMode.TEXTURE || paintArg.getMode() == HvlPaintMode.TEXTURE_COLORIZED){
-						GL11.glTexCoord2f(polygonArg.getUVs()[i].x * paintArg.getValueTexture().getWidth(), 
-								polygonArg.getUVs()[i].y * paintArg.getValueTexture().getHeight());
+						GL11.glTexCoord2f(polygonArg.getUVs()[i].x * paintArg.getValueTexture().getImageWidth(), 
+								polygonArg.getUVs()[i].y * paintArg.getValueTexture().getImageHeight());
 					}else GL11.glTexCoord2f(polygonArg.getUVs()[i].x, polygonArg.getUVs()[i].y);
 				}
 				GL11.glVertex2f(polygonArg.getVertices()[i].x, polygonArg.getVertices()[i].y);

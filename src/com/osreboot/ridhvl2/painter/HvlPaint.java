@@ -1,7 +1,7 @@
 package com.osreboot.ridhvl2.painter;
 
-import org.newdawn.slick.Color;
-import org.newdawn.slick.opengl.Texture;
+import com.osreboot.ridhvl2.migration.Color;
+import com.osreboot.ridhvl2.migration.HvlTexture;
 
 //TODO implement HvlRenderFrame functionality
 /**
@@ -28,7 +28,7 @@ public final class HvlPaint {
 	private HvlPaintMode mode;
 
 	private Color color;
-	private Texture texture;
+	private HvlTexture texture;
 	//	private HvlRenderFrame frame;
 
 	/**
@@ -46,7 +46,7 @@ public final class HvlPaint {
 	 * 
 	 * @param tArg the value to assign to the 'texture' variable
 	 */
-	public HvlPaint(Texture tArg){
+	public HvlPaint(HvlTexture tArg){
 		texture = tArg;
 		mode = HvlPaintMode.TEXTURE;
 	}
@@ -56,7 +56,7 @@ public final class HvlPaint {
 	 * 
 	 * @param tArg the value to assign to the 'texture' variable
 	 */
-	public HvlPaint(Color cArg, Texture tArg){
+	public HvlPaint(Color cArg, HvlTexture tArg){
 		color = cArg;
 		texture = tArg;
 		mode = HvlPaintMode.TEXTURE_COLORIZED;
@@ -93,7 +93,7 @@ public final class HvlPaint {
 	 * @return the value of the 'texture' variable
 	 * @throws WrongModeException if the mode does not match <code>TEXTURE</code> or <code>TEXTURE_COLORIZED</code>
 	 */
-	public Texture getValueTexture(){
+	public HvlTexture getValueTexture(){
 		if(mode == HvlPaintMode.TEXTURE || mode ==  HvlPaintMode.TEXTURE_COLORIZED)
 			return texture;
 		else throw new WrongModeException(HvlPaintMode.TEXTURE, mode);
@@ -128,7 +128,7 @@ public final class HvlPaint {
 	 * 
 	 * @param tArg the value to assign to the 'texture' variable
 	 */
-	public void setValue(Texture tArg){
+	public void setValue(HvlTexture tArg){
 		color = null;
 		texture = tArg;
 		//		frame = null;
@@ -142,7 +142,7 @@ public final class HvlPaint {
 	 * @param cArg the value to assign to the 'color' variable
 	 * @param tArg the value to assign to the 'texture' variable
 	 */
-	public void setValue(Color cArg, Texture tArg){
+	public void setValue(Color cArg, HvlTexture tArg){
 		color = cArg;
 		texture = tArg;
 		//		frame = null;

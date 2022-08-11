@@ -1,10 +1,5 @@
 package com.osreboot.ridhvl2.menu.component;
 
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
-import org.lwjgl.opengl.Display;
-import org.newdawn.slick.Color;
-
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlMath;
 import com.osreboot.ridhvl2.menu.HvlComponent;
@@ -13,6 +8,10 @@ import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlFont;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
+import com.osreboot.ridhvl2.migration.Color;
+import com.osreboot.ridhvl2.migration.Display;
+import com.osreboot.ridhvl2.migration.Keyboard;
+import com.osreboot.ridhvl2.migration.Mouse;
 import com.osreboot.ridhvl2.template.HvlTemplate;
 
 public class HvlField extends HvlButtonLabeled{
@@ -43,31 +42,31 @@ public class HvlField extends HvlButtonLabeled{
 	DEFAULT_UPDATE = (delta, environment, component) -> {
 		if(!environment.isBlocked()){
 			if(active == component){
-				if((!isMouseOverEnvironment(environment) && Mouse.isButtonDown(0)) || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
-					active = null;
-					component.set(TAG_STATE, HvlButtonState.OFF);
-				}else{
-					if(isMouseOverEnvironment(environment) && Mouse.isButtonDown(1))
-						component.set(TAG_TEXT, "");
-					
-					Keyboard.poll();
-					while(Keyboard.next()){
-						if(Keyboard.getEventKeyState()){
-							String text = ((HvlField)component).getText();
-							if(Keyboard.getEventKey() == Keyboard.KEY_BACK){
-								if(text.length() > 0)
-									((HvlField)component).text(text.substring(0, Math.max(text.length() - 1, 0)));
-							}else{
-								String input = Keyboard.getEventCharacter() + "";
-								if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) input = input.toUpperCase();
-								if(component.get(TAG_ALLOWED_CHARACTERS).contains(input) &&
-										(text + input).length() <= component.get(TAG_MAXIMUM_CHARACTERS)){
-									((HvlField)component).text(text + input);
-								}
-							}
-						}
-					}
-				}
+//				if((!isMouseOverEnvironment(environment) && Mouse.isButtonDown(0)) || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
+//					active = null;
+//					component.set(TAG_STATE, HvlButtonState.OFF);
+//				}else{
+//					if(isMouseOverEnvironment(environment) && Mouse.isButtonDown(1))
+//						component.set(TAG_TEXT, "");
+//					
+//					Keyboard.poll();
+//					while(Keyboard.next()){
+//						if(Keyboard.getEventKeyState()){
+//							String text = ((HvlField)component).getText();
+//							if(Keyboard.getEventKey() == Keyboard.KEY_BACK){
+//								if(text.length() > 0)
+//									((HvlField)component).text(text.substring(0, Math.max(text.length() - 1, 0)));
+//							}else{
+//								String input = Keyboard.getEventCharacter() + "";
+//								if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) input = input.toUpperCase();
+//								if(component.get(TAG_ALLOWED_CHARACTERS).contains(input) &&
+//										(text + input).length() <= component.get(TAG_MAXIMUM_CHARACTERS)){
+//									((HvlField)component).text(text + input);
+//								}
+//							}
+//						}
+//					}
+//				}
 			}else{
 				//TODO implement HvlCursor here
 				if(isMouseOverEnvironment(environment)){

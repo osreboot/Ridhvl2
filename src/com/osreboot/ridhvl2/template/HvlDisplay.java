@@ -1,16 +1,13 @@
 package com.osreboot.ridhvl2.template;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.awt.DisplayMode;
 
-import org.lwjgl.LWJGLException;
-import org.lwjgl.opengl.Display;
-import org.lwjgl.opengl.DisplayMode;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
 
 import com.osreboot.ridhvl2.HvlAction;
-import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
+import com.osreboot.ridhvl2.migration.Display;
 
 /**
  * An instantiable wrapper that serves as a combination of LWJGL's {@linkplain Display} and {@linkplain DisplayMode}
@@ -38,15 +35,6 @@ public abstract class HvlDisplay {
 	
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
-		try{
-			DisplayMode[] displays = Display.getAvailableDisplayModes();
-			for(DisplayMode mode : displays)
-				addFullscreenDisplay(new HvlDisplayFullscreen(mode, false));
-			HvlLogger.println(debug, "Found " + getFullscreenDisplays().size() + " supported fullscreen display modes.");
-		}catch(LWJGLException e){
-			e.printStackTrace();
-		}
-
 		if(getDisplay() != null){
 			getDisplay().apply();
 			displayInitialized = true;
@@ -69,14 +57,11 @@ public abstract class HvlDisplay {
 			getDisplay().unapply();
 			display = null;
 		}
-		clearFullscreenDisplays();
 		displayInitialized = false;
 	};
 
 	private static HvlDisplay display;
 	private static boolean displayInitialized = false;
-
-	private static ArrayList<HvlDisplayFullscreen> fullscreenDisplays = new ArrayList<>();
 
 	/**
 	 * @return the active HvlDisplay instance
@@ -106,24 +91,6 @@ public abstract class HvlDisplay {
 		return displayInitialized;
 	}
 
-	private static void addFullscreenDisplay(HvlDisplayFullscreen displayArg){
-		fullscreenDisplays.add(displayArg);
-	}
-
-	/**
-	 * After HvlDisplay's {@linkplain HvlChronology} initialize event, this method returns an unmodifiable list of
-	 * all fullscreen HvlDisplay instances supported by the current system.
-	 * 
-	 * @return all fullscreen HvlDisplay instances supported by the current system
-	 */
-	public static List<HvlDisplayFullscreen> getFullscreenDisplays(){
-		return Collections.unmodifiableList(fullscreenDisplays);
-	}
-	
-	private static void clearFullscreenDisplays(){
-		fullscreenDisplays.clear();
-	}
-
 	private int refreshRate;
 	private boolean vsyncEnabled, resizable;
 	//TODO iconPath
@@ -133,6 +100,8 @@ public abstract class HvlDisplay {
 		vsyncEnabled = vsyncEnabledArg;
 		resizable = resizableArg;
 	}
+	
+	public abstract long getId();
 
 	/**
 	 * Called when the HvlDisplay is set as the active display.

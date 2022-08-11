@@ -3,8 +3,7 @@ package com.osreboot.ridhvl2.test;
 import static com.osreboot.ridhvl2.HvlStatics.hvlDraw;
 import static com.osreboot.ridhvl2.HvlStatics.hvlQuad;
 
-import org.newdawn.slick.Color;
-
+import com.osreboot.ridhvl2.migration.Color;
 import com.osreboot.ridhvl2.template.HvlDisplayWindowed;
 import com.osreboot.ridhvl2.template.HvlTemplateI;
 
