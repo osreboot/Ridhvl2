@@ -1,12 +1,6 @@
 package com.osreboot.ridhvl2.loader;
 
 import java.io.File;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
-import org.lwjgl.opengl.GL11;
-import org.lwjgl.stb.STBImage;
-import org.lwjgl.system.MemoryStack;
 
 import com.osreboot.ridhvl2.HvlConfig;
 import com.osreboot.ridhvl2.menu.HvlFont;
@@ -42,28 +36,8 @@ public class HvlLoaderFont extends HvlLoader<HvlFont>{
 		//TODO find a better way to handle this
 		if(pathArg.toUpperCase().endsWith("HVLFT")){
 			HvlFont font = HvlConfig.PJSON.load(basePathArg + File.separator + pathArg);
-
+			HvlTexture texture = HvlTexture.load(basePathArg + File.separator + font.get(HvlFont.TAG_TEXTURE));
 			
-			ByteBuffer image;
-			int width, height;
-			try(MemoryStack stack = MemoryStack.stackPush()){
-				IntBuffer w = stack.mallocInt(1);
-				IntBuffer h = stack.mallocInt(1);
-				IntBuffer comp = stack.mallocInt(1);
-
-				STBImage.stbi_set_flip_vertically_on_load(true);
-				image = STBImage.stbi_load(basePathArg + File.separator + font.get(HvlFont.TAG_TEXTURE), w, h, comp, 4);
-				if(image == null) return false;
-
-				width = w.get();
-				height = h.get();
-			}
-
-			HvlTexture texture = new HvlTexture(GL11.glGenTextures(), width, height);
-			texture.bind();
-
-			GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, image);
-
 			font.setLoadedTexture(texture);
 			font.setTexelNudge(true);
 			resources.add(font);

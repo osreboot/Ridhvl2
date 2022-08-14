@@ -10,6 +10,7 @@ import org.lwjgl.system.MemoryUtil;
 import com.osreboot.ridhvl2.HvlLogger;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.migration.Display;
+import com.osreboot.ridhvl2.migration.Mouse;
 
 /**
  * An implementation of {@linkplain HvlDisplay} that handles a windowed LWJGL 
@@ -33,7 +34,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	private int initialWidth, initialHeight;
 	public boolean initialResizable;
 	private long id;
-	
+
 	/**
 	 * Constructor that defaults to a decorated window. Use 
 	 * {@linkplain #HvlDisplayWindowed(int, int, int, String, boolean, boolean)} to supply a custom decorated value.
@@ -54,7 +55,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 		initialHeight = heightArg;
 		initialTitle = titleArg;
 	}
-	
+
 	/**
 	 * Constructor that takes a custom decorated value. Use 
 	 * {@linkplain #HvlDisplayWindowed(int, int, int, String, boolean)} to assume a default decorated value.
@@ -83,20 +84,30 @@ public class HvlDisplayWindowed extends HvlDisplay{
 		GLFWErrorCallback.createPrint(System.err).set();
 		GLFW.glfwDefaultWindowHints();
 		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, isResizable() ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
-		
-		id = GLFW.glfwCreateWindow(initialWidth, initialHeight, initialTitle, MemoryUtil.NULL, MemoryUtil.NULL);
-		
+
+		id = GLFW.glfwCreateWindow(initialWidth, initialHeight, initialTitle, GLFW.glfwGetPrimaryMonitor(), MemoryUtil.NULL);
+
 		GLFWVidMode vidmode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-        GLFW.glfwSetWindowPos(id,
-                         (vidmode.width() - initialWidth) / 2,
-                         (vidmode.height() - initialHeight) / 2
-        );
+		GLFW.glfwSetWindowPos(id,
+				(vidmode.width() - initialWidth) / 2,
+				(vidmode.height() - initialHeight) / 2
+				);
+
+		GLFW.glfwSetWindowSizeCallback(id, (window, width, height) -> {
+			GL11.glViewport(0, 0, width, height);
+			GL11.glLoadIdentity();
+			GL11.glOrtho(0, width, height, 0, 1, -1);
+		});
 		
-        GLFW.glfwMakeContextCurrent(id);
-        GLFW.glfwSwapInterval(isVsyncEnabled() ? 1 : 0);
-        GLFW.glfwShowWindow(id);
+		GLFW.glfwSetScrollCallback(id, (window, xoffset, yoffset) -> {
+			Mouse.dWheel = (float)yoffset;
+		});
+
+		GLFW.glfwMakeContextCurrent(id);
+		GLFW.glfwSwapInterval(isVsyncEnabled() ? 1 : 0);
+		GLFW.glfwShowWindow(id);
 	}
-	
+
 	@Override
 	protected void unapply(){
 		GLFW.glfwDestroyWindow(id);
@@ -107,25 +118,19 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	@Override
 	protected void preUpdate(float delta){
 		GL.createCapabilities();
-		GLFW.glfwSwapBuffers(id);
 		GLFW.glfwPollEvents();
 	}
 
 	@Override
 	protected void postUpdate(float delta){
-		//Display.update();
-		
-		//if(Display.wasResized()){
-			GL11.glViewport(0, 0, Display.getWidth(), Display.getHeight());
-			GL11.glLoadIdentity();
-			GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
-		//}
-		
 		// TODO Display.sync(getRefreshRate());
+		GLFW.glfwSwapBuffers(id);
 		
 		if(GLFW.glfwWindowShouldClose(id)){
 			HvlTemplate.newest().setExiting();
 		}
+
+		Mouse.dWheel = 0;
 	}
 
 	/**
@@ -144,7 +149,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 		super.setResizable(resizableArg);
 		GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, resizableArg ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
 	}
-	
+
 	@Override
 	public HvlEnvironment getEnvironment(){
 		return new HvlEnvironment(0, 0, Display.getWidth(), Display.getHeight(), false);
@@ -154,5 +159,5 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	public long getId(){
 		return id;
 	}
-	
+
 }

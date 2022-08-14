@@ -119,8 +119,8 @@ public final class HvlPainter{
 				if(paintArg.getMode() != HvlPaintMode.COLOR){
 					//TODO test non-square texture drawing again when UV support is added
 					if(paintArg.getMode() == HvlPaintMode.TEXTURE || paintArg.getMode() == HvlPaintMode.TEXTURE_COLORIZED){
-						GL11.glTexCoord2f(polygonArg.getUVs()[i].x * paintArg.getValueTexture().getImageWidth(), 
-								polygonArg.getUVs()[i].y * paintArg.getValueTexture().getImageHeight());
+						GL11.glTexCoord2f(polygonArg.getUVs()[i].x/* * paintArg.getValueTexture().getImageWidth()*/, 
+								polygonArg.getUVs()[i].y/* * paintArg.getValueTexture().getImageHeight()*/);
 					}else GL11.glTexCoord2f(polygonArg.getUVs()[i].x, polygonArg.getUVs()[i].y);
 				}
 				GL11.glVertex2f(polygonArg.getVertices()[i].x, polygonArg.getVertices()[i].y);

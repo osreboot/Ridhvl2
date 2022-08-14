@@ -2,9 +2,6 @@ package com.osreboot.ridhvl2.template;
 
 import java.awt.DisplayMode;
 
-import org.lwjgl.glfw.GLFW;
-import org.lwjgl.glfw.GLFWErrorCallback;
-
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.migration.Display;

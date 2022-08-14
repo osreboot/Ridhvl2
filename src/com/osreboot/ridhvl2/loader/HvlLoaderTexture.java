@@ -37,28 +37,7 @@ public class HvlLoaderTexture extends HvlLoader<HvlTexture>{
 
 	@Override
 	public boolean load(String basePathArg, String pathArg){
-		ByteBuffer image;
-		int width, height;
-		try(MemoryStack stack = MemoryStack.stackPush()){
-			IntBuffer w = stack.mallocInt(1);
-			IntBuffer h = stack.mallocInt(1);
-			IntBuffer comp = stack.mallocInt(1);
-			
-			STBImage.stbi_set_flip_vertically_on_load(true);
-			image = STBImage.stbi_load(basePathArg + File.separator + pathArg, w, h, comp, 4);
-			if(image == null) return false;
-			
-			width = w.get();
-			height = h.get();
-		}
-		
-		HvlTexture texture = new HvlTexture(GL11.glGenTextures(), width, height);
-		texture.bind();
-		
-		GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA8, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, image);
-		
-		resources.add(texture);
-		
+		resources.add(HvlTexture.load(basePathArg + File.separator + pathArg));
 		return true;
 	}
 
