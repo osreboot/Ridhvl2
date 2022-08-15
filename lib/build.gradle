@@ -1,0 +1,58 @@
+plugins {
+    id 'java-library'
+    id 'eclipse'
+}
+
+import org.gradle.internal.os.OperatingSystem
+
+project.ext.lwjglVersion = "3.3.1"
+
+switch (OperatingSystem.current()) {
+	case OperatingSystem.LINUX:
+		def osArch = System.getProperty("os.arch")
+		project.ext.lwjglNatives = osArch.startsWith("arm") || osArch.startsWith("aarch64")
+			? "natives-linux-${osArch.contains("64") || osArch.startsWith("armv8") ? "arm64" : "arm32"}"
+			: "natives-linux"
+		break
+	case OperatingSystem.MAC_OS:
+		project.ext.lwjglNatives = System.getProperty("os.arch").startsWith("aarch64") ? "natives-macos-arm64" : "natives-macos"
+		break
+	case OperatingSystem.WINDOWS:
+		def osArch = System.getProperty("os.arch")
+		project.ext.lwjglNatives = osArch.contains("64")
+			? "natives-windows${osArch.startsWith("aarch64") ? "-arm64" : ""}"
+			: "natives-windows-x86"
+		break
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+
+	api "org.lwjgl:lwjgl"
+	api "org.lwjgl:lwjgl-glfw"
+	api "org.lwjgl:lwjgl-opengl"
+	api "org.lwjgl:lwjgl-stb"
+	runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+	runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+	
+	implementation 'com.fasterxml.jackson.core:jackson-annotations:2.13.3'
+	implementation 'com.fasterxml.jackson.core:jackson-core:2.13.3'
+	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.named('jar') {
+	archivesBaseName = 'Ridhvl2'
+	archiveVersion = version;
+}
