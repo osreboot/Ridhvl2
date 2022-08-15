@@ -1,5 +1,7 @@
+[![Gradle Package](https://github.com/osreboot/Ridhvl2/actions/workflows/gradle-publish.yml/badge.svg)](https://github.com/osreboot/Ridhvl2/actions/workflows/gradle-publish.yml)
+
 <p align="center">
-  <img src="https://github.com/osreboot/Ridhvl2/blob/master/res/RIDHVL2.png" width="384" height="384" alt="Ridhvl2">
+  <img src="https://github.com/osreboot/Ridhvl2-Wiki-Resources/blob/master/RIDHVL2.png" width="384" height="384" alt="Ridhvl2">
 </p>
 
 # Ridhvl2
