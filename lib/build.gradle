@@ -1,6 +1,7 @@
 plugins {
     id 'java-library'
     id 'eclipse'
+    id 'maven-publish'
 }
 
 import org.gradle.internal.os.OperatingSystem
@@ -46,6 +47,27 @@ dependencies {
 	implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.3'
 
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
+}
+
+publishing {
+    repositories {
+        maven {
+            name = "Ridhvl2"
+            url = uri("https://maven.pkg.github.com/osreboot/ridhvl2")
+            credentials {
+                username = project.findProperty("gpr.user") ?: System.getenv("USERNAME")
+                password = project.findProperty("gpr.key") ?: System.getenv("TOKEN")
+            }
+        }
+    }
+    publications {
+        gpr(MavenPublication) {
+            from(components.java)
+            
+            groupId = group
+            artifactId = "ridhvl2"
+        }
+    }
 }
 
 tasks.named('test') {
