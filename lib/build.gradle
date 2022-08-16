@@ -31,16 +31,21 @@ repositories {
 }
 
 dependencies {
-  api platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
+	def lwjglVersion = "3.3.1"
+	api platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
+	def lwjglModules = ['glfw', 'opengl', 'stb']
+	def lwjglOSes = ['linux', 'linux-arm32', 'linux-arm64',
+		'macos', 'macos-arm64',
+		'windows', 'windows-arm64', 'windows-x86']
+	
 	api "org.lwjgl:lwjgl"
-	api "org.lwjgl:lwjgl-glfw"
-	api "org.lwjgl:lwjgl-opengl"
-	api "org.lwjgl:lwjgl-stb"
-	runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
-	runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
-	runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
-	runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+	lwjglModules.each { lwjglModule -> 
+		api "org.lwjgl:lwjgl-${lwjglModule}"
+		lwjglOSes.each { lwjglOS -> 
+			runtimeOnly "org.lwjgl:lwjgl-${lwjglModule}::natives-${lwjglOS}"
+		}
+	}
 	
 	api 'com.fasterxml.jackson.core:jackson-annotations:2.13.3'
 	api 'com.fasterxml.jackson.core:jackson-core:2.13.3'
