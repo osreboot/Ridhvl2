@@ -55,7 +55,7 @@ public abstract class HvlLoader<T> {
 	 * A path commonly used to store resources, generally acts as the default path for loaders.
 	 */
 	public static final String 
-	PATH_DEFAULT = "res";
+	PATH_DEFAULT = "src/main/resources";
 	
 	/**
 	 * Label that identifies a loader's resource type. Two loaders with the same label cannot be active (in

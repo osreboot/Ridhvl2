@@ -17,7 +17,7 @@ public class HvlLoaderTexture extends HvlLoader<HvlTexture>{
 	 * Constructs an HvlLoaderTexture instance with the default path being "res".
 	 */
 	public HvlLoaderTexture(){
-		this("res");
+		this(PATH_DEFAULT);
 	}
 
 	/**

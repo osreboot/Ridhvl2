@@ -19,7 +19,7 @@ public class HvlLoaderFont extends HvlLoader<HvlFont>{
 	 * Constructs an HvlLoaderFont instance with the default path being "res".
 	 */
 	public HvlLoaderFont(){
-		this("res");
+		this(PATH_DEFAULT);
 	}
 
 	/**
