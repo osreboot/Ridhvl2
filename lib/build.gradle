@@ -34,16 +34,15 @@ dependencies {
 	def lwjglVersion = "3.3.1"
 	api platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
 
-	def lwjglModules = ['glfw', 'opengl', 'stb']
+	def lwjglModules = ['', '-glfw', '-opengl', '-stb']
 	def lwjglOSes = ['linux', 'linux-arm32', 'linux-arm64',
 		'macos', 'macos-arm64',
 		'windows', 'windows-arm64', 'windows-x86']
 	
-	api "org.lwjgl:lwjgl"
 	lwjglModules.each { lwjglModule -> 
-		api "org.lwjgl:lwjgl-${lwjglModule}"
+		api "org.lwjgl:lwjgl${lwjglModule}"
 		lwjglOSes.each { lwjglOS -> 
-			runtimeOnly "org.lwjgl:lwjgl-${lwjglModule}::natives-${lwjglOS}"
+			runtimeOnly "org.lwjgl:lwjgl${lwjglModule}::natives-${lwjglOS}"
 		}
 	}
 	
