@@ -7,43 +7,25 @@ import org.lwjgl.system.MemoryUtil;
 
 import com.osreboot.ridhvl2.HvlCoord;
 
-public class HvlDisplayWindowed extends HvlDisplay{
+public class HvlDisplayFullscreen extends HvlDisplay{
 
-	private final int refreshRate;
-	
-	private HvlCoord size;
-
-	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg){
-		super(titleArg, false, resizableArg);
-		refreshRate = refreshRateArg;
-		size = new HvlCoord(widthArg, heightArg);
-		
-		setResizable(resizableArg);
+	public HvlDisplayFullscreen(String titleArg){
+		super(titleArg, false, false);
 	}
 
 	@Override
 	protected long apply(){
 		GLFW.glfwDefaultWindowHints();
-		setResizable(isResizable());
-
-		long id = GLFW.glfwCreateWindow((int)Math.ceil(size.x), (int)Math.ceil(size.y), getTitle(), MemoryUtil.NULL, MemoryUtil.NULL);
 
 		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-		GLFW.glfwSetWindowPos(id,
-				(vidMode.width() - (int)Math.ceil(size.x)) / 2,
-				(vidMode.height() - (int)Math.ceil(size.y)) / 2
-				);
-		
-		GLFW.glfwSetWindowSizeCallback(id, (window, width, height) -> {
-			HvlDisplay.resizeViewport(width, height);
-
-			size.set(width, height);
-		});
+		long id = GLFW.glfwCreateWindow(vidMode.width(), vidMode.height(), getTitle(), GLFW.glfwGetPrimaryMonitor(), MemoryUtil.NULL);
 		
 		HvlDisplay.registerCallbacks(id);
 
-		GLFW.glfwMakeContextCurrent(id);
+		setResizable(isResizable());
 		setVsyncEnabled(isVsyncEnabled());
+		
+		GLFW.glfwMakeContextCurrent(id);
 		GLFW.glfwShowWindow(id);
 		
 		return id;
@@ -51,7 +33,6 @@ public class HvlDisplayWindowed extends HvlDisplay{
 
 	@Override
 	protected void unapply(){
-		GLFW.glfwSetWindowSizeCallback(getId(), null);
 		HvlDisplay.clearCallbacks(getId());
 		
 		GLFW.glfwDestroyWindow(getId());
@@ -72,15 +53,15 @@ public class HvlDisplayWindowed extends HvlDisplay{
 			HvlTemplate.newest().setExiting();
 		}
 	}
-	
+
 	@Override
 	public HvlCoord getSize(){
-		return size;
+		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+		return new HvlCoord(vidMode.width(), vidMode.height());
 	}
 
 	@Override
 	public int getRefreshRate(){
-		return refreshRate;
+		return GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor()).refreshRate();
 	}
-
 }

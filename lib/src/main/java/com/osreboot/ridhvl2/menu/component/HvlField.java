@@ -9,17 +9,15 @@ import com.osreboot.ridhvl2.menu.HvlFont;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
 import com.osreboot.ridhvl2.migration.Color;
-import com.osreboot.ridhvl2.migration.Display;
-import com.osreboot.ridhvl2.migration.Mouse;
+import com.osreboot.ridhvl2.template.HvlMouse;
 import com.osreboot.ridhvl2.template.HvlTemplate;
 
 public class HvlField extends HvlButtonLabeled{
 	private static final long serialVersionUID = 3524532940445964359L;
 
 	private static boolean isMouseOverEnvironment(HvlEnvironment environment){
-		return Mouse.getX() > environment.getX() && Mouse.getX() < environment.getX() + environment.getWidth() &&
-				Display.getHeight() - Mouse.getY() > environment.getY() &&
-				Display.getHeight() - Mouse.getY() < environment.getY() + environment.getHeight();
+		return HvlMouse.getX() > environment.getX() && HvlMouse.getX() < environment.getX() + environment.getWidth() &&
+				HvlMouse.getY() > environment.getY() && HvlMouse.getY() < environment.getY() + environment.getHeight();
 	}
 
 	public static HvlField active;
@@ -69,7 +67,7 @@ public class HvlField extends HvlButtonLabeled{
 			}else{
 				//TODO implement HvlCursor here
 				if(isMouseOverEnvironment(environment)){
-					if(!Mouse.isButtonDown(0)){
+					if(!HvlMouse.isButtonDown(HvlMouse.BUTTON_LEFT)){
 						if(component.get(TAG_STATE) == HvlButtonState.ON){
 							component.get(TAG_CLICKED).run((HvlButton)component);
 							active = (HvlField)component;
@@ -143,7 +141,7 @@ public class HvlField extends HvlButtonLabeled{
 	public HvlField maximumCharacters(int maximumCharactersArg){
 		return (HvlField)set(TAG_MAXIMUM_CHARACTERS, maximumCharactersArg);
 	}
-	
+
 	public HvlField textHint(String textHintArg){
 		return (HvlField)set(TAG_TEXT_HINT, textHintArg);
 	}

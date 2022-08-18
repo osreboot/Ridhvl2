@@ -6,12 +6,12 @@ import org.lwjgl.opengl.GL11;
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlStatics;
 import com.osreboot.ridhvl2.migration.Color;
-import com.osreboot.ridhvl2.migration.Display;
 import com.osreboot.ridhvl2.painter.HvlPaint.HvlPaintMode;
 import com.osreboot.ridhvl2.template.HvlChronology;
 import com.osreboot.ridhvl2.template.HvlChronologyExit;
 import com.osreboot.ridhvl2.template.HvlChronologyInitialize;
 import com.osreboot.ridhvl2.template.HvlChronologyUpdate;
+import com.osreboot.ridhvl2.template.HvlDisplay;
 
 /**
  * A drawing system based on LWJGL's {@linkplain org.lwjgl.opengl.GL11 GL11} access. Must be enabled by
@@ -45,7 +45,7 @@ public final class HvlPainter{
 
 		GL11.glMatrixMode(GL11.GL_MATRIX_MODE);
 		GL11.glLoadIdentity();
-		GL11.glOrtho(0, Display.getWidth(), Display.getHeight(), 0, 1, -1);
+		GL11.glOrtho(0, HvlDisplay.getWidth(), HvlDisplay.getHeight(), 0, 1, -1);
 		GL11.glMatrixMode(GL11.GL_MODELVIEW);
 	};
 

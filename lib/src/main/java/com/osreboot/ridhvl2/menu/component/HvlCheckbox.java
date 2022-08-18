@@ -7,8 +7,7 @@ import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
 import com.osreboot.ridhvl2.menu.component.HvlButton.HvlButtonState;
-import com.osreboot.ridhvl2.migration.Display;
-import com.osreboot.ridhvl2.migration.Mouse;
+import com.osreboot.ridhvl2.template.HvlMouse;
 
 public class HvlCheckbox extends HvlComponent{
 	private static final long serialVersionUID = 6029038729850694290L;
@@ -32,10 +31,9 @@ public class HvlCheckbox extends HvlComponent{
 	DEFAULT_UPDATE = (delta, environment, component) -> {
 		if(!environment.isBlocked()){
 			//TODO implement HvlCursor here
-			if(Mouse.getX() > environment.getX() && Mouse.getX() < environment.getX() + environment.getWidth() &&
-					Display.getHeight() - Mouse.getY() > environment.getY() &&
-					Display.getHeight() - Mouse.getY() < environment.getY() + environment.getHeight()){
-				if(!Mouse.isButtonDown(0)){
+			if(HvlMouse.getX() > environment.getX() && HvlMouse.getX() < environment.getX() + environment.getWidth() &&
+					HvlMouse.getY() > environment.getY() && HvlMouse.getY() < environment.getY() + environment.getHeight()){
+				if(!HvlMouse.isButtonDown(HvlMouse.BUTTON_LEFT)){
 					if(component.get(TAG_STATE) == HvlButtonState.ON)
 						component.set(TAG_ACTIVE, !component.get(TAG_ACTIVE));
 						component.get(TAG_CLICKED).run((HvlCheckbox)component);

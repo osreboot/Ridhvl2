@@ -40,7 +40,7 @@ public abstract class HvlTemplateI extends HvlTemplate{
 		getTimer().setMaxDelta(HvlTimer.MAXDELTA_DECISECOND);
 
 		//Set the HvlDisplay specified by the user
-		HvlDisplay.setDisplay(displayArg);
+		HvlDisplay.preLoadDisplay(displayArg);
 
 		//Register and load Ridhvl2's utilities
 		HvlChronologyRegistry.registerRidhvlChronologies();
@@ -64,7 +64,7 @@ public abstract class HvlTemplateI extends HvlTemplate{
 	 */
 	@Override
 	public abstract void initialize();
-	
+
 	@Override
 	public final void preUpdate(float delta){
 		HvlChronology.preUpdate(delta);
@@ -78,7 +78,7 @@ public abstract class HvlTemplateI extends HvlTemplate{
 	 */
 	@Override
 	public abstract void update(float delta);
-	
+
 	@Override
 	public final void postUpdate(float delta){
 		HvlChronology.postUpdate(delta);
@@ -88,7 +88,7 @@ public abstract class HvlTemplateI extends HvlTemplate{
 			HvlChronology.unloadEvents();
 		}
 	}
-	
+
 	/**
 	 * Called once after a program exit is requested. This should be used to perform a last-second save of a user's
 	 * files or game state, or other similar exit operations. This method will be automatically called in all clean

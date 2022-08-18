@@ -1,24 +1,13 @@
 package com.osreboot.ridhvl2.template;
 
-import java.awt.DisplayMode;
+import org.lwjgl.glfw.GLFW;
+import org.lwjgl.glfw.GLFWErrorCallback;
+import org.lwjgl.opengl.GL11;
 
 import com.osreboot.ridhvl2.HvlAction;
+import com.osreboot.ridhvl2.HvlCoord;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
-import com.osreboot.ridhvl2.migration.Display;
 
-/**
- * An instantiable wrapper that serves as a combination of LWJGL's {@linkplain Display} and {@linkplain DisplayMode}
- * classes. The static aspects of this utility facilitate the swapping and manipulation of a single active instance
- * of HvlDisplay, which is itself responsible for handling the program's current LWJGL DisplayMode.
- * 
- * <p>
- * 
- * Users looking for instances to feed to {@linkplain HvlTemplateI} constructors should refer to one of HvlDisplay's
- * many subclasses, such as {@linkplain HvlDisplayFullscreenAuto} or {@linkplain HvlDisplayWindowed}.
- * 
- * @author os_reboot
- *
- */
 public abstract class HvlDisplay {
 
 	public static final String LABEL = "HvlDisplay";
@@ -29,13 +18,23 @@ public abstract class HvlDisplay {
 	CHRONO_EXIT = HvlChronology.CHRONOLOGY_EXIT_LATE + HvlChronology.CHRONOLOGY_EXIT_INTERVAL,
 	LAUNCH_CODE = 1,
 	LAUNCH_CODE_RAW = 2;//2^1
-	
+
+	private static boolean active = false;
+
+	private static HvlDisplay preLoadedDisplay;
+
+	public static void preLoadDisplay(HvlDisplay displayArg){
+		preLoadedDisplay = displayArg;
+	}
+
 	@HvlChronologyInitialize(label = LABEL, chronology = CHRONO_INIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_INIT = debug -> {
-		if(getDisplay() != null){
-			getDisplay().apply();
-			displayInitialized = true;
-		}else throw new NullDisplayException();
+		active = HvlChronology.verifyLaunchCode(LAUNCH_CODE);
+
+		GLFW.glfwInit();
+		GLFWErrorCallback.createPrint(System.err).set();
+
+		setDisplay(preLoadedDisplay);
 	};
 
 	@HvlChronologyUpdate(label = LABEL, chronology = CHRONO_PRE_UPDATE, launchCode = LAUNCH_CODE)
@@ -47,159 +46,122 @@ public abstract class HvlDisplay {
 	public static final HvlAction.A2<Boolean, Float> ACTION_POST_UPDATE = (debug, delta) -> {
 		getDisplay().postUpdate(delta);
 	};
-	
+
 	@HvlChronologyExit(label = LABEL, chronology = CHRONO_EXIT, launchCode = LAUNCH_CODE)
 	public static final HvlAction.A1<Boolean> ACTION_EXIT = debug -> {
-		if(getDisplay() != null && isDisplayInitialized()){
-			getDisplay().unapply();
-			display = null;
+		try{
+			setDisplay(null);
+
+			GLFW.glfwTerminate();
+			GLFW.glfwSetErrorCallback(null).free();
+		}finally{
+			active = false;
 		}
-		displayInitialized = false;
 	};
 
-	private static HvlDisplay display;
-	private static boolean displayInitialized = false;
+	private static void verifyActive(){
+		if(!active) throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
+	}
 
-	/**
-	 * @return the active HvlDisplay instance
-	 */
+	private static HvlDisplay display;
+
+	public static void setDisplay(HvlDisplay displayArg){
+		verifyActive();
+
+		if(display != null){
+			display.unapply();
+		}
+		//TODO smooth transition (i.e. don't destroy display)
+
+		display = displayArg;
+		if(display != null){
+			display.id = display.apply();
+		}
+	}
+
 	public static HvlDisplay getDisplay(){
+		verifyActive();
+
 		return display;
 	}
 
-	/**
-	 * Sets the active HvlDisplay instance and applies it with {@linkplain #apply()}. If an HvlDisplay instance is
-	 * already active, it is first unapplied with {@linkplain #unapply()}.
-	 * 
-	 * @param displayArg the HvlDisplay instance to set as the active display
-	 * @throws NullDisplayException if the supplied HvlDisplay instance is null
-	 */
-	public static void setDisplay(HvlDisplay displayArg){
-		if(displayArg == null) throw new NullDisplayException();
-		
-		if(display != null && displayInitialized) display.unapply();
-		//TODO smooth transition (i.e. don't destroy display)
-		
-		display = displayArg;
-		if(displayInitialized) display.apply();
-	}
-	
-	private static boolean isDisplayInitialized(){
-		return displayInitialized;
+	public static void resizeViewport(int widthArg, int heightArg){
+		GL11.glViewport(0, 0, widthArg, heightArg);
+		GL11.glLoadIdentity();
+		GL11.glOrtho(0, widthArg, heightArg, 0, 1, -1);
 	}
 
-	private int refreshRate;
+	public static void registerCallbacks(long idArg){
+		GLFW.glfwSetScrollCallback(idArg, (window, xOffset, yOffset) -> {
+			HvlMouse.deltaWheel += (float)yOffset;
+		});
+	}
+
+	public static void clearCallbacks(long idArg){
+		GLFW.glfwSetScrollCallback(idArg, null);
+	}
+
+	public static int getWidth(){
+		return (int)Math.ceil(getDisplay().getSize().x);
+	}
+
+	public static int getHeight(){
+		return (int)Math.ceil(getDisplay().getSize().y);
+	}
+
+	private long id;
+	private String title;
 	private boolean vsyncEnabled, resizable;
 	//TODO iconPath
 
-	HvlDisplay(int refreshRateArg, boolean vsyncEnabledArg, boolean resizableArg){
-		refreshRate = refreshRateArg;
+	protected HvlDisplay(String titleArg, boolean vsyncEnabledArg, boolean resizableArg){
+		title = titleArg;
 		vsyncEnabled = vsyncEnabledArg;
 		resizable = resizableArg;
 	}
-	
-	public abstract long getId();
 
-	/**
-	 * Called when the HvlDisplay is set as the active display.
-	 */
-	protected abstract void apply();
-	
-	/**
-	 * Called when the HvlDisplay is set as inactive.
-	 */
+	protected abstract long apply();
 	protected abstract void unapply();
 
-	/**
-	 * Called once per update, before {@linkplain HvlTemplate} updates.
-	 * 
-	 * @param delta the time (in seconds) since the last update
-	 */
 	protected abstract void preUpdate(float delta);
-	
-	/**
-	 * Called once per update, after {@linkplain HvlTemplate} updates.
-	 * 
-	 * @param delta the time (in seconds) since the last update
-	 */
 	protected abstract void postUpdate(float delta);
 
-	/**
-	 * @return if the HvlDisplay's vertical-sync option is enabled
-	 */
+	public final long getId(){
+		return id;
+	}
+
+	public abstract HvlCoord getSize();
+	public abstract int getRefreshRate();
+
+	public void setTitle(String titleArg){
+		title = titleArg;
+		if(display != null && display.getId() == id) GLFW.glfwSetWindowTitle(getId(), title);
+	}
+
+	public String getTitle(){
+		return title;
+	}
+
+	public void setVsyncEnabled(boolean vsyncEnabledArg){
+		vsyncEnabled = vsyncEnabledArg;
+		if(display != null && display.getId() == id) GLFW.glfwSwapInterval(vsyncEnabled ? 1 : 0);
+	}
+
 	public boolean isVsyncEnabled(){
 		return vsyncEnabled;
 	}
 
-	/**
-	 * Sets the HvlDisplay's vertical-sync option. This may be disabled on HvlDisplay implementations that don't 
-	 * support vsync.
-	 * 
-	 * @param vsyncEnabledArg the new <code>vsyncEnabled</code> value
-	 */
-	public void setVsyncEnabled(boolean vsyncEnabledArg){
-		vsyncEnabled = vsyncEnabledArg;
+	public void setResizable(boolean resizableArg){
+		resizable = resizableArg;
+		if(display != null && display.getId() == id) GLFW.glfwWindowHint(GLFW.GLFW_RESIZABLE, resizable ? GLFW.GLFW_TRUE : GLFW.GLFW_FALSE);
 	}
 
-	/**
-	 * @return the HvlDisplay's current refresh rate
-	 */
-	public int getRefreshRate(){
-		return refreshRate;
-	}
-
-	/**
-	 * Sets the HvlDisplay's refresh rate. This may be disabled on HvlDisplay implementations that don't support
-	 * changing refresh rates.
-	 * 
-	 * @param refreshRateArg the new <code>refreshRate</code> value
-	 * @throws InvalidRefreshRateException if <code>refreshRateArg</code> is less than 1
-	 */
-	public void setRefreshRate(int refreshRateArg){
-		if(refreshRateArg < 1){
-			throw new InvalidRefreshRateException();
-		}else refreshRate = refreshRateArg;
-	}
-
-	/**
-	 * @return if the HvlDisplay's resizability option is enabled
-	 */
 	public boolean isResizable(){
 		return resizable;
 	}
 
-	/**
-	 * Sets the HvlDisplay's resizability option. This may be disabled on HvlDisplay implementatons that don't
-	 * support resizable displays.
-	 * 
-	 * @param resizableArg
-	 */
-	public void setResizable(boolean resizableArg){
-		resizable = resizableArg;
-	}
-	
-	public abstract HvlEnvironment getEnvironment();
-
-	/**
-	 * Thrown if an attempt is made to change a HvlDisplay's <code>refreshRate</code> to a value less than 1.
-	 * 
-	 * @author os_reboot
-	 *
-	 */
-	public static class InvalidRefreshRateException extends RuntimeException{
-		private static final long serialVersionUID = -5066247796713528811L;
-	}
-
-	/**
-	 * Thrown if, when HvlDisplay's {@linkplain HvlChronology} initialize event is called, a HvlDisplay instance has
-	 * not been set as the active instance. This exception is not thrown if HvlDisplay isn't activated by the
-	 * HvlChronology launch code.
-	 * 
-	 * @author os_reboot
-	 *
-	 */
-	public static class NullDisplayException extends RuntimeException{
-		private static final long serialVersionUID = -5076487588403656161L;
+	public HvlEnvironment getEnvironment(){
+		return new HvlEnvironment(0, 0, getSize().x, getSize().y, false);
 	}
 
 }
