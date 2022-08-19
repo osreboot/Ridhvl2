@@ -68,14 +68,17 @@ public abstract class HvlDisplay {
 	public static void setDisplay(HvlDisplay displayArg){
 		verifyActive();
 
+		boolean resizeRequired = false;
 		if(display != null){
 			display.unapply();
+			resizeRequired = true;
 		}
 		//TODO smooth transition (i.e. don't destroy display)
 
 		display = displayArg;
 		if(display != null){
 			display.id = display.apply();
+			if(resizeRequired) resizeViewport(getWidth(), getHeight());
 		}
 	}
 

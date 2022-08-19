@@ -16,16 +16,15 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 	@Override
 	protected long apply(){
 		GLFW.glfwDefaultWindowHints();
+		setResizable(isResizable());
 
 		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 		long id = GLFW.glfwCreateWindow(vidMode.width(), vidMode.height(), getTitle(), GLFW.glfwGetPrimaryMonitor(), MemoryUtil.NULL);
 		
 		HvlDisplay.registerCallbacks(id);
 
-		setResizable(isResizable());
-		setVsyncEnabled(isVsyncEnabled());
-		
 		GLFW.glfwMakeContextCurrent(id);
+		setVsyncEnabled(isVsyncEnabled());
 		GLFW.glfwShowWindow(id);
 		
 		return id;
