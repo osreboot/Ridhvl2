@@ -508,7 +508,7 @@ public final class HvlChronology {
 				a.run(loadedInitialize.get(a));
 			}catch(Exception e){
 				HvlLogger.println("Exception thrown by an initialize event!");
-				e.printStackTrace();
+				throw e;
 			}
 		}
 	}
@@ -528,7 +528,7 @@ public final class HvlChronology {
 				a.run(loadedPreUpdate.get(a), delta);
 			}catch(Exception e){
 				HvlLogger.println("Exception thrown by a pre-update event!");
-				e.printStackTrace();
+				throw e;
 			}
 		}
 	}
@@ -548,7 +548,7 @@ public final class HvlChronology {
 				a.run(loadedPostUpdate.get(a), delta);
 			}catch(Exception e){
 				HvlLogger.println("Exception thrown by a post-update event!");
-				e.printStackTrace();
+				throw e;
 			}
 		}
 	}
@@ -564,7 +564,7 @@ public final class HvlChronology {
 				a.run(loadedExit.get(a));
 			}catch(Exception e){
 				HvlLogger.println("Exception thrown by an exit event!");
-				e.printStackTrace();
+				throw e;
 			}
 		}
 	}
