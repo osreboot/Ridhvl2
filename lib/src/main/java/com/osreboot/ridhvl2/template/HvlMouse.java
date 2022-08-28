@@ -17,7 +17,7 @@ public final class HvlMouse{
 	CHRONO_POST_UPDATE = HvlChronology.CHRONOLOGY_UPDATE_POST_MIDDLE - (2 * HvlChronology.CHRONOLOGY_UPDATE_INTERVAL),
 	CHRONO_EXIT = HvlChronology.CHRONOLOGY_EXIT_MIDDLE - (3 * HvlChronology.CHRONOLOGY_EXIT_INTERVAL),
 	LAUNCH_CODE = 8,
-	LAUNCH_CODE_RAW = 256;//2^7
+	LAUNCH_CODE_RAW = 256;//2^8
 
 	private static boolean active = false;
 

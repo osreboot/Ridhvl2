@@ -47,6 +47,7 @@ public final class HvlChronologyRegistry {
 		HvlChronology.registerChronology(HvlDefault.class);
 		HvlChronology.registerChronology(HvlMenu.class);
 		HvlChronology.registerChronology(HvlMouse.class);
+		HvlChronology.registerChronology(HvlKeyboard.class);
 	}
 	
 }

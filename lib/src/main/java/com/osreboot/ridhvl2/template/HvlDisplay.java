@@ -98,10 +98,18 @@ public abstract class HvlDisplay {
 		GLFW.glfwSetScrollCallback(idArg, (window, xOffset, yOffset) -> {
 			HvlMouse.deltaWheel += (float)yOffset;
 		});
+		GLFW.glfwSetCharCallback(idArg, (window, codepoint) -> {
+			for(Character c : Character.toChars(codepoint)) HvlKeyboard.deltaCharacters.add(c);
+		});
+		GLFW.glfwSetKeyCallback(idArg, (window, key, scancode, action, mods) -> {
+			if(key == HvlKeyboard.KEY_BACKSPACE && (action == GLFW.GLFW_PRESS || action == GLFW.GLFW_REPEAT)) HvlKeyboard.activationsBackspace++;
+		});
 	}
 
 	public static void clearCallbacks(long idArg){
 		GLFW.glfwSetScrollCallback(idArg, null);
+		GLFW.glfwSetCharCallback(idArg, null);
+		GLFW.glfwSetKeyCallback(idArg, null);
 	}
 
 	public static int getWidth(){

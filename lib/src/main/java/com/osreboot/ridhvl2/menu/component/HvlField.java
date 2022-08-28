@@ -9,6 +9,7 @@ import com.osreboot.ridhvl2.menu.HvlFont;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
 import com.osreboot.ridhvl2.migration.Color;
+import com.osreboot.ridhvl2.template.HvlKeyboard;
 import com.osreboot.ridhvl2.template.HvlMouse;
 import com.osreboot.ridhvl2.template.HvlTemplate;
 
@@ -39,31 +40,22 @@ public class HvlField extends HvlButtonLabeled{
 	DEFAULT_UPDATE = (delta, environment, component) -> {
 		if(!environment.isBlocked()){
 			if(active == component){
-//				if((!isMouseOverEnvironment(environment) && Mouse.isButtonDown(0)) || Keyboard.isKeyDown(Keyboard.KEY_ESCAPE)){
-//					active = null;
-//					component.set(TAG_STATE, HvlButtonState.OFF);
-//				}else{
-//					if(isMouseOverEnvironment(environment) && Mouse.isButtonDown(1))
-//						component.set(TAG_TEXT, "");
-//					
-//					Keyboard.poll();
-//					while(Keyboard.next()){
-//						if(Keyboard.getEventKeyState()){
-//							String text = ((HvlField)component).getText();
-//							if(Keyboard.getEventKey() == Keyboard.KEY_BACK){
-//								if(text.length() > 0)
-//									((HvlField)component).text(text.substring(0, Math.max(text.length() - 1, 0)));
-//							}else{
-//								String input = Keyboard.getEventCharacter() + "";
-//								if(Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT)) input = input.toUpperCase();
-//								if(component.get(TAG_ALLOWED_CHARACTERS).contains(input) &&
-//										(text + input).length() <= component.get(TAG_MAXIMUM_CHARACTERS)){
-//									((HvlField)component).text(text + input);
-//								}
-//							}
-//						}
-//					}
-//				}
+				if((!isMouseOverEnvironment(environment) && HvlMouse.isButtonDown(HvlMouse.BUTTON_LEFT)) || HvlKeyboard.isKeyDown(HvlKeyboard.KEY_ESCAPE)){
+					active = null;
+					component.set(TAG_STATE, HvlButtonState.OFF);
+				}else{
+					if(isMouseOverEnvironment(environment) && HvlMouse.isButtonDown(HvlMouse.BUTTON_RIGHT))
+						component.set(TAG_TEXT, "");
+
+					for(Character c : HvlKeyboard.pollCharacters()){
+						String text = ((HvlField)component).getText();
+						if(component.get(TAG_ALLOWED_CHARACTERS).contains(c + "") && (text + c).length() <= component.get(TAG_MAXIMUM_CHARACTERS)){
+							((HvlField)component).text(text + c);
+						}
+					}
+					((HvlField)component).text(((HvlField)component).getText()
+							.substring(0, Math.max(((HvlField)component).getText().length() - HvlKeyboard.pollActivationsBackspace(), 0)));
+				}
 			}else{
 				//TODO implement HvlCursor here
 				if(isMouseOverEnvironment(environment)){
@@ -71,6 +63,8 @@ public class HvlField extends HvlButtonLabeled{
 						if(component.get(TAG_STATE) == HvlButtonState.ON){
 							component.get(TAG_CLICKED).run((HvlButton)component);
 							active = (HvlField)component;
+							HvlKeyboard.pollCharacters();
+							HvlKeyboard.pollActivationsBackspace();
 						}
 						component.set(TAG_STATE, HvlButtonState.HOVER);
 					}else component.set(TAG_STATE, HvlButtonState.ON);
