@@ -9,8 +9,12 @@ import com.osreboot.ridhvl2.HvlCoord;
 
 public class HvlDisplayFullscreen extends HvlDisplay{
 
+	private HvlCoord size;
+	
 	public HvlDisplayFullscreen(String titleArg){
 		super(titleArg, false, false);
+		
+		size = new HvlCoord();
 	}
 
 	@Override
@@ -20,6 +24,7 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 
 		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
 		long id = GLFW.glfwCreateWindow(vidMode.width(), vidMode.height(), getTitle(), GLFW.glfwGetPrimaryMonitor(), MemoryUtil.NULL);
+		size.set(vidMode.width(), vidMode.height());
 		
 		HvlDisplay.registerCallbacks(id);
 
@@ -41,6 +46,10 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 	protected void preUpdate(float delta){
 		GL.createCapabilities();
 		GLFW.glfwPollEvents();
+		
+		// Update size
+		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
+		size.set(vidMode.width(), vidMode.height());
 	}
 
 	@Override
@@ -54,9 +63,8 @@ public class HvlDisplayFullscreen extends HvlDisplay{
 	}
 
 	@Override
-	public HvlCoord getSize(){
-		GLFWVidMode vidMode = GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor());
-		return new HvlCoord(vidMode.width(), vidMode.height());
+	public HvlCoord getIndependentSize(){
+		return size;
 	}
 
 	@Override

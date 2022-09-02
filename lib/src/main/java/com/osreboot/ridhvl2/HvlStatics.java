@@ -69,6 +69,80 @@ public final class HvlStatics {
 		}
 		return globalQuad;
 	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
+	 * quad (specified by <code>c</code>) being the upper-left corner of the quad. See 
+	 * {@linkplain #hvlQuadc(float, float, float, float)} for other HvlQuad options.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlQuad instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param c the origin of the quad
+	 * @param xl the x-size of the quad
+	 * @param yl the y-size of the quad
+	 * @return an instance of HvlQuad with coordinates set to the specified values
+	 */
+	public static HvlQuad hvlQuad(HvlCoord c, float xl, float yl){
+		return hvlQuad(c.x, c.y, xl, yl);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
+	 * quad (specified by <code>x</code> and <code>y</code>) being the upper-left corner of the quad. See 
+	 * {@linkplain #hvlQuadc(float, float, float, float)} for other HvlQuad options.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlQuad instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param x the x-origin of the quad
+	 * @param y the y-origin of the quad
+	 * @param c the size of the quad
+	 * @return an instance of HvlQuad with coordinates set to the specified values
+	 */
+	public static HvlQuad hvlQuad(float x, float y, HvlCoord c){
+		return hvlQuad(x, y, c.x, c.y);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
+	 * quad (specified by <code>c1</code>) being the upper-left corner of the quad. See 
+	 * {@linkplain #hvlQuadc(float, float, float, float)} for other HvlQuad options.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlQuad instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param c1 the origin of the quad
+	 * @param c2 the size of the quad
+	 * @return an instance of HvlQuad with coordinates set to the specified values
+	 */
+	public static HvlQuad hvlQuad(HvlCoord c1, HvlCoord c2){
+		return hvlQuad(c1.x, c1.y, c2.x, c2.y);
+	}
 
 	/**
 	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
@@ -107,6 +181,80 @@ public final class HvlStatics {
 					HvlQuad.COORDS_DEFAULT_UVS[2], HvlQuad.COORDS_DEFAULT_UVS[3]);
 		}
 		return globalQuad;
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
+	 * quad (specified by <code>c</code>) being the center of the quad. See 
+	 * {@linkplain #hvlQuad(float, float, float, float)} for other HvlQuad options.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlQuad instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param c the origin of the quad
+	 * @param xl the x-size of the quad
+	 * @param yl the y-size of the quad
+	 * @return an instance of HvlQuad with coordinates set to the specified values
+	 */
+	public static HvlQuad hvlQuadc(HvlCoord c, float xl, float yl){
+		return hvlQuadc(c.x, c.y, xl, yl);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
+	 * quad (specified by <code>x</code> and <code>y</code>) being the center of the quad. See 
+	 * {@linkplain #hvlQuad(float, float, float, float)} for other HvlQuad options.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlQuad instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param x the x-origin of the quad
+	 * @param y the y-origin of the quad
+	 * @param c the size of the quad
+	 * @return an instance of HvlQuad with coordinates set to the specified values
+	 */
+	public static HvlQuad hvlQuadc(float x, float y, HvlCoord c){
+		return hvlQuadc(x, y, c.x, c.y);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlQuad HvlQuad} with the origin of the
+	 * quad (specified by <code>c1</code>) being the center of the quad. See 
+	 * {@linkplain #hvlQuad(float, float, float, float)} for other HvlQuad options.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlQuad instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param c1 the origin of the quad
+	 * @param c2 the size of the quad
+	 * @return an instance of HvlQuad with coordinates set to the specified values
+	 */
+	public static HvlQuad hvlQuadc(HvlCoord c1, HvlCoord c2){
+		return hvlQuadc(c1.x, c1.y, c2.x, c2.y);
 	}
 
 	/**
@@ -197,6 +345,37 @@ public final class HvlStatics {
 	
 	/**
 	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
+	 * of the circle (specified by <code>c</code>) being the upper-left corner of the circle.
+	 * This method uses the default HvlCircle vertex density, as specified by
+	 * {@linkplain HvlCircle#DEFAULT_VERTEX_RESOLUTION}. See {@linkplain #hvlCirclec(float, float, float)} for
+	 * other HvlCircle options.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method is <b>slow</b>! For better performance, use {@linkplain #hvlQuad(float, float, float, float)}
+	 * combined with a {@linkplain HvlPaint} that has a circular alpha channel.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlCircle instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param c the origin of the circle
+	 * @param radius the radius of the circle
+	 * @return an instance of HvlCircle with coordinates set to the specified values
+	 */
+	public static HvlCircle hvlCircle(HvlCoord c, float radius){
+		return hvlCircle(c.x, c.y, radius);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
 	 * of the circle (specified by <code>x</code> and <code>y</code>) being the center of the circle. This method
 	 * uses the default HvlCircle vertex density, as specified by {@linkplain HvlCircle#DEFAULT_VERTEX_RESOLUTION}.
 	 * See {@linkplain #hvlCircle(float, float, float)} for other HvlCircle options.
@@ -232,6 +411,36 @@ public final class HvlStatics {
 			globalCircles.get(vertexCount).setUVs(0f, 0f, 1f, 1f);
 		}
 		return globalCircles.get(vertexCount);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
+	 * of the circle (specified by <code>c</code>) being the center of the circle. This method
+	 * uses the default HvlCircle vertex density, as specified by {@linkplain HvlCircle#DEFAULT_VERTEX_RESOLUTION}.
+	 * See {@linkplain #hvlCircle(float, float, float)} for other HvlCircle options.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method is <b>slow</b>! For better performance, use {@linkplain #hvlQuad(float, float, float, float)}
+	 * combined with a {@linkplain HvlPaint} that has a circular alpha channel.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlCircle instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param c the origin of the circle
+	 * @param radius the radius of the circle
+	 * @return an instance of HvlCircle with coordinates set to the specified values
+	 */
+	public static HvlCircle hvlCirclec(HvlCoord c, float radius){
+		return hvlCirclec(c.x, c.y, radius);
 	}
 
 	/**
@@ -275,6 +484,37 @@ public final class HvlStatics {
 	
 	/**
 	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
+	 * of the circle (specified by <code>c</code>) being the upper-left corner of the circle.
+	 * The circle instance will have the number of vertices specified by <code>vertexCount</code>. See
+	 * {@linkplain #hvlCircle(float, float, float)} for other HvlCircle options.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method is <b>slow</b>! For better performance, use {@linkplain #hvlQuad(float, float, float, float)}
+	 * combined with a {@linkplain HvlPaint} that has a circular alpha channel.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlCircle instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param c the origin of the circle
+	 * @param radius the radius of the circle
+	 * @param vertexCount the number of vertices to comprise the circle
+	 * @return an instance of HvlCircle with coordinates set to the specified values
+	 */
+	public static HvlCircle hvlCircle(HvlCoord c, float radius, int vertexCount){
+		return hvlCircle(c.x, c.y, radius, vertexCount);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
 	 * of the circle (specified by <code>x</code> and <code>y</code>) being the center of the circle. The
 	 * circle instance will have the number of vertices specified by <code>vertexCount</code>. See 
 	 * {@linkplain #hvlCircle(float, float, float)} for other HvlCircle options.
@@ -310,6 +550,37 @@ public final class HvlStatics {
 			globalCircles.get(vertexCount).setUVs(0f, 0f, 1f, 1f);
 		}
 		return globalCircles.get(vertexCount);
+	}
+	
+	/**
+	 * Produces an instance of {@linkplain com.osreboot.ridhvl2.painter.HvlCircle HvlCircle} with the origin
+	 * of the circle (specified by <code>c</code>) being the center of the circle. The
+	 * circle instance will have the number of vertices specified by <code>vertexCount</code>. See 
+	 * {@linkplain #hvlCircle(float, float, float)} for other HvlCircle options.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this method is <b>slow</b>! For better performance, use {@linkplain #hvlQuad(float, float, float, float)}
+	 * combined with a {@linkplain HvlPaint} that has a circular alpha channel.
+	 * 
+	 * <p>
+	 * 
+	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
+	 * technique that removes the need for users to create their own HvlCircle instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlPolygon values.
+	 * 
+	 * <p>
+	 * 
+	 * NOTE: this references a volatile memory location and should only be used directly inside HvlPainter
+	 * draw calls!
+	 * 
+	 * @param c the origin of the circle
+	 * @param radius the radius of the circle
+	 * @param vertexCount the number of vertices to comprise the circle
+	 * @return an instance of HvlCircle with coordinates set to the specified values
+	 */
+	public static HvlCircle hvlCirclec(HvlCoord c, float radius, int vertexCount){
+		return hvlCirclec(c.x, c.y, radius, vertexCount);
 	}
 
 	/**
@@ -547,6 +818,18 @@ public final class HvlStatics {
 	public static void hvlTranslate(float xArg, float yArg, HvlAction.A0 actionArg){
 		HvlPainter.translate(xArg, yArg, actionArg);
 	}
+	
+	/**
+	 * Applies a translation transformation to the body of <code>actionArg</code>, with <code>cArg</code>
+	 * being the offset of the translation. Uses the same translation procedure from
+	 * {@linkplain HvlPainter}.
+	 * 
+	 * @param cArg the coordinate offset of the translation
+	 * @param actionArg the context that the translation is applied to
+	 */
+	public static void hvlTranslate(HvlCoord cArg, HvlAction.A0 actionArg){
+		HvlPainter.translate(cArg.x, cArg.y, actionArg);
+	}
 
 	/**
 	 * Applies a rotation transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
@@ -563,6 +846,19 @@ public final class HvlStatics {
 	}
 	
 	/**
+	 * Applies a rotation transformation to the body of <code>actionArg</code>, with <code>cArg</code>
+	 * being the origin of the rotation, and <code>degreesArg</code> being the magnitude of
+	 * the rotation, in degrees. Uses the same rotation procedure from {@linkplain HvlPainter}.
+	 * 
+	 * @param cArg the origin of the rotation
+	 * @param degreesArg the magnitude of the rotation
+	 * @param actionArg the context that the rotation is applied to
+	 */
+	public static void hvlRotate(HvlCoord cArg, float degreesArg, HvlAction.A0 actionArg){
+		HvlPainter.rotate(cArg.x, cArg.y, degreesArg, actionArg);
+	}
+	
+	/**
 	 * Applies a scaling transformation to the body of <code>actionArg</code>, with <code>xArg</code> and
 	 * <code>yArg</code> being the origin of the scale, and <code>scaleArg</code> being the magnitude of
 	 * the scale. Uses the same scaling procedure from {@linkplain HvlPainter}.
@@ -574,6 +870,19 @@ public final class HvlStatics {
 	 */
 	public static void hvlScale(float xArg, float yArg, float scaleArg, HvlAction.A0 actionArg){
 		HvlPainter.scale(xArg, yArg, scaleArg, actionArg);
+	}
+	
+	/**
+	 * Applies a scaling transformation to the body of <code>actionArg</code>, with <code>cArg</code>
+	 * being the origin of the scale, and <code>scaleArg</code> being the magnitude of
+	 * the scale. Uses the same scaling procedure from {@linkplain HvlPainter}.
+	 * 
+	 * @param cArg the origin of the scale
+	 * @param scaleArg the magnitude of the scale
+	 * @param actionArg the context that the scale is applied to
+	 */
+	public static void hvlScale(HvlCoord cArg, float scaleArg, HvlAction.A0 actionArg){
+		HvlPainter.scale(cArg.x, cArg.y, scaleArg, actionArg);
 	}
 
 	//========================/\/\/\    END PAINTER STATICS    /\/\/\========================//

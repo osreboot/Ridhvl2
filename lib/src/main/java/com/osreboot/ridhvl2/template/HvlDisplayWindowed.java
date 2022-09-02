@@ -74,7 +74,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 	}
 	
 	@Override
-	public HvlCoord getSize(){
+	public HvlCoord getIndependentSize(){
 		return size;
 	}
 

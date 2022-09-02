@@ -113,11 +113,19 @@ public abstract class HvlDisplay {
 	}
 
 	public static int getWidth(){
-		return (int)Math.ceil(getDisplay().getSize().x);
+		return (int)Math.ceil(getDisplay().getIndependentSize().x);
 	}
 
 	public static int getHeight(){
-		return (int)Math.ceil(getDisplay().getSize().y);
+		return (int)Math.ceil(getDisplay().getIndependentSize().y);
+	}
+	
+	public static HvlCoord getSize(){
+		return new HvlCoord(getWidth(), getHeight());
+	}
+	
+	public static HvlCoord getCenter(){
+		return new HvlCoord((float)getWidth() / 2f, (float)getHeight() / 2f);
 	}
 
 	private long id;
@@ -141,7 +149,7 @@ public abstract class HvlDisplay {
 		return id;
 	}
 
-	public abstract HvlCoord getSize();
+	public abstract HvlCoord getIndependentSize();
 	public abstract int getRefreshRate();
 
 	public void setTitle(String titleArg){
@@ -172,7 +180,7 @@ public abstract class HvlDisplay {
 	}
 
 	public HvlEnvironment getEnvironment(){
-		return new HvlEnvironment(0, 0, getSize().x, getSize().y, false);
+		return new HvlEnvironment(0, 0, getIndependentSize().x, getIndependentSize().y, false);
 	}
 
 }
