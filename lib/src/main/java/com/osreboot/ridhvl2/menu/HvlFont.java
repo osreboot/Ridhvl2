@@ -76,8 +76,8 @@ public class HvlFont extends HvlTaggable{
 				if(characters.containsKey(c)){
 					HvlCharacter character = characters.get(c);
 
-					float charWidth = (character.getUV1().x - character.getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
-					float charHeight = (character.getUV1().y - character.getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
+					float charWidth = (character.getUV1().x - character.getUV0().x) * loadedTexture.width * get(TAG_SCALE) * scaleArg;
+					float charHeight = (character.getUV1().y - character.getUV0().y) * loadedTexture.height * get(TAG_SCALE) * scaleArg;
 
 					hvlDraw(hvlQuad(texelNudge ? (int)currentX : currentX, texelNudge ? (int)currentY : currentY, charWidth, charHeight, 
 							character.getUV0().x, character.getUV0().y, character.getUV1().x, character.getUV1().y),
@@ -89,8 +89,8 @@ public class HvlFont extends HvlTaggable{
 					if(charHeight > maxHeight)
 						maxHeight = charHeight;
 				}else if(get(TAG_CHARACTER_MISSING) != null){
-					float charWidth = (get(TAG_CHARACTER_MISSING).getUV1().x - get(TAG_CHARACTER_MISSING).getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
-					float charHeight = (get(TAG_CHARACTER_MISSING).getUV1().y - get(TAG_CHARACTER_MISSING).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
+					float charWidth = (get(TAG_CHARACTER_MISSING).getUV1().x - get(TAG_CHARACTER_MISSING).getUV0().x) * loadedTexture.width * get(TAG_SCALE) * scaleArg;
+					float charHeight = (get(TAG_CHARACTER_MISSING).getUV1().y - get(TAG_CHARACTER_MISSING).getUV0().y) * loadedTexture.height * get(TAG_SCALE) * scaleArg;
 
 					hvlDraw(hvlQuad(texelNudge ? (int)currentX : currentX, texelNudge ? (int)currentY : currentY, charWidth, charHeight, 
 							get(TAG_CHARACTER_MISSING).getUV0().x, get(TAG_CHARACTER_MISSING).getUV0().y,
@@ -134,10 +134,10 @@ public class HvlFont extends HvlTaggable{
 			float lineWidth = 0;
 			for(char c : line.toCharArray()){
 				if(characters.containsKey(c)){
-					lineWidth += (characters.get(c).getUV1().x - characters.get(c).getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
+					lineWidth += (characters.get(c).getUV1().x - characters.get(c).getUV0().x) * loadedTexture.width * get(TAG_SCALE) * scaleArg;
 					lineWidth += get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
 				}else if(get(TAG_CHARACTER_MISSING) != null){
-					lineWidth += (get(TAG_CHARACTER_MISSING).getUV1().x - get(TAG_CHARACTER_MISSING).getUV0().x) * loadedTexture.getImageWidth() * get(TAG_SCALE) * scaleArg;
+					lineWidth += (get(TAG_CHARACTER_MISSING).getUV1().x - get(TAG_CHARACTER_MISSING).getUV0().x) * loadedTexture.height * get(TAG_SCALE) * scaleArg;
 					lineWidth += get(TAG_X_SPACING) * get(TAG_SCALE) * scaleArg;
 				}//TODO else throw exception
 			}
@@ -158,11 +158,11 @@ public class HvlFont extends HvlTaggable{
 			float maxHeight = 0;
 			for(char c : line.toCharArray()){
 				if(characters.containsKey(c)){
-					float charHeight = (characters.get(c).getUV1().y - characters.get(c).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
+					float charHeight = (characters.get(c).getUV1().y - characters.get(c).getUV0().y) * loadedTexture.width * get(TAG_SCALE) * scaleArg;
 					if(charHeight > maxHeight)
 						maxHeight = charHeight;
 				}else if(get(TAG_CHARACTER_MISSING) != null){
-					float charHeight = (get(TAG_CHARACTER_MISSING).getUV1().y - get(TAG_CHARACTER_MISSING).getUV0().y) * loadedTexture.getImageHeight() * get(TAG_SCALE) * scaleArg;
+					float charHeight = (get(TAG_CHARACTER_MISSING).getUV1().y - get(TAG_CHARACTER_MISSING).getUV0().y) * loadedTexture.height * get(TAG_SCALE) * scaleArg;
 					if(charHeight > maxHeight)
 						maxHeight = charHeight;
 				}//TODO else throw exception
