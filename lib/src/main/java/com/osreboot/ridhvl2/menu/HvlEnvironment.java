@@ -1,5 +1,7 @@
 package com.osreboot.ridhvl2.menu;
 
+import com.osreboot.ridhvl2.HvlCoord;
+
 public class HvlEnvironment{
 
 	private float x, y, width, height;
@@ -71,6 +73,14 @@ public class HvlEnvironment{
 
 	public float getHeight(){
 		return height;
+	}
+	
+	public HvlCoord getLocation(){
+		return new HvlCoord(getX(), getY());
+	}
+	
+	public HvlCoord getSize(){
+		return new HvlCoord(getWidth(), getHeight());
 	}
 
 	public boolean isBlocked(){
