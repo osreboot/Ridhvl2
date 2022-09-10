@@ -3,10 +3,9 @@ package com.osreboot.ridhvl2.painter;
 import com.osreboot.ridhvl2.migration.Color;
 import com.osreboot.ridhvl2.migration.HvlTexture;
 
-//TODO implement HvlRenderFrame functionality
 /**
  * A flexible texture-esq object that is applied when drawing polygons with {@linkplain HvlPainter}. Usable in 
- * four modes (<code>COLOR, TEXTURE, TEXTURE_COLORIZED, RENDERFRAME</code>). HvlPainter will automatically analyze
+ * four modes (<code>COLOR, TEXTURE, TEXTURE_COLORIZED</code>). HvlPainter will automatically analyze
  * the mode and draw the texture with the appropriate commands.
  * 
  * @author os_reboot
@@ -22,14 +21,13 @@ public final class HvlPaint {
 	 *
 	 */
 	public enum HvlPaintMode{
-		COLOR, TEXTURE, TEXTURE_COLORIZED, RENDERFRAME
+		COLOR, TEXTURE, TEXTURE_COLORIZED
 	}
 
 	private HvlPaintMode mode;
 
 	private Color color;
 	private HvlTexture texture;
-	//	private HvlRenderFrame frame;
 
 	/**
 	 * Constructs a HvlPaint from a color. Automatically sets the mode to <code>COLOR</code>.
@@ -62,16 +60,6 @@ public final class HvlPaint {
 		mode = HvlPaintMode.TEXTURE_COLORIZED;
 	}
 
-	//	/**
-	//	 * Constructs a HvlPaint from a {@linkplain HvlRenderFrame}. Automatically sets the mode to <code>RENDERFRAME</code>.
-	//	 * 
-	//	 * @param fArg the value to assign to the 'frame' variable
-	//	 */
-	//	public HvlPaint(HvlRenderFrame fArg){
-	//		frame = fArg;
-	//		mode = Mode.RENDERFRAME;
-	//	}
-
 	/**
 	 * @return the current mode of the HvlPaint
 	 */
@@ -99,16 +87,6 @@ public final class HvlPaint {
 		else throw new WrongModeException(HvlPaintMode.TEXTURE, mode);
 	}
 
-	//	/**
-	//	 * @return the value of the 'frame' variable
-	//	 * @throws WrongModeException if the mode does not match <code>RENDERFRAME</code>
-	//	 */
-	//	public HvlRenderFrame getValueRF(){
-	//		if(mode == Mode.RENDERFRAME)
-	//			return frame;
-	//		else throw new WrongModeException(Mode.RENDERFRAME, mode);
-	//	}
-
 	/**
 	 * Sets the value of the HvlPaint. Automatically sets mode to <code>COLOR</code> and sets non-color variables to
 	 * null.
@@ -118,7 +96,6 @@ public final class HvlPaint {
 	public void setValue(Color cArg){
 		color = cArg;
 		texture = null;
-		//		frame = null;
 		mode = HvlPaintMode.COLOR;
 	}
 
@@ -131,7 +108,6 @@ public final class HvlPaint {
 	public void setValue(HvlTexture tArg){
 		color = null;
 		texture = tArg;
-		//		frame = null;
 		mode = HvlPaintMode.TEXTURE;
 	}
 	
@@ -145,22 +121,8 @@ public final class HvlPaint {
 	public void setValue(Color cArg, HvlTexture tArg){
 		color = cArg;
 		texture = tArg;
-		//		frame = null;
 		mode = HvlPaintMode.TEXTURE_COLORIZED;
 	}
-
-	//	/**
-	//	 * Sets the value of the HvlPaint. Automatically sets mode to <code>RENDERFRAME</code> and sets non-HvlRenderFrame 
-	//	 * variables to null.
-	//	 * 
-	//	 * @param fArg the value to assign to the 'frame' variable
-	//	 */
-	//	public void setValue(HvlRenderFrame fArg){
-	//		color = null;
-	//		texture = null;
-	//		frame = fArg;
-	//		mode = Mode.RENDERFRAME;
-	//	}
 
 	/**
 	 * Thrown if a type-casting getter is improperly executed on a HvlPaint without first checking it's 

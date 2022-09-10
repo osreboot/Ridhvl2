@@ -105,11 +105,6 @@ public final class HvlPainter{
 						paintArg.getValueColor().a);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, paintArg.getValueTexture().id);
 				
-			}else if(paintArg.getMode() == HvlPaintMode.RENDERFRAME){
-				
-				// Prepare for HvlRenderFrame rendering
-				//TODO
-				
 			}
 
 			// Render the polygon
