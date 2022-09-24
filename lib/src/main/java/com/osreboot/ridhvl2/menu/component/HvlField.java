@@ -31,6 +31,10 @@ public class HvlField extends HvlButtonLabeled{
 	CHARACTERS_ALPHABET = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
 	CHARACTERS_NUMBERS = "0123456789";
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public static final HvlTagTransient<HvlAction.A1<HvlField>>
+	TAG_TYPED = new HvlTagTransient(HvlAction.A1.class, "typed");
+
 	public static final HvlTag<String> TAG_ALLOWED_CHARACTERS = new HvlTag<>(String.class, "allowed_characters");
 	public static final HvlTag<Integer> TAG_MAXIMUM_CHARACTERS = new HvlTag<>(Integer.class, "maximum_characters");
 	public static final HvlTag<String> TAG_TEXT_HINT = new HvlTag<>(String.class, "text_hint");
@@ -44,17 +48,24 @@ public class HvlField extends HvlButtonLabeled{
 					active = null;
 					component.set(TAG_STATE, HvlButtonState.OFF);
 				}else{
-					if(isMouseOverEnvironment(environment) && HvlMouse.isButtonDown(HvlMouse.BUTTON_RIGHT))
+					if(isMouseOverEnvironment(environment) && HvlMouse.isButtonDown(HvlMouse.BUTTON_RIGHT)){
 						component.set(TAG_TEXT, "");
+						component.get(TAG_TYPED).run((HvlField)component);
+					}
 
 					for(Character c : HvlKeyboard.pollCharacters()){
 						String text = ((HvlField)component).getText();
 						if(component.get(TAG_ALLOWED_CHARACTERS).contains(c + "") && (text + c).length() <= component.get(TAG_MAXIMUM_CHARACTERS)){
 							((HvlField)component).text(text + c);
+							component.get(TAG_TYPED).run((HvlField)component);
 						}
 					}
-					((HvlField)component).text(((HvlField)component).getText()
-							.substring(0, Math.max(((HvlField)component).getText().length() - HvlKeyboard.pollActivationsBackspace(), 0)));
+					int activationsBackspace = HvlKeyboard.pollActivationsBackspace();
+					if(activationsBackspace > 0){
+						((HvlField)component).text(((HvlField)component).getText()
+								.substring(0, Math.max(((HvlField)component).getText().length() - activationsBackspace, 0)));
+						component.get(TAG_TYPED).run((HvlField)component);
+					}
 				}
 			}else{
 				//TODO implement HvlCursor here
@@ -98,8 +109,12 @@ public class HvlField extends HvlButtonLabeled{
 	public static final HvlAction.A1<HvlButton>
 	DEFAULT_CLICKED = (button) -> {};
 
+	public static final HvlAction.A1<HvlField>
+	DEFAULT_TYPED = (field) -> {};
+
 	protected HvlField(HvlTagTransient<?>... tags){
 		super(accumulate(tags,
+				TAG_TYPED,
 				TAG_ALLOWED_CHARACTERS,
 				TAG_MAXIMUM_CHARACTERS,
 				TAG_TEXT_HINT,
@@ -107,6 +122,7 @@ public class HvlField extends HvlButtonLabeled{
 		set(TAG_UPDATE, DEFAULT_UPDATE);
 		set(TAG_DRAW, DEFAULT_DRAW);
 		set(TAG_CLICKED, DEFAULT_CLICKED);
+		set(TAG_TYPED, DEFAULT_TYPED);
 	}
 
 	public HvlField(HvlFont fontArg, String textArg, Color colorArg, float scaleArg,
@@ -126,6 +142,10 @@ public class HvlField extends HvlButtonLabeled{
 		set(TAG_MAXIMUM_CHARACTERS, Integer.MAX_VALUE);
 		set(TAG_TEXT_HINT, "");
 		set(TAG_TEXT_HINT_COLOR, new Color(colorArg.r, colorArg.g, colorArg.b, colorArg.a / 2f));
+	}
+
+	public HvlField typed(HvlAction.A1<HvlField> typedArg){
+		return (HvlField)set(TAG_TYPED, typedArg);
 	}
 
 	public HvlField allowedCharacters(String allowedCharactersArg){
