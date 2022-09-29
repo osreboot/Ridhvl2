@@ -49,7 +49,7 @@ public abstract class HvlTimer {
 		historicSleepOffset = 0;
 		historicYieldOffset = 0;
 
-		tickNextNS = (long)(GLFW.glfwGetTime() * NANOS_PER_SECOND);
+		tickNextNS = getTimeNS();
 	}
 
 	/**
@@ -73,7 +73,7 @@ public abstract class HvlTimer {
 				
 				// Sleep as long as possible
 				long timeSleep;
-				while(timeToNextTickNS > historicAverage(historicSleepNS)){
+				while(running && timeToNextTickNS > historicAverage(historicSleepNS)){
 					timeSleep = getTimeNS();
 					Thread.sleep(1);
 					historicSleepNS[historicSleepOffset++ % historicSleepNS.length] = getTimeNS() - timeSleep;
@@ -87,13 +87,15 @@ public abstract class HvlTimer {
 				
 				// Yield as long as possible
 				long timeYield;
-				while(timeToNextTickNS > historicAverage(historicYieldNS)){
+				while(running && timeToNextTickNS > historicAverage(historicYieldNS)){
 					timeYield = getTimeNS();
 					Thread.yield();
 					historicYieldNS[historicYieldOffset++ % historicYieldNS.length] = getTimeNS() - timeYield;
 					timeToNextTickNS = tickNextNS - getTimeNS();
 				}
-			}catch(InterruptedException e){}
+			}catch(InterruptedException e){
+				running = false;
+			}
 
 			tickNextNS = Math.max(tickNextNS + (NANOS_PER_SECOND / (long)tickRate), getTimeNS());
 		}

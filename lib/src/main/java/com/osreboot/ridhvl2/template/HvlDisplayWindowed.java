@@ -62,7 +62,6 @@ public class HvlDisplayWindowed extends HvlDisplay{
 
 	@Override
 	protected void postUpdate(float delta){
-		// TODO Display.sync(getRefreshRate());
 		GLFW.glfwSwapBuffers(getId());
 		
 		if(GLFW.glfwWindowShouldClose(getId())){
