@@ -8,14 +8,11 @@ import org.lwjgl.system.MemoryUtil;
 import com.osreboot.ridhvl2.HvlCoord;
 
 public class HvlDisplayWindowed extends HvlDisplay{
-
-	private final int refreshRate;
 	
 	private HvlCoord size;
 
-	public HvlDisplayWindowed(int refreshRateArg, int widthArg, int heightArg, String titleArg, boolean resizableArg){
+	public HvlDisplayWindowed(int widthArg, int heightArg, String titleArg, boolean resizableArg){
 		super(titleArg, false, resizableArg);
-		refreshRate = refreshRateArg;
 		size = new HvlCoord(widthArg, heightArg);
 		
 		setResizable(resizableArg);
@@ -80,7 +77,7 @@ public class HvlDisplayWindowed extends HvlDisplay{
 
 	@Override
 	public int getRefreshRate(){
-		return refreshRate;
+		return GLFW.glfwGetVideoMode(GLFW.glfwGetPrimaryMonitor()).refreshRate(); // TODO this isn't correct
 	}
 
 }

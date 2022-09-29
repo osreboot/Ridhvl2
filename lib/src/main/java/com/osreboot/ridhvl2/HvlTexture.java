@@ -1,4 +1,4 @@
-package com.osreboot.ridhvl2.migration;
+package com.osreboot.ridhvl2;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;

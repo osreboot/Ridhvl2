@@ -21,6 +21,8 @@ import com.osreboot.ridhvl2.template.HvlTimer;
 public class TestTimer extends HvlTimer{
 	
 	public TestTimer(){
+		super(144f);
+		
 		HvlLogger.println("Starting timer...");
 		setMaxDelta(MAXDELTA_CENTISECOND);
 		start();

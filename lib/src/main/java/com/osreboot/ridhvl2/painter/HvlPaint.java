@@ -1,7 +1,7 @@
 package com.osreboot.ridhvl2.painter;
 
-import com.osreboot.ridhvl2.migration.Color;
-import com.osreboot.ridhvl2.migration.HvlTexture;
+import com.osreboot.ridhvl2.HvlColor;
+import com.osreboot.ridhvl2.HvlTexture;
 
 /**
  * A flexible texture-esq object that is applied when drawing polygons with {@linkplain HvlPainter}. Usable in 
@@ -26,7 +26,7 @@ public final class HvlPaint {
 
 	private HvlPaintMode mode;
 
-	private Color color;
+	private HvlColor color;
 	private HvlTexture texture;
 
 	/**
@@ -34,7 +34,7 @@ public final class HvlPaint {
 	 * 
 	 * @param cArg the value to assign to the 'color' variable
 	 */
-	public HvlPaint(Color cArg){
+	public HvlPaint(HvlColor cArg){
 		color = cArg;
 		mode = HvlPaintMode.COLOR;
 	}
@@ -54,7 +54,7 @@ public final class HvlPaint {
 	 * 
 	 * @param tArg the value to assign to the 'texture' variable
 	 */
-	public HvlPaint(Color cArg, HvlTexture tArg){
+	public HvlPaint(HvlColor cArg, HvlTexture tArg){
 		color = cArg;
 		texture = tArg;
 		mode = HvlPaintMode.TEXTURE_COLORIZED;
@@ -71,7 +71,7 @@ public final class HvlPaint {
 	 * @return the value of the 'color' variable
 	 * @throws WrongModeException if the mode does not match <code>COLOR</code> or <code>TEXTURE_COLORIZED</code>
 	 */
-	public Color getValueColor(){
+	public HvlColor getValueColor(){
 		if(mode == HvlPaintMode.COLOR || mode ==  HvlPaintMode.TEXTURE_COLORIZED)
 			return color;
 		else throw new WrongModeException(HvlPaintMode.COLOR, mode);
@@ -93,7 +93,7 @@ public final class HvlPaint {
 	 * 
 	 * @param cArg the value to assign to the 'color' variable
 	 */
-	public void setValue(Color cArg){
+	public void setValue(HvlColor cArg){
 		color = cArg;
 		texture = null;
 		mode = HvlPaintMode.COLOR;
@@ -118,7 +118,7 @@ public final class HvlPaint {
 	 * @param cArg the value to assign to the 'color' variable
 	 * @param tArg the value to assign to the 'texture' variable
 	 */
-	public void setValue(Color cArg, HvlTexture tArg){
+	public void setValue(HvlColor cArg, HvlTexture tArg){
 		color = cArg;
 		texture = tArg;
 		mode = HvlPaintMode.TEXTURE_COLORIZED;
@@ -130,7 +130,7 @@ public final class HvlPaint {
 	 * 
 	 * <p>
 	 * 
-	 * <code>HvlPaint p = new HvlPaint(Color.white); p.getValueTexture();</code>
+	 * <code>HvlPaint p = new HvlPaint(HvlColor.WHITE); p.getValueTexture();</code>
 	 * 
 	 * <p>
 	 * 

@@ -15,9 +15,9 @@ import org.lwjgl.opengl.GL13;
 import org.lwjgl.opengl.GL20;
 
 import com.osreboot.ridhvl2.HvlAction;
+import com.osreboot.ridhvl2.HvlColor;
 import com.osreboot.ridhvl2.HvlCoord;
-import com.osreboot.ridhvl2.migration.Color;
-import com.osreboot.ridhvl2.migration.HvlTexture;
+import com.osreboot.ridhvl2.HvlTexture;
 
 public class HvlShader {
 
@@ -113,7 +113,7 @@ public class HvlShader {
 		GL20.glUniform2f(loc, value.x, value.y);
 	}
 	
-	public void send(String key, Color value){
+	public void send(String key, HvlColor value){
 		int loc = GL20.glGetUniformLocation(shaderId, key);
 		GL20.glUniform4f(loc, value.r, value.g, value.b, value.a);
 	}

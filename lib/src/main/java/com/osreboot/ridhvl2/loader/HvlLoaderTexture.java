@@ -2,7 +2,7 @@ package com.osreboot.ridhvl2.loader;
 
 import java.io.File;
 
-import com.osreboot.ridhvl2.migration.HvlTexture;
+import com.osreboot.ridhvl2.HvlTexture;
 
 /**
  * A standard HvlLoader implementation designed to handle images in the form of 

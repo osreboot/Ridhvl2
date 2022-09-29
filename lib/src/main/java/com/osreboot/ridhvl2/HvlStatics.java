@@ -6,8 +6,6 @@ import com.osreboot.ridhvl2.loader.HvlLoader;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlEnvironmentVolatile;
 import com.osreboot.ridhvl2.menu.HvlFont;
-import com.osreboot.ridhvl2.migration.Color;
-import com.osreboot.ridhvl2.migration.HvlTexture;
 import com.osreboot.ridhvl2.painter.HvlCircle;
 import com.osreboot.ridhvl2.painter.HvlPaint;
 import com.osreboot.ridhvl2.painter.HvlPainter;
@@ -660,19 +658,19 @@ public final class HvlStatics {
 
 	//========================\/\/\/   BEGIN PAINTER STATICS   \/\/\/========================//
 
-	private static Color globalColor;
+	private static HvlColor globalColor;
 
 	/**
-	 * Produces an instance of {@linkplain org.newdawn.slick.Color Color} with <code>r</code>, <code>g</code> 
+	 * Produces an instance of {@linkplain HvlColor} with <code>r</code>, <code>g</code> 
 	 * and <code>b</code> values specified by <code>rArg</code>, <code>gArg</code> and <code>bArg</code>, 
 	 * respectively. See {@linkplain #hvlColor(float, float, float, float)}, 
-	 * {@linkplain #hvlColor(float, float)} for other Color options.
+	 * {@linkplain #hvlColor(float, float)} for other HvlColor options.
 	 * 
 	 * <p>
 	 * 
 	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
-	 * technique that removes the need for users to create their own Color instances and allows for rapid
-	 * {@linkplain HvlPainter} draw calls with varying Color values.
+	 * technique that removes the need for users to create their own HvlColor instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlColor values.
 	 * 
 	 * <p>
 	 * 
@@ -682,10 +680,10 @@ public final class HvlStatics {
 	 * @param rArg the red value of the color
 	 * @param gArg the green value of the color
 	 * @param bArg the blue value of the color
-	 * @return an instance of Color set to the specified values
+	 * @return an instance of HvlColor set to the specified values
 	 */
-	public static Color hvlColor(float rArg, float gArg, float bArg){
-		if(globalColor == null) globalColor = new Color(rArg, gArg, bArg);
+	public static HvlColor hvlColor(float rArg, float gArg, float bArg){
+		if(globalColor == null) globalColor = new HvlColor(rArg, gArg, bArg);
 		else{
 			globalColor.r = rArg;
 			globalColor.g = gArg;
@@ -696,16 +694,16 @@ public final class HvlStatics {
 	}
 
 	/**
-	 * Produces an instance of {@linkplain org.newdawn.slick.Color Color} with <code>r</code>, <code>g</code>,
+	 * Produces an instance of {@linkplain HvlColor} with <code>r</code>, <code>g</code>,
 	 * <code>b</code> and <code>a</code> values specified by <code>rArg</code>, <code>gArg</code>, 
 	 * <code>bArg</code> and <code>aArg</code>, respectively. See {@linkplain #hvlColor(float, float, float)}, 
-	 * {@linkplain #hvlColor(float, float)} for other Color options.
+	 * {@linkplain #hvlColor(float, float)} for other HvlColor options.
 	 * 
 	 * <p>
 	 * 
 	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
-	 * technique that removes the need for users to create their own Color instances and allows for rapid
-	 * {@linkplain HvlPainter} draw calls with varying Color values.
+	 * technique that removes the need for users to create their own HvlColor instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlColor values.
 	 * 
 	 * <p>
 	 * 
@@ -716,10 +714,10 @@ public final class HvlStatics {
 	 * @param gArg the green value of the color
 	 * @param bArg the blue value of the color
 	 * @param aArg the alpha value of the color
-	 * @return an instance of Color set to the specified values
+	 * @return an instance of HvlColor set to the specified values
 	 */
-	public static Color hvlColor(float rArg, float gArg, float bArg, float aArg){
-		if(globalColor == null) globalColor = new Color(rArg, gArg, bArg, aArg);
+	public static HvlColor hvlColor(float rArg, float gArg, float bArg, float aArg){
+		if(globalColor == null) globalColor = new HvlColor(rArg, gArg, bArg, aArg);
 		else{
 			globalColor.r = rArg;
 			globalColor.g = gArg;
@@ -730,16 +728,16 @@ public final class HvlStatics {
 	}
 
 	/**
-	 * Produces an instance of {@linkplain org.newdawn.slick.Color Color} with <code>r</code>, <code>g</code>
+	 * Produces an instance of {@linkplain HvlColor} with <code>r</code>, <code>g</code>
 	 * and <code>b</code> values specified by <code>vArg</code> ("value"; for grayscale colors), and an
 	 * <code>a</code> value specified by <code>aArg</code>. See {@linkplain #hvlColor(float, float, float)}, 
-	 * {@linkplain #hvlColor(float, float, float, float)} for other Color options.
+	 * {@linkplain #hvlColor(float, float, float, float)} for other HvlColor options.
 	 * 
 	 * <p>
 	 * 
 	 * This method re-assigns the value of a global variable and returns that variable. This is an optimization 
-	 * technique that removes the need for users to create their own Color instances and allows for rapid
-	 * {@linkplain HvlPainter} draw calls with varying Color values.
+	 * technique that removes the need for users to create their own HvlColor instances and allows for rapid
+	 * {@linkplain HvlPainter} draw calls with varying HvlColor values.
 	 * 
 	 * <p>
 	 * 
@@ -748,10 +746,10 @@ public final class HvlStatics {
 	 * 
 	 * @param vArg the value of the color
 	 * @param aArg the alpha value of the color
-	 * @return an instance of Color set to the specified values
+	 * @return an instance of HvlColor set to the specified values
 	 */
-	public static Color hvlColor(float vArg, float aArg){
-		if(globalColor == null) globalColor = new Color(vArg, vArg, vArg, aArg);
+	public static HvlColor hvlColor(float vArg, float aArg){
+		if(globalColor == null) globalColor = new HvlColor(vArg, vArg, vArg, aArg);
 		else{
 			globalColor.r = vArg;
 			globalColor.g = vArg;
@@ -771,7 +769,7 @@ public final class HvlStatics {
 	 * @param polygonArg the polygon to draw
 	 * @param colorArg the paint to use for <code>polygonArg</code>
 	 */
-	public static void hvlDraw(HvlPolygon polygonArg, Color colorArg){
+	public static void hvlDraw(HvlPolygon polygonArg, HvlColor colorArg){
 		if(globalPaint == null) globalPaint = new HvlPaint(colorArg);
 		else globalPaint.setValue(colorArg);
 		HvlPainter.draw(polygonArg, globalPaint);
@@ -800,7 +798,7 @@ public final class HvlStatics {
 	 * @param textureArg the texture of the paint to use for <code>polygonArg</code>
 	 * @param colorArg the color of the paint to use for <code>polygonArg</code>
 	 */
-	public static void hvlDraw(HvlPolygon polygonArg, HvlTexture textureArg, Color colorArg){
+	public static void hvlDraw(HvlPolygon polygonArg, HvlTexture textureArg, HvlColor colorArg){
 		if(globalPaint == null) globalPaint = new HvlPaint(colorArg, textureArg);
 		else globalPaint.setValue(colorArg, textureArg);
 		HvlPainter.draw(polygonArg, globalPaint);

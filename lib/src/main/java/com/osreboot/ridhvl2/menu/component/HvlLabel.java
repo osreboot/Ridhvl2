@@ -1,6 +1,7 @@
 package com.osreboot.ridhvl2.menu.component;
 
 import com.osreboot.ridhvl2.HvlAction;
+import com.osreboot.ridhvl2.HvlColor;
 import com.osreboot.ridhvl2.HvlMath;
 import com.osreboot.ridhvl2.menu.HvlComponent;
 import com.osreboot.ridhvl2.menu.HvlDefault;
@@ -8,7 +9,6 @@ import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlFont;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
-import com.osreboot.ridhvl2.migration.Color;
 
 public class HvlLabel extends HvlComponent{
 	private static final long serialVersionUID = 6541669450721020192L;
@@ -18,7 +18,7 @@ public class HvlLabel extends HvlComponent{
 	}
 
 	public static final HvlTagTransient<HvlFont> TAG_FONT = new HvlTagTransient<>(HvlFont.class, "font");
-	public static final HvlTagTransient<Color> TAG_COLOR = new HvlTagTransient<>(Color.class, "color");
+	public static final HvlTagTransient<HvlColor> TAG_COLOR = new HvlTagTransient<>(HvlColor.class, "color");
 
 	public static final HvlTag<String> TAG_TEXT = new HvlTag<>(String.class, "text");
 	public static final HvlTag<Float> TAG_SCALE = new HvlTag<>(Float.class, "scale");
@@ -50,7 +50,7 @@ public class HvlLabel extends HvlComponent{
 		set(TAG_DRAW, DEFAULT_DRAW);
 	}
 
-	public HvlLabel(HvlFont fontArg, String textArg, Color colorArg, float scaleArg){
+	public HvlLabel(HvlFont fontArg, String textArg, HvlColor colorArg, float scaleArg){
 		this();
 		HvlDefault.applyIfExists(HvlLabel.class, this);
 		set(TAG_FONT, fontArg);

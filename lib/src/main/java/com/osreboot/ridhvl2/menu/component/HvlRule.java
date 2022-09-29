@@ -4,13 +4,13 @@ import static com.osreboot.ridhvl2.HvlStatics.hvlDraw;
 import static com.osreboot.ridhvl2.HvlStatics.hvlQuadc;
 
 import com.osreboot.ridhvl2.HvlAction;
+import com.osreboot.ridhvl2.HvlColor;
 import com.osreboot.ridhvl2.HvlMath;
 import com.osreboot.ridhvl2.menu.HvlComponent;
 import com.osreboot.ridhvl2.menu.HvlDefault;
 import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
-import com.osreboot.ridhvl2.migration.Color;
 
 public class HvlRule extends HvlComponent{
 	private static final long serialVersionUID = -6293558927367622718L;
@@ -19,7 +19,7 @@ public class HvlRule extends HvlComponent{
 		return HvlDefault.applyIfExists(HvlRule.class, new HvlRule());
 	}
 
-	public static final HvlTagTransient<Color> TAG_COLOR = new HvlTagTransient<>(Color.class, "color");
+	public static final HvlTagTransient<HvlColor> TAG_COLOR = new HvlTagTransient<>(HvlColor.class, "color");
 
 	public static final HvlTag<Boolean> TAG_HORIZONTAL = new HvlTag<>(Boolean.class, "horizontal");
 	public static final HvlTag<Float> TAG_SIZE = new HvlTag<>(Float.class, "size");
@@ -58,7 +58,7 @@ public class HvlRule extends HvlComponent{
 		set(TAG_DRAW, DEFAULT_DRAW);
 	}
 	
-	public HvlRule(boolean horizontalArg, float sizeArg, float thicknessArg, Color colorArg){
+	public HvlRule(boolean horizontalArg, float sizeArg, float thicknessArg, HvlColor colorArg){
 		this();
 		HvlDefault.applyIfExists(HvlRule.class, this);
 		set(TAG_COLOR, colorArg);

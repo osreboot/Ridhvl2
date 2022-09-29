@@ -6,8 +6,8 @@ import static com.osreboot.ridhvl2.HvlStatics.hvlQuad;
 import java.util.HashMap;
 import java.util.Set;
 
-import com.osreboot.ridhvl2.migration.Color;
-import com.osreboot.ridhvl2.migration.HvlTexture;
+import com.osreboot.ridhvl2.HvlColor;
+import com.osreboot.ridhvl2.HvlTexture;
 
 public class HvlFont extends HvlTaggable{
 	private static final long serialVersionUID = 7326153102489408036L;
@@ -54,18 +54,18 @@ public class HvlFont extends HvlTaggable{
 	}
 
 	public void draw(String textArg, float xArg, float yArg){
-		draw(textArg, xArg, yArg, Color.white, 1f);
+		draw(textArg, xArg, yArg, HvlColor.WHITE, 1f);
 	}
 
-	public void draw(String textArg, float xArg, float yArg, Color colorArg){
+	public void draw(String textArg, float xArg, float yArg, HvlColor colorArg){
 		draw(textArg, xArg, yArg, colorArg, 1f);
 	}
 
 	public void draw(String textArg, float xArg, float yArg, float scaleArg){
-		draw(textArg, xArg, yArg, Color.white, scaleArg);
+		draw(textArg, xArg, yArg, HvlColor.WHITE, scaleArg);
 	}
 
-	public void draw(String textArg, float xArg, float yArg, Color colorArg, float scaleArg){
+	public void draw(String textArg, float xArg, float yArg, HvlColor colorArg, float scaleArg){
 		String[] lines = textArg.split(get(TAG_REGEX_NEWLINE));
 		
 		float currentY = yArg + get(TAG_Y_OFFSET);
@@ -111,18 +111,18 @@ public class HvlFont extends HvlTaggable{
 	}
 
 	public void drawc(String textArg, float xArg, float yArg){
-		draw(textArg, xArg - (getWidth(textArg, 1f) / 2f), yArg - (getHeight(textArg, 1f) / 2f), Color.white, 1f);
+		draw(textArg, xArg - (getWidth(textArg, 1f) / 2f), yArg - (getHeight(textArg, 1f) / 2f), HvlColor.WHITE, 1f);
 	}
 
-	public void drawc(String textArg, float xArg, float yArg, Color colorArg){
+	public void drawc(String textArg, float xArg, float yArg, HvlColor colorArg){
 		draw(textArg, xArg - (getWidth(textArg, 1f) / 2f), yArg - (getHeight(textArg, 1f) / 2f), colorArg, 1f);
 	}
 
 	public void drawc(String textArg, float xArg, float yArg, float scaleArg){
-		draw(textArg, xArg - (getWidth(textArg, scaleArg) / 2f), yArg - (getHeight(textArg, scaleArg) / 2f), Color.white, scaleArg);
+		draw(textArg, xArg - (getWidth(textArg, scaleArg) / 2f), yArg - (getHeight(textArg, scaleArg) / 2f), HvlColor.WHITE, scaleArg);
 	}
 
-	public void drawc(String textArg, float xArg, float yArg, Color colorArg, float scaleArg){
+	public void drawc(String textArg, float xArg, float yArg, HvlColor colorArg, float scaleArg){
 		draw(textArg, xArg - (getWidth(textArg, scaleArg) / 2f), yArg - (getHeight(textArg, scaleArg) / 2f), colorArg, scaleArg);
 	}
 

@@ -1,6 +1,7 @@
 package com.osreboot.ridhvl2.menu.component;
 
 import com.osreboot.ridhvl2.HvlAction;
+import com.osreboot.ridhvl2.HvlColor;
 import com.osreboot.ridhvl2.HvlMath;
 import com.osreboot.ridhvl2.menu.HvlComponent;
 import com.osreboot.ridhvl2.menu.HvlDefault;
@@ -8,7 +9,6 @@ import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlFont;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
-import com.osreboot.ridhvl2.migration.Color;
 import com.osreboot.ridhvl2.template.HvlKeyboard;
 import com.osreboot.ridhvl2.template.HvlMouse;
 import com.osreboot.ridhvl2.template.HvlTemplate;
@@ -38,7 +38,7 @@ public class HvlField extends HvlButtonLabeled{
 	public static final HvlTag<String> TAG_ALLOWED_CHARACTERS = new HvlTag<>(String.class, "allowed_characters");
 	public static final HvlTag<Integer> TAG_MAXIMUM_CHARACTERS = new HvlTag<>(Integer.class, "maximum_characters");
 	public static final HvlTag<String> TAG_TEXT_HINT = new HvlTag<>(String.class, "text_hint");
-	public static final HvlTag<Color> TAG_TEXT_HINT_COLOR = new HvlTag<>(Color.class, "text_hint_color");
+	public static final HvlTag<HvlColor> TAG_TEXT_HINT_COLOR = new HvlTag<>(HvlColor.class, "text_hint_color");
 
 	public static final HvlAction.A3<Float, HvlEnvironment, HvlComponent>
 	DEFAULT_UPDATE = (delta, environment, component) -> {
@@ -125,7 +125,7 @@ public class HvlField extends HvlButtonLabeled{
 		set(TAG_TYPED, DEFAULT_TYPED);
 	}
 
-	public HvlField(HvlFont fontArg, String textArg, Color colorArg, float scaleArg,
+	public HvlField(HvlFont fontArg, String textArg, HvlColor colorArg, float scaleArg,
 			HvlAction.A4<Float, HvlEnvironment, HvlButton, HvlButtonState> drawStateArg){
 		this();
 		HvlDefault.applyIfExists(HvlField.class, this);
@@ -141,7 +141,7 @@ public class HvlField extends HvlButtonLabeled{
 		set(TAG_ALLOWED_CHARACTERS, CHARACTERS_ALPHABET + CHARACTERS_NUMBERS);
 		set(TAG_MAXIMUM_CHARACTERS, Integer.MAX_VALUE);
 		set(TAG_TEXT_HINT, "");
-		set(TAG_TEXT_HINT_COLOR, new Color(colorArg.r, colorArg.g, colorArg.b, colorArg.a / 2f));
+		set(TAG_TEXT_HINT_COLOR, new HvlColor(colorArg.r, colorArg.g, colorArg.b, colorArg.a / 2f));
 	}
 
 	public HvlField typed(HvlAction.A1<HvlField> typedArg){

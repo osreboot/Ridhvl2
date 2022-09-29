@@ -15,26 +15,20 @@ import com.osreboot.ridhvl2.loader.HvlLoaderTexture;
  */
 public abstract class HvlTemplateI extends HvlTemplate{
 
-	/**
-	 * Constructs an instance of HvlTemplateI with default launch codes. This is the recommended constructor.
-	 * 
-	 * @param displayArg the initial {@linkplain HvlDisplay} instance to use
-	 */
-	public HvlTemplateI(HvlDisplay displayArg){
-		this(displayArg, Long.MAX_VALUE, Long.MAX_VALUE - 1);
-		//TODO different debug value when Ridhvl2 is more robust
-	}
-
+	public static final double
+	UPDATE_RATE_DEFAULT = 144.0;
+	
 	/**
 	 * Constructs an instance of HvlTemplateI with user-specified launch codes. This constructor is not
 	 * recommended for those unfamiliar with the inner workings of Ridhvl2.
 	 * 
+	 * @param updateRateArg the tick rate of the template's internal timer
 	 * @param displayArg the initial {@linkplain HvlDisplay} instance to use
 	 * @param launchCodeArg the {@linkplain HvlChronology} launch code to use
 	 * @param debugLaunchCodeArg the {@linkplain HvlChronology} debug launch code to use
 	 */
-	public HvlTemplateI(HvlDisplay displayArg, long launchCodeArg, long debugLaunchCodeArg){
-		super(0);
+	public HvlTemplateI(double updateRateArg, HvlDisplay displayArg, long launchCodeArg, long debugLaunchCodeArg){
+		super(updateRateArg);
 
 		//Set the timer's max delta to something reasonable for games
 		getTimer().setMaxDelta(HvlTimer.MAXDELTA_DECISECOND);
@@ -55,6 +49,27 @@ public abstract class HvlTemplateI extends HvlTemplate{
 
 		//Start the timer loop
 		start();
+	}
+	
+	/**
+	 * Constructs an instance of HvlTemplateI with default launch codes.
+	 * 
+	 * @param updateRateArg the tick rate of the template's internal timer
+	 * @param displayArg the initial {@linkplain HvlDisplay} instance to use
+	 */
+	public HvlTemplateI(double updateRateArg, HvlDisplay displayArg){
+		this(updateRateArg, displayArg, Long.MAX_VALUE, Long.MAX_VALUE - 1);
+		//TODO different debug value when Ridhvl2 is more robust
+	}
+	
+	/**
+	 * Constructs an instance of HvlTemplateI with default launch codes and default update rate. This is the recommended constructor.
+	 * 
+	 * @param displayArg the initial {@linkplain HvlDisplay} instance to use
+	 */
+	public HvlTemplateI(HvlDisplay displayArg){
+		this(UPDATE_RATE_DEFAULT, displayArg, Long.MAX_VALUE, Long.MAX_VALUE - 1);
+		//TODO different debug value when Ridhvl2 is more robust
 	}
 
 	/**

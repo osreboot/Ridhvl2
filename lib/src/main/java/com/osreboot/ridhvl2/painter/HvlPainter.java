@@ -5,7 +5,6 @@ import org.lwjgl.opengl.GL11;
 
 import com.osreboot.ridhvl2.HvlAction;
 import com.osreboot.ridhvl2.HvlStatics;
-import com.osreboot.ridhvl2.migration.Color;
 import com.osreboot.ridhvl2.painter.HvlPaint.HvlPaintMode;
 import com.osreboot.ridhvl2.template.HvlChronology;
 import com.osreboot.ridhvl2.template.HvlChronologyExit;
@@ -96,7 +95,7 @@ public final class HvlPainter{
 				
 				// Prepare for textured polygon rendering with solid white texture alpha
 				GL11.glEnable(GL11.GL_TEXTURE_2D);
-				Color.white.bind();
+				GL11.glColor4f(1f, 1f, 1f, 1f);
 				GL11.glBindTexture(GL11.GL_TEXTURE_2D, paintArg.getValueTexture().id);
 				
 			}else if(paintArg.getMode() == HvlPaintMode.TEXTURE_COLORIZED){

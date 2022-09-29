@@ -6,7 +6,7 @@ import org.lwjgl.opengl.EXTFramebufferObject;
 import org.lwjgl.opengl.GL11;
 
 import com.osreboot.ridhvl2.HvlAction;
-import com.osreboot.ridhvl2.migration.HvlTexture;
+import com.osreboot.ridhvl2.HvlTexture;
 import com.osreboot.ridhvl2.template.HvlDisplay;
 
 public class HvlFrameBuffer extends HvlTexture{

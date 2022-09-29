@@ -3,8 +3,8 @@ package com.osreboot.ridhvl2.loader;
 import java.io.File;
 
 import com.osreboot.ridhvl2.HvlConfig;
+import com.osreboot.ridhvl2.HvlTexture;
 import com.osreboot.ridhvl2.menu.HvlFont;
-import com.osreboot.ridhvl2.migration.HvlTexture;
 
 /**
  * A standard HvlLoader implementation designed to handle fonts in the form of 

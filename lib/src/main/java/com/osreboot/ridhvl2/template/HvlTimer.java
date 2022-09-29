@@ -25,12 +25,32 @@ public abstract class HvlTimer {
 	MAXDELTA_CENTISECOND = 10,
 	MAXDELTA_MILLISECOND = 1;
 
+	private static final long
+	NANOS_PER_SECOND = 1000L * 1000L * 1000L;
+
+	private final double tickRate;
 	private float dilation = 1f, totalTimeS = 0f;
 	//totalTimeMS <- not affected by dilation
 	private long deltaMS, totalTimeMS, lastUpdateTimeMS, maxDeltaMS = MAXDELTA_UNLIMITED;
 	private boolean running = false;
 
-	public HvlTimer(){}
+	private long tickNextNS;
+
+	private long[] historicSleepNS = new long[10];
+	private long[] historicYieldNS = new long[10];
+	private int historicSleepOffset, historicYieldOffset;
+
+	public HvlTimer(double tickRateArg){
+		tickRate = tickRateArg;
+
+		for(int i = 0; i < historicSleepNS.length; i++) historicSleepNS[i] = 1000L * 1000L;
+		for(int i = 0; i < historicYieldNS.length; i++) historicYieldNS[i] = 0L;
+
+		historicSleepOffset = 0;
+		historicYieldOffset = 0;
+
+		tickNextNS = (long)(GLFW.glfwGetTime() * NANOS_PER_SECOND);
+	}
 
 	/**
 	 * Starts the loop. This method will not exit until <code>setRunning(false)</code> is called.
@@ -38,6 +58,7 @@ public abstract class HvlTimer {
 	public final void start(){
 		running = true;
 		while(running){
+			// Handle updating external methods / values
 			totalTimeMS = (long)(GLFW.glfwGetTime() * 1000.0);
 			deltaMS = Math.min(totalTimeMS - lastUpdateTimeMS, maxDeltaMS);
 			lastUpdateTimeMS = totalTimeMS;
@@ -45,7 +66,47 @@ public abstract class HvlTimer {
 				totalTimeS += ((float)deltaMS / 1000) * dilation;
 				tick(((float)deltaMS / 1000) * dilation);
 			}
+
+			// Handle sleeping until next tick (inspiration: https://github.com/LWJGL/lwjgl/blob/master/src/java/org/lwjgl/opengl/Sync.java)
+			try{
+				long timeToNextTickNS = tickNextNS - getTimeNS();
+				
+				// Sleep as long as possible
+				long timeSleep;
+				while(timeToNextTickNS > historicAverage(historicSleepNS)){
+					timeSleep = getTimeNS();
+					Thread.sleep(1);
+					historicSleepNS[historicSleepOffset++ % historicSleepNS.length] = getTimeNS() - timeSleep;
+					timeToNextTickNS = tickNextNS - getTimeNS();
+				}
+
+				// Dampen to avoid excessive yields
+				if(historicAverage(historicSleepNS) > 10L * 1000L * 1000L){
+					for(int i = 0; i < historicSleepNS.length; i++) historicSleepNS[i] *= 0.9;
+				}
+				
+				// Yield as long as possible
+				long timeYield;
+				while(timeToNextTickNS > historicAverage(historicYieldNS)){
+					timeYield = getTimeNS();
+					Thread.yield();
+					historicYieldNS[historicYieldOffset++ % historicYieldNS.length] = getTimeNS() - timeYield;
+					timeToNextTickNS = tickNextNS - getTimeNS();
+				}
+			}catch(InterruptedException e){}
+
+			tickNextNS = Math.max(tickNextNS + (NANOS_PER_SECOND / (long)tickRate), getTimeNS());
 		}
+	}
+
+	private long getTimeNS(){
+		return (long)(GLFW.glfwGetTime() * NANOS_PER_SECOND);
+	}
+
+	private long historicAverage(long[] history){
+		long sum = 0;
+		for(int i = 0; i < history.length; i++) sum += history[i];
+		return sum / history.length;
 	}
 
 	/**

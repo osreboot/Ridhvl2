@@ -43,10 +43,10 @@ public abstract class HvlTemplate {
 	 * 
 	 * @param dontCareArg mandates the calling of the constructor, serves no other purpose
 	 */
-	public HvlTemplate(int dontCareArg){//TODO better solution than this
+	public HvlTemplate(double tickRateArg){
 		newestInstance = this;
 		
-		timer = new HvlTimer(){
+		timer = new HvlTimer(tickRateArg){
 			@Override
 			public void tick(float delta){
 				preUpdate(delta);

@@ -1,6 +1,7 @@
 package com.osreboot.ridhvl2.menu.component;
 
 import com.osreboot.ridhvl2.HvlAction;
+import com.osreboot.ridhvl2.HvlColor;
 import com.osreboot.ridhvl2.HvlMath;
 import com.osreboot.ridhvl2.menu.HvlComponent;
 import com.osreboot.ridhvl2.menu.HvlDefault;
@@ -8,7 +9,6 @@ import com.osreboot.ridhvl2.menu.HvlEnvironment;
 import com.osreboot.ridhvl2.menu.HvlFont;
 import com.osreboot.ridhvl2.menu.HvlTag;
 import com.osreboot.ridhvl2.menu.HvlTagTransient;
-import com.osreboot.ridhvl2.migration.Color;
 
 public class HvlButtonLabeled extends HvlButton{
 	private static final long serialVersionUID = -220791134661836894L;
@@ -18,7 +18,7 @@ public class HvlButtonLabeled extends HvlButton{
 	}
 
 	public static final HvlTagTransient<HvlFont> TAG_FONT = new HvlTagTransient<>(HvlFont.class, "font");
-	public static final HvlTagTransient<Color> TAG_TEXT_COLOR = new HvlTagTransient<>(Color.class, "text_color");
+	public static final HvlTagTransient<HvlColor> TAG_TEXT_COLOR = new HvlTagTransient<>(HvlColor.class, "text_color");
 
 	public static final HvlTag<String> TAG_TEXT = new HvlTag<>(String.class, "text");
 	public static final HvlTag<Float> TAG_TEXT_SCALE = new HvlTag<>(Float.class, "text_scale");
@@ -55,7 +55,7 @@ public class HvlButtonLabeled extends HvlButton{
 		set(TAG_DRAW, DEFAULT_DRAW);
 	}
 
-	public HvlButtonLabeled(HvlFont fontArg, String textArg, Color colorArg, float scaleArg,
+	public HvlButtonLabeled(HvlFont fontArg, String textArg, HvlColor colorArg, float scaleArg,
 			HvlAction.A4<Float, HvlEnvironment, HvlButton, HvlButtonState> drawStateArg,
 			HvlAction.A1<HvlButton> clickedArg){
 		this();
@@ -72,7 +72,7 @@ public class HvlButtonLabeled extends HvlButton{
 		set(TAG_TEXT_OFFSET_Y, 0f);
 	}
 
-	public HvlButtonLabeled(HvlFont fontArg, String textArg, Color colorArg, float scaleArg,
+	public HvlButtonLabeled(HvlFont fontArg, String textArg, HvlColor colorArg, float scaleArg,
 			HvlAction.A4<Float, HvlEnvironment, HvlButton, HvlButtonState> drawStateArg){
 		this();
 		HvlDefault.applyIfExists(HvlButtonLabeled.class, this);
