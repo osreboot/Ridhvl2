@@ -91,6 +91,18 @@ public final class HvlMenu {
 				componentsQueued.get(componentsQueued.size() - 1);
 		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
 	}
+	
+	public static HvlComponent bottom(){
+		if(active){
+			return components.get(0);
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
+	}
+	
+	public static HvlComponent bottomNext(){
+		if(active){
+			return componentsQueued == null ? components.get(0) : componentsQueued.get(0);
+		}else throw new HvlChronology.InactiveException(LABEL, LAUNCH_CODE);
+	}
 
 	public static void push(HvlComponent componentArg){
 		if(active){
