@@ -61,6 +61,7 @@ public abstract class HvlContainer extends HvlComponent{
 
 	@SuppressWarnings("unchecked")
 	public <T extends HvlComponent> T find(String nameArg){
+		if(getName().equals(nameArg)) return (T)this;
 		for(HvlComponent child : get(TAG_CHILDREN)){
 			if(child.getName().equals(nameArg))
 				return (T)child;
@@ -68,8 +69,7 @@ public abstract class HvlContainer extends HvlComponent{
 		for(HvlComponent child : get(TAG_CHILDREN)){
 			if(child instanceof HvlContainer){
 				HvlComponent searchResult = ((HvlContainer)child).find(nameArg);
-				if(searchResult != null)
-					return (T)searchResult;
+				if(searchResult != null) return (T)searchResult;
 			}
 		}
 		return null;
