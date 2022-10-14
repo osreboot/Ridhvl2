@@ -80,8 +80,8 @@ public final class HvlMath {
 	 * Examples:<br>
 	 * <code>stepTowards(0, 5, 10)</code> returns <code>5</code> because 0 + 5 = 5<br>
 	 * <code>stepTowards(0, 5, -10)</code> returns <code>-5</code> because 0 - 5 = -5<br>
-	 * <code>stepTowards(0, 20, 10)</code> returns <code>10</code> because 0 + 20 > 10<br>
-	 * <code>stepTowards(0, 20, -10)</code> returns <code>-10</code> because 0 - 20 < -10<br>
+	 * <code>stepTowards(0, 20, 10)</code> returns <code>10</code> because 0 + 20 {@literal >} 10<br>
+	 * <code>stepTowards(0, 20, -10)</code> returns <code>-10</code> because 0 - 20 {@literal <} -10<br>
 	 * <code>stepTowards(0, -1, 2)</code> returns <code>1</code> because 0 + 1 = 1<br>
 	 * <code>stepTowards(0, -1, -2)</code> returns <code>-1</code> because 0 - 1 = -1
 	 * 
@@ -237,7 +237,7 @@ public final class HvlMath {
 	 * 
 	 * Algorithm source: <a href="http://paulbourke.net/geometry/pointlineplane/">http://paulbourke.net/geometry/pointlineplane/</a>
 	 * 
-	 * @param c1Arg the point for the distance calculation
+	 * @param cArg the point for the distance calculation
 	 * @param lStartArg the first reference point for the infinite line
 	 * @param lEndArg the second reference point for the infinite line
 	 * @return the Euclidean distance between the point and the infinite line

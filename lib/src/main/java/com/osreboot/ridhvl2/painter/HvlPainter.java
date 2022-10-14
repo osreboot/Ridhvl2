@@ -67,9 +67,8 @@ public final class HvlPainter{
 	private HvlPainter(){}
 
 	/**
-	 * Draws <code>polygonArg</code> in <code>paintArg</code> to the current 
-	 * {@linkplain org.lwjgl.opengl.Display Display}. The Display should already be specified by
-	 * {@linkplain com.osreboot.ridhvl2.template.HvlDisplay HvlDisplay} if that utility is active (it is in
+	 * Draws <code>polygonArg</code> in <code>paintArg</code> to the current HvlDisplay. The display should
+	 * already be specified by {@linkplain HvlDisplay} if that utility is active (it is in
 	 * most cases).
 	 * 
 	 * <p>

@@ -941,7 +941,7 @@ public final class HvlStatics {
 	}
 
 	/**
-	 * Fetches a {@linkplain org.newdawn.slick.opengl.Texture Texture} instance stored in an {@linkplain HvlLoader}.
+	 * Fetches a {@linkplain HvlTexture} instance stored in an {@linkplain HvlLoader}.
 	 * This resource must have been loaded previously. See {@linkplain #hvlLoad(String)} for more information on
 	 * loading resources. Additionally, (and similarly to {@linkplain #hvlLoad(String)}) an HvlLoader instance
 	 * with the specific <code>TYPELABEL</code> must be available for use and have said Texture loaded into it.

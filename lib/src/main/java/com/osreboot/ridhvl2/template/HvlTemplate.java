@@ -41,7 +41,7 @@ public abstract class HvlTemplate {
 	 * Constructs an HvlTemplate instance. Also assigns the <code>newestInstance</code> variable and initializes 
 	 * the {@linkplain HvlTimer}. To start the timer loop, call {@linkplain #start()}.
 	 * 
-	 * @param dontCareArg mandates the calling of the constructor, serves no other purpose
+	 * @param tickRateArg the rate at which {@linkplain #update(float)} is called, in Hz
 	 */
 	public HvlTemplate(double tickRateArg){
 		newestInstance = this;

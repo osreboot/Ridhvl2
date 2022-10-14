@@ -53,6 +53,44 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
 }
 
+sourceSets {
+	main {
+		java {
+			srcDirs "src/main/java"
+		}
+	}
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+tasks.named('jar') {
+	archivesBaseName = 'Ridhvl2'
+	archiveVersion = version;
+}
+
+tasks.named('javadoc'){
+	source = sourceSets.main.java
+	classpath = sourceSets.main.runtimeClasspath
+}
+
+task sourcesJar(type: Jar, dependsOn: classes){
+	duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+	classifier = 'sources'
+	from sourceSets.main.java
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc){
+	classifier = 'javadoc'
+	from javadoc.destinationDir
+}
+
+artifacts {
+	archives sourcesJar
+	archives javadocJar
+}
+
 publishing {
     repositories {
         maven {
@@ -68,17 +106,11 @@ publishing {
         gpr(MavenPublication) {
             from(components.java)
             
+            artifact(sourcesJar)
+            artifact(javadocJar)
+            
             groupId = group
             artifactId = "ridhvl2"
         }
     }
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-tasks.named('jar') {
-	archivesBaseName = 'Ridhvl2'
-	archiveVersion = version;
 }

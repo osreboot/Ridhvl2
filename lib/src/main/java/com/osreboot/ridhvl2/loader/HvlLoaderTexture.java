@@ -6,7 +6,7 @@ import com.osreboot.ridhvl2.HvlTexture;
 
 /**
  * A standard HvlLoader implementation designed to handle images in the form of 
- * {@linkplain org.newdawn.slick.opengl.Texture Texture} objects.
+ * {@linkplain HvlTexture} objects.
  * 
  * @author os_reboot
  *

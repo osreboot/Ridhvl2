@@ -10,9 +10,11 @@ import com.osreboot.ridhvl2.template.HvlChronology;
  * <p>
  * 
  * Example:<br>
- * <code>void runAction(HvlAction.A1<String> actionArg){<br>
- * &nbspactionArg.run("test");<br>
- * }<br></code>
+ * <pre><code>
+ * void runAction(HvlAction.A1{@code <String>} actionArg){
+ *   actionArg.run("test");
+ * }
+ * </code></pre>
  * ...<br>
  * <code>runAction((arg) -> System.out.println(arg));//prints "test" to console</code>
  * 
