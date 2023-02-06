@@ -60,6 +60,10 @@ public class HvlColor implements Serializable{
 	public HvlColor(HvlColor colorArg){
 		this(colorArg.r, colorArg.g, colorArg.b, colorArg.a);
 	}
+	
+	public HvlColor(){
+		this(0f, 0f, 0f, 1f);
+	}
 
 	@Override
 	public boolean equals(Object objectArg){
