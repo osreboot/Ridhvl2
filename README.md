@@ -7,6 +7,8 @@
 # Ridhvl2
 Ridhvl2 is a library designed to provide shortcuts and templates for 2D Java game development.
 
+Ridhvl2 is publicly available for commercial use under the [zlib license](https://choosealicense.com/licenses/zlib/).
+
 Pull requests that provide *helpful* and *logical* additions will be accepted. Additionally, questions and ideas can be discussed in our [Discord server](https://discord.gg/E8GTCNH)!
 
 # Dependencies
