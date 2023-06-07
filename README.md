@@ -7,9 +7,11 @@
 # Ridhvl2
 Ridhvl2 is a library designed to provide shortcuts and templates for 2D Java game development.
 
-Ridhvl2 depends on [Lwjgl 2](http://legacy.lwjgl.org/), [slick-util](http://slick.ninjacave.com/) and [Jackson](https://github.com/FasterXML/jackson).
+Pull requests that provide *helpful* and *logical* additions will be accepted. Additionally, questions and ideas can be discussed in our [Discord server](https://discord.gg/E8GTCNH)!
 
-Pull requests that provide *helpful* and *logical* additions will be accepted. Additionally, questions and ideas can be discussed in our [Discord server](https://discord.gg/E8GTCNH).
+# Dependencies
+
+Ridhvl2 depends on [Gradle](https://github.com/gradle/gradle), [LWJGL3](https://github.com/LWJGL/lwjgl3), [jackson-core](https://github.com/FasterXML/jackson-core), [jackson-databind](https://github.com/FasterXML/jackson-databind), [jackson-annotations](https://github.com/FasterXML/jackson-annotations), and [JUnit 5](https://github.com/junit-team/junit5/). You can view dependency information, licenses, and source code via the supplied links.
 
 ---
 
@@ -39,7 +41,7 @@ public class Ridhvl2Test extends HvlTemplateI{
         // [Display Configuration]:
         // - The constructor needs a HvlDisplay to describe the application window.
         // - This example creates a 144Hz, 1280x720, non-resizable window titled "Ridhvl2 Test!".
-        super(new HvlDisplayWindowed(144, 1280, 720, "Ridhvl2 Test!", false));
+        super(144.0, new HvlDisplayWindowed(1280, 720, "Ridhvl2 Test!", false));
     }
   
     //---------------------------------------------------------------------//
@@ -50,7 +52,7 @@ public class Ridhvl2Test extends HvlTemplateI{
     @Override
     public void initialize(){
         // [Resource Loading]:
-        // - Ridhvl2 defaults to searching in the "/res" folder. 
+        // - Ridhvl2 defaults to searching in the "/src/main/resources" folder. 
         // - hvlLoad(String) loads any type of resource (images, sounds, etc.).
         // - Resources are stored in the order that they are loaded.
         hvlLoad("RIDHVL2.png");
